@@ -9,10 +9,20 @@
   UndecidableInstances
   #-}
 
-module Graph where
+module Data.Graph.LabeledGraph where
 
-import Prelude hiding (id)
-import Data.List
+import Prelude ()
+
+import Control.Monad
+import Data.Bool
+import Data.Eq
+import Data.Int
+import Data.List.Stream
+import Data.Maybe
+import Data.Tuple
+import System.IO
+import Text.Show
+import Data.Function hiding (id)
 
 {---------------------------- Type declarations -------------------------------}
 type ID = Int
