@@ -1,10 +1,11 @@
 module Algorithms.Kohonen where
 
-import Data.Array
+import Control.Applicative
+import Data.Array.IArray
 import Data.List
 import Data.Tuple
 import System.IO.Unsafe (unsafePerformIO)
-import System.Random
+import System.Random.Mersenne
 import Control.Monad
 import Control.Monad.State
 
@@ -18,30 +19,32 @@ newtype Weights a = Weights [a] deriving (Eq, Show)
 instance Functor Weights where
     fmap f (Weights ws) = Weights (map f ws)
 
+
 apply :: ([a] -> [a]) -> Weights a -> Weights a
 apply f (Weights ws) = Weights (f ws)
 
 
-instance Random a =>  Random (Weights a) where
-    random g = let (g',ws) = mapAccumL (\g x -> (snd . next $ g, fst . random $ g)) g [1..]
-               in (Weights ws, g')
-    randomR = error "Instance randomR for Random (Weights a) is undefined"
+instance MTRandom a =>  MTRandom (Weights a) where
+    random g =  do rs <- randoms g
+                   return (Weights rs)
 
 
-type WeightsField a = Array (Row,Col) (Weights a)
 
 
-initWeightsField :: Random a => (Row,Col) -> Integer -> IO (WeightsField a)
-initWeightsField bnds@(rs,cs) wlength = do
-  g <- getStdGen
-  let (g',ws') = mapAccumL 
-                 (\g _ -> (snd . next $ g, 
-                           mkWeight (fromIntegral wlength) g)) 
-                 g 
-                 [1..rs*cs]
-  ws <- sequence ws'
+type WeightsField a = (Array (Row,Col) (Weights a)) 
+
+
+
+
+initWeightsField :: forall a. MTRandom a => (Row, Col) -> Integer -> IO (WeightsField a)
+initWeightsField bnds@(rs,cs) wlength = do 
+  ws <- sequence . replicate (fromIntegral (rs*cs))
+        $ return . apply (take (fromIntegral wlength)) 
+            =<< (randomIO :: IO (Weights a))
   return $ listArray ((1,1),bnds) ws
 
-      where mkWeight s g = do let (ws, g') = random g
-                              setStdGen g'
-                              return $ apply (take s) ws
+
+
+type InputVector a = Array Int a
+
+
