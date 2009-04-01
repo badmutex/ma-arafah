@@ -36,14 +36,22 @@ type WeightsField a = (Array (Row,Col) (Weights a))
 
 
 
-initWeightsField :: forall a. MTRandom a => (Row, Col) -> Integer -> IO (WeightsField a)
+initWeightsField :: (Integral b, MTRandom a) => 
+                    (Row, Col) -> b -> IO (WeightsField a)
 initWeightsField bnds@(rs,cs) wlength = do 
   ws <- sequence . replicate (fromIntegral (rs*cs))
         $ return . apply (take (fromIntegral wlength)) 
-            =<< (randomIO :: IO (Weights a))
+            =<< (randomIO :: MTRandom a => IO (Weights a))
   return $ listArray ((1,1),bnds) ws
 
+-- test
+test_wf :: WeightsField Test_MD
+test_wf = unsafePerformIO $ initWeightsField (100,100) 9
 
+data Test_MD = Test deriving Show
+instance MTRandom Test_MD where
+    random _ = return Test
+-- /test
 
 type InputVector a = Array Int a
 
