@@ -1,6 +1,7 @@
-module Algorithms.Kohonen where
+{-# LANGUAGE
+  NoMonomorphismRestriction
+  #-}
 
-import Control.Applicative
 import Data.Array.IArray
 import Data.List
 import Data.Tuple
@@ -8,51 +9,72 @@ import System.IO.Unsafe (unsafePerformIO)
 import System.Random.Mersenne
 import Control.Monad
 import Control.Monad.State
-
+import Data.IORef
+import Control.Concurrent.MVar
+import Control.Applicative
+import System.Random.Shuffle
 
 type Row = Integer
 type Col = Integer
+type Position = (Row,Col)
 
+(|>) :: a -> (a -> b) -> b
+d |> f = f d
 
-newtype Weights a = Weights [a] deriving (Eq, Show)
+newtype Vector a = Vector [a] deriving (Eq,Show)
 
-instance Functor Weights where
-    fmap f (Weights ws) = Weights (map f ws)
+instance Functor Vector where
+    fmap f (Vector ws) = Vector (fmap f ws)
 
+instance Applicative Vector where
+    pure w = Vector (repeat w)
+    (Vector fs) <*> (Vector ws) = Vector (zipWith ($) fs ws)
 
-apply :: ([a] -> [a]) -> Weights a -> Weights a
-apply f (Weights ws) = Weights (f ws)
-
-
-instance MTRandom a =>  MTRandom (Weights a) where
+instance MTRandom a => MTRandom (Vector a) where
     random g =  do rs <- randoms g
-                   return (Weights rs)
+                   return (Vector rs)
+
+apply :: ([a] -> [b]) -> Vector a -> Vector b
+apply f (Vector ws) = Vector (f ws)
+
+type Weights a = Vector a
+type Input a = Vector a
+type Field a = Array Position (Weights a)
+
+field :: MVar (IORef (Field Int))
+field = unsafePerformIO $ do newEmptyMVar
+
+readFieldIORef = readMVar field
+takeFieldIORef = takeMVar field
+writeFieldIORef = putMVar field
+takeField = takeFieldIORef >>= readIORef
+readField = readFieldIORef >>= readIORef
+writeField f = takeFieldIORef >>= writeIORef f
+modifyField f = takeFieldIORef >>= (\ref -> modifyIORef ref f)
+
+initField :: (Integral b) => Position -> b -> IO ()
+initField pos@(nrows,ncols) vlength = do
+  ws <- sequence . replicate (fromIntegral (nrows * ncols))
+        $ return . apply (take (fromIntegral vlength)) 
+            =<< randomIO
+  let f = listArray ((1,1),pos) ws
+  field' <- newIORef f
+  putMVar field field'
+  
+foo = unsafePerformIO $ do
+        initField (1,1) 3
+        field <- readField
+        return field
+
+
+euclidean (Vector v1) (Vector v2) = sqrt . sum $ 
+                                    zipWith (\ a b -> (a-b)**2) v1 v2
+distance = euclidean
+
+
+shuffle :: [a] -> [a]
+shuffle = undefined
 
 
 
-
-type WeightsField a = (Array (Row,Col) (Weights a)) 
-
-
-
-
-initWeightsField :: (Integral b, MTRandom a) => 
-                    (Row, Col) -> b -> IO (WeightsField a)
-initWeightsField bnds@(rs,cs) wlength = do 
-  ws <- sequence . replicate (fromIntegral (rs*cs))
-        $ return . apply (take (fromIntegral wlength)) 
-            =<< (randomIO :: MTRandom a => IO (Weights a))
-  return $ listArray ((1,1),bnds) ws
-
--- test
-test_wf :: WeightsField Test_MD
-test_wf = unsafePerformIO $ initWeightsField (100,100) 9
-
-data Test_MD = Test deriving Show
-instance MTRandom Test_MD where
-    random _ = return Test
--- /test
-
-type InputVector a = Array Int a
-
-
+  
