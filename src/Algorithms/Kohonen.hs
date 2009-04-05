@@ -41,40 +41,46 @@ type Weights a = Vector a
 type Input a = Vector a
 type Field a = Array Position (Weights a)
 
-field :: MVar (IORef (Field Int))
-field = unsafePerformIO $ do newEmptyMVar
+weights_field :: MVar (IORef (Field Double))
+weights_field = unsafePerformIO $ do newEmptyMVar
 
-readFieldIORef = readMVar field
-takeFieldIORef = takeMVar field
-writeFieldIORef = putMVar field
+readFieldIORef = readMVar weights_field
+takeFieldIORef = takeMVar weights_field
+writeFieldIORef = putMVar weights_field
 takeField = takeFieldIORef >>= readIORef
 readField = readFieldIORef >>= readIORef
-writeField f = takeFieldIORef >>= writeIORef f
+writeField f = takeFieldIORef >>= (\ref -> writeIORef ref f)
 modifyField f = takeFieldIORef >>= (\ref -> modifyIORef ref f)
 
-initField :: (Integral b) => Position -> b -> IO ()
+initField :: (Integral vlength) => Position -> vlength -> IO (Field Double)
 initField pos@(nrows,ncols) vlength = do
   ws <- sequence . replicate (fromIntegral (nrows * ncols))
         $ return . apply (take (fromIntegral vlength)) 
             =<< randomIO
   let f = listArray ((1,1),pos) ws
-  field' <- newIORef f
-  putMVar field field'
-  
-foo = unsafePerformIO $ do
-        initField (1,1) 3
-        field <- readField
-        return field
+  field <- newIORef f
+  putMVar weights_field field
+  takeField >>= return
 
-
-euclidean (Vector v1) (Vector v2) = sqrt . sum $ 
+euclidean (Vector v1) (Vector v2) = sqrt . sum $
                                     zipWith (\ a b -> (a-b)**2) v1 v2
 distance = euclidean
 
-
+-- TODO implement shuffle :: [a] -> [a]
 shuffle :: [a] -> [a]
 shuffle = undefined
 
 
-
+find_best_match input = do
+  field <- takeField
   
+  let !best = assocs field
+             |> minimumBy (\(_,v1) (_,v2) -> compare (d v1) (d v2))
+             where d = distance input
+
+  writeField field
+  return best
+
+
+neighborhood v1 v2 = 1 / (d + 1)
+    where d = euclidean (Vector v1) (Vector v2)
