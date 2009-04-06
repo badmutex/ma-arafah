@@ -1,5 +1,6 @@
 {-# LANGUAGE
-  NoMonomorphismRestriction
+  NoMonomorphismRestriction,
+  TypeSynonymInstances
   #-}
 
 import Data.Array.IArray
@@ -34,6 +35,12 @@ instance MTRandom a => MTRandom (Vector a) where
     random g =  do rs <- randoms g
                    return (Vector rs)
 
+vector_op f (Vector v1) (Vector v2) = Vector (zipWith f v1 v2)
+(|+|) = vector_op (+)
+(|-|) = vector_op (-)
+(/*/) s = fmap (s*)
+
+
 apply :: ([a] -> [b]) -> Vector a -> Vector b
 apply f (Vector ws) = Vector (f ws)
 
@@ -44,13 +51,22 @@ type Field a = Array Position (Weights a)
 weights_field :: MVar (Field Double)
 weights_field = unsafePerformIO $ do newEmptyMVar
 
-readField = readMVar weights_field
+
 takeField = takeMVar weights_field
 writeField = putMVar weights_field
 modifyField f = modifyMVar_ weights_field (\field -> return $ f field)
 
 best_matching_unit :: MVar (Vector a)
 best_matching_unit = unsafePerformIO $ do newEmptyMVar
+
+takeBMU = takeMVar best_matching_unit
+writeBMU = putMVar best_matching_unit
+modifyBMU f = modifyMVar_ best_matching_unit (\bmu -> return $ f bmu)
+
+learning_restraint :: MVar Double
+learning_restraint = unsafePerformIO $ do newMVar 1.0
+inc_learning_restraint = modifyMVar_ learning_restraint
+                         (\lr -> return $ lr * 0.1)
 
 initField :: (Integral vlength) => Position -> vlength -> IO (Field Double)
 initField pos@(nrows,ncols) vlength = do
@@ -70,16 +86,22 @@ shuffle :: [a] -> [a]
 shuffle = undefined
 
 
-find_best_match input = do
-  field <- takeField
-  
-  let !best = assocs field
-             |> minimumBy (\(_,v1) (_,v2) -> compare (d v1) (d v2))
-             where d = distance input
+find_best_match :: (Floating a, Ord a) =>
+                   Field a -> Input a -> (Position, Weights a)
+find_best_match field input = best
+    where !best = assocs field
+                |> minimumBy (\(_,v1) (_,v2) -> compare (d v1) (d v2))
+              where d = distance input
 
-  writeField field
-  return best
 
 
 neighborhood v1 v2 = 1 / (d + 1)
     where d = euclidean v1 v2
+
+update_weights :: (Floating a, Num a) =>
+                  Field a -> Input a -> Weights a -> a -> Field a
+update_weights field input bmu restraint = field // mods
+    where mods = map update . assocs $ field
+          update (pos,ws) = (pos,ws')
+              where ws' = ws |+| ((n ws bmu) /*/ (restraint /*/ (input |-| ws)))
+                    n = neighborhood
