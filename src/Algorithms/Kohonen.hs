@@ -41,25 +41,24 @@ type Weights a = Vector a
 type Input a = Vector a
 type Field a = Array Position (Weights a)
 
-weights_field :: MVar (IORef (Field Double))
+weights_field :: MVar (Field Double)
 weights_field = unsafePerformIO $ do newEmptyMVar
 
-readFieldIORef = readMVar weights_field
-takeFieldIORef = takeMVar weights_field
-writeFieldIORef = putMVar weights_field
-takeField = takeFieldIORef >>= readIORef
-readField = readFieldIORef >>= readIORef
-writeField f = takeFieldIORef >>= (\ref -> writeIORef ref f)
-modifyField f = takeFieldIORef >>= (\ref -> modifyIORef ref f)
+readField = readMVar weights_field
+takeField = takeMVar weights_field
+writeField = putMVar weights_field
+modifyField f = modifyMVar_ weights_field (\field -> return $ f field)
+
+best_matching_unit :: MVar (Vector a)
+best_matching_unit = unsafePerformIO $ do newEmptyMVar
 
 initField :: (Integral vlength) => Position -> vlength -> IO (Field Double)
 initField pos@(nrows,ncols) vlength = do
   ws <- sequence . replicate (fromIntegral (nrows * ncols))
         $ return . apply (take (fromIntegral vlength)) 
             =<< randomIO
-  let f = listArray ((1,1),pos) ws
-  field <- newIORef f
-  putMVar weights_field field
+  let field = listArray ((1,1),pos) ws
+  writeField field
   takeField >>= return
 
 euclidean (Vector v1) (Vector v2) = sqrt . sum $
@@ -83,4 +82,4 @@ find_best_match input = do
 
 
 neighborhood v1 v2 = 1 / (d + 1)
-    where d = euclidean (Vector v1) (Vector v2)
+    where d = euclidean v1 v2
