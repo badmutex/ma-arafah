@@ -74,8 +74,7 @@ initField pos@(nrows,ncols) vlength = do
         $ return . apply (take (fromIntegral vlength)) 
             =<< randomIO
   let field = listArray ((1,1),pos) ws
-  writeField field
-  takeField >>= return
+  return field
 
 euclidean (Vector v1) (Vector v2) = sqrt . sum $
                                     zipWith (\ a b -> (a-b)**2) v1 v2
