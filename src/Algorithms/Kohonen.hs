@@ -19,8 +19,8 @@ type Row = Integer
 type Col = Integer
 type Position = (Row,Col)
 
-(|>) :: a -> (a -> b) -> b
-d |> f = f d
+(|>) :: (a -> b) -> (b -> c) -> a -> c
+(|>) = flip (.)
 
 newtype Vector a = Vector [a] deriving (Eq,Show)
 
@@ -89,8 +89,8 @@ shuffle = undefined
 find_best_match :: (Floating a, Ord a) =>
                    Field a -> Input a -> (Position, Weights a)
 find_best_match field input = best
-    where !best = assocs field
-                |> minimumBy (\(_,v1) (_,v2) -> compare (d v1) (d v2))
+    where !best = minimumBy (\(_,v1) (_,v2) -> compare (d v1) (d v2)) 
+                  $ assocs field
               where d = distance input
 
 
