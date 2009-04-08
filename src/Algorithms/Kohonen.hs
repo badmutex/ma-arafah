@@ -13,7 +13,7 @@ import Control.Monad.State
 import Data.IORef
 import Control.Concurrent.MVar
 import Control.Applicative
-import System.Random.Shuffle
+-- import System.Random.Shuffle
 
 type Row = Integer
 type Col = Integer
@@ -48,7 +48,7 @@ type Weights a = Vector a
 type Input a = Vector a
 type Field a = Array Position (Weights a)
 
-weights_field :: MVar (Field Double)
+weights_field :: MVar (Field a)
 weights_field = unsafePerformIO $ do newEmptyMVar
 
 
@@ -68,7 +68,7 @@ learning_restraint = unsafePerformIO $ do newMVar 1.0
 inc_learning_restraint = modifyMVar_ learning_restraint
                          (\lr -> return $ lr * 0.1)
 
-initField :: (Integral vlength) => Position -> vlength -> IO (Field Double)
+initField :: (Integral vlength, MTRandom a) => Position -> vlength -> IO (Field a)
 initField pos@(nrows,ncols) vlength = do
   ws <- sequence . replicate (fromIntegral (nrows * ncols))
         $ return . apply (take (fromIntegral vlength)) 
@@ -104,3 +104,20 @@ update_weights field input bmu restraint = field // mods
           update (pos,ws) = (pos,ws')
               where ws' = ws |+| ((n ws bmu) /*/ (restraint /*/ (input |-| ws)))
                     n = neighborhood
+
+
+sfoldl :: (a -> b -> a) -> (a -> Bool) -> a -> [b] -> a
+sfoldl _ _ o [] = o
+sfoldl f s o (x:xs)
+    | s o       = o
+    | otherwise = sfoldl f s (f o x) xs
+
+
+-- som inputs vsize = do
+--   field <- initField (100,100) vsize
+--   let c = cycle . shuffle $ inputs
+--       field' = foldl' (\field pattern -> work field pattern
+
+
+
+  -- return field
