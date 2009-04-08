@@ -113,20 +113,22 @@ sfoldl f s o (x:xs)
     | otherwise = sfoldl f s (f o x) xs
 
 
+data SOMParams a = Params {
+      field     :: Field a
+    , restraint :: Double
+    , iteration :: Integer
+    , stop      :: Bool
+    }
 
-som :: Integral vlength => [Vector Double] -> vlength -> IO (Field Double)
-som inputs vsize = do
-  field <- initField (100,100) vsize
-  return $ sfoldl (\field pattern -> project pattern field)
-                   stop
-                   field
-                   (cycle . shuffle $ inputs)
+som :: (MTRandom a) => [Input a] -> SOMParams a -> Field a
+som inputs params =
+    field $ sfoldl (\params pattern -> project pattern params)
+          stop
+          params
+          (cycle . shuffle $ inputs)
 
 
 -- TODO implement project
-project ::  Vector a -> Field a -> Field a
+project ::  Input a -> SOMParams a -> SOMParams a
 project = undefined
 
--- TODO implement stop
-stop :: Field a -> Bool
-stop = undefined
