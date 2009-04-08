@@ -120,7 +120,7 @@ data SOMParams a = Params {
     , stop      :: Bool
     }
 
-som :: (MTRandom a) => [Input a] -> SOMParams a -> Field a
+--som :: [Input a] -> SOMParams a -> Field a
 som inputs params =
     field $ sfoldl (\params pattern -> project pattern params)
           stop
@@ -128,7 +128,16 @@ som inputs params =
           (cycle . shuffle $ inputs)
 
 
--- TODO implement project
-project ::  Input a -> SOMParams a -> SOMParams a
-project = undefined
+--project :: Input a -> SOMParams a -> SOMParams a
+project pattern state = let wfield = field state
+                            (pos,bmu)  = find_best_match wfield pattern
+                            wfield'    = update_weights
+                                         wfield
+                                         pattern
+                                         bmu
+                                         (restraint state)
+                            restraint' = restraint state * 0.1
+                        in state { field     = wfield'
+                                 , restraint = restraint'
+                                 , iteration = iteration state + 1 }
 
