@@ -48,25 +48,6 @@ type Weights a = Vector a
 type Input a = Vector a
 type Field a = Array Position (Weights a)
 
-weights_field :: MVar (Field a)
-weights_field = unsafePerformIO $ do newEmptyMVar
-
-
-takeField = takeMVar weights_field
-writeField = putMVar weights_field
-modifyField f = modifyMVar_ weights_field (\field -> return $ f field)
-
-best_matching_unit :: MVar (Vector a)
-best_matching_unit = unsafePerformIO $ do newEmptyMVar
-
-takeBMU = takeMVar best_matching_unit
-writeBMU = putMVar best_matching_unit
-modifyBMU f = modifyMVar_ best_matching_unit (\bmu -> return $ f bmu)
-
-learning_restraint :: MVar Double
-learning_restraint = unsafePerformIO $ do newMVar 1.0
-inc_learning_restraint = modifyMVar_ learning_restraint
-                         (\lr -> return $ lr * 0.1)
 
 initField :: (Integral vlength, MTRandom a) => Position -> vlength -> IO (Field a)
 initField pos@(nrows,ncols) vlength = do
