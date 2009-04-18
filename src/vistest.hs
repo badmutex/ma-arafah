@@ -6,22 +6,35 @@ import Data.Traversable
 import Hubigraph
 import Prelude hiding (mapM, sequence)
 import System.IO.Unsafe (unsafePerformIO)
+import Text.Printf
 
 
 cancerData = "/Users/badi/src/ma-arafah.git/src/breast-cancer-wisconsin.data"
+k_cancer = 11
 yeastData = "/Users/badi/src/ma-arafah.git/src/yeast.data"
+k_yeast = 10
+o4_results = "/Users/badi/src/ma-arafah.git/src/o4-results.data"
+k_o4 = 5
 
 
--- cancer = readFile cancerData
---          >>= return
---          . map (\l -> read ("[" ++ l ++ "]")) . lines
+cancer :: IO [[Double]]
+cancer = readFile cancerData
+         >>= return
+         . map (\l -> read ("[" ++ l ++ "]")) . lines
 
+yeast :: IO [[Double]]
 yeast = readFile yeastData
         >>= return
         . map (map read . words) . lines
 
-inputVectors = yeast
-k = unsafePerformIO $ inputVectors >>= return . kmeans 10
+o4 :: IO [[Double]]
+o4 = readFile o4_results
+     >>= return
+     . map (map read . drop 2 . words)
+     . lines
+
+inputVectors = o4
+k = unsafePerformIO $ inputVectors >>= return . kmeans k_o4
 
 
 vis = do
@@ -38,31 +51,32 @@ vis = do
                  )
 
   -- connect cluster centers together
---   let vid_centers = zip vs_c ccenters
---   es_c <- mapM (\(vid_a,c_a) ->
---                     forM vid_centers (\(vid_b,c_b) ->
---                                    if vid_a /= vid_b
---                                    then do eid <- newEdge (vid_a, vid_b)
---                                            let d = 
---                                                    realToFrac
+  let vid_centers = zip vs_c ccenters
+  es_c <- mapM (\(vid_a,c_a) ->
+                    forM vid_centers (\(vid_b,c_b) ->
+                                   if vid_a /= vid_b
+                                   then do eid <- newEdge (vid_a, vid_b)
+                                           let d = 
+                                                   realToFrac
 --                                                    . round
 --                                                    . (/1000)
---                                                    $ euclidean c_a c_b
---                                            edgeSpline     eid True
+                                                   $ euclidean c_a c_b
+                                           edgeSpline     eid True
 --                                            edgeStrength   eid d
---                                            edgeLabel      eid (show d)
---                                            edgeStroke     eid Dashed
---                                            edgeShowstrain eid True
---                                            edgeVisible    eid True
---                                            return eid
---                                    else return (-1)
---                               ) >>= return . filter (> 0))
---           vid_centers
+                                           edgeLabel      eid (printf "%.2f" (d::Double))
+                                           edgeStroke     eid Dashed
+                                           edgeShowstrain eid True
+                                           edgeVisible    eid True
+                                           return eid
+                                   else return (-1)
+                              ) >>= return . filter (> 0))
+          vid_centers
 
 
   -- vertices for data points
   vs_d <- mapM (\c -> forM c (\_ -> do vid <- newVertex
                                        vertexColor vid "#33ff00"
+                                       vertexVisible vid True
                                        return vid
                              )) k
 
