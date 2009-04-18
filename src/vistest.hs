@@ -8,12 +8,20 @@ import Prelude hiding (mapM, sequence)
 import System.IO.Unsafe (unsafePerformIO)
 
 
-datafile = "/Users/badi/src/ma-arafah.git/src/breast-cancer-wisconsin.data"
+cancerData = "/Users/badi/src/ma-arafah.git/src/breast-cancer-wisconsin.data"
+yeastData = "/Users/badi/src/ma-arafah.git/src/yeast.data"
 
 
-bdata = readFile datafile >>= return . map (\l -> read ("[" ++ l ++ "]")) . lines
+-- cancer = readFile cancerData
+--          >>= return
+--          . map (\l -> read ("[" ++ l ++ "]")) . lines
 
-k = unsafePerformIO $ bdata >>= return . kmeans 11
+yeast = readFile yeastData
+        >>= return
+        . map (map read . words) . lines
+
+inputVectors = yeast
+k = unsafePerformIO $ inputVectors >>= return . kmeans 10
 
 
 vis = do
@@ -40,7 +48,7 @@ vis = do
 --                                                    . round
 --                                                    . (/1000)
 --                                                    $ euclidean c_a c_b
---                                            edgeSpline     eid False
+--                                            edgeSpline     eid True
 --                                            edgeStrength   eid d
 --                                            edgeLabel      eid (show d)
 --                                            edgeStroke     eid Dashed
