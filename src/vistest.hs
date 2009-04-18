@@ -1,17 +1,14 @@
 module Test where
 
 import Control.Monad (replicateM)
-import Data.Graph.Inductive.Example
-import Data.Graph.Inductive.Graph
 import Data.KMeans
-import Data.List
 import Data.Traversable
 import Hubigraph
 import Prelude hiding (mapM, sequence)
 import System.IO.Unsafe (unsafePerformIO)
 
 
-datafile = "breast-cancer-wisconsin.data"
+datafile = "/Users/badi/src/ma-arafah.git/src/breast-cancer-wisconsin.data"
 
 
 bdata = readFile datafile >>= return . map (\l -> read ("[" ++ l ++ "]")) . lines
@@ -31,6 +28,22 @@ vis = do
                            return vid
                  )
 
+  -- connect cluster centers together
+  let vid_centers = zip vs_c ccenters
+  es_c <- mapM (\(vid_a,c_a) ->
+                    forM vid_centers (\(vid_b,c_b) ->
+                                   if vid_a /= vid_b
+                                   then do eid <- newEdge (vid_a, vid_b)
+                                           edgeSpline eid True
+                                           edgeStrength eid (realToFrac
+                                                             $ euclidean c_a c_b)
+                                           edgeVisible eid False
+                                           return eid
+                                   else return (-1)
+                              ) >>= return . filter (> 0))
+          vid_centers
+
+
   -- vertices for data points
   vs_d <- mapM (\c -> forM c (\_ -> do vid <- newVertex
                                        vertexColor vid "#33ff00"
@@ -38,26 +51,15 @@ vis = do
                              )) k
 
   -- connect data points to their cluster center
-  mapM (\(vid_c, vids) -> forM vids (\vid_d -> do
-                                       eid <- if vid_c /= vid_d 
-                                              then newEdge (vid_c,vid_d)
-                                              else return (-1)
-                                       edgeSpline eid False
-                                       return eid
-                                    )) 
+  mapM (\(vid_c, vids) -> forM vids (\vid_d ->
+                                       if vid_c /= vid_d
+                                       then do eid <- newEdge (vid_c,vid_d)
+                                               edgeSpline eid False
+                                               edgeVisible eid False
+                                               return eid
+                                       else return (-1)
+                                    ) >>= return . filter (> 0))
            (zip vs_c vs_d)
-      >>= return . map (filter (> 0))
-
-  -- connect cluster centers together
---   let vid_centers = zip vs_c ccenters
---   es_c <- mapM (\(vid_a,c_a) -> 
---                     forM vid_centers (\(vid_b,c_b) -> do
---                                    eid <- newEdge (vid_a, vid_b)
---                                    edgeSpline eid True
---                                    edgeStrength eid (realToFrac $ euclidean c_a c_b)
---                                    return eid
---                               ))
---           vid_centers
 
   
   
