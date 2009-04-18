@@ -21,27 +21,35 @@ vis = do
   let ccenters = map center k
 
   -- vertices for cluster centers
-  vs_c <- forM k (\_ -> do vid <- newVertex
+  vs_c <- forM k (\c -> do vid <- newVertex
                            vertexColor vid "#ff0000"
-                           vertexSize vid 3
+--                            vertexSize  vid 0.25
                            vertexShape vid Icosahedron
+                           vertexLabel vid (show . length $ c)
                            return vid
                  )
 
   -- connect cluster centers together
-  let vid_centers = zip vs_c ccenters
-  es_c <- mapM (\(vid_a,c_a) ->
-                    forM vid_centers (\(vid_b,c_b) ->
-                                   if vid_a /= vid_b
-                                   then do eid <- newEdge (vid_a, vid_b)
-                                           edgeSpline eid True
-                                           edgeStrength eid (realToFrac
-                                                             $ euclidean c_a c_b)
-                                           edgeVisible eid False
-                                           return eid
-                                   else return (-1)
-                              ) >>= return . filter (> 0))
-          vid_centers
+--   let vid_centers = zip vs_c ccenters
+--   es_c <- mapM (\(vid_a,c_a) ->
+--                     forM vid_centers (\(vid_b,c_b) ->
+--                                    if vid_a /= vid_b
+--                                    then do eid <- newEdge (vid_a, vid_b)
+--                                            let d = 
+--                                                    realToFrac
+--                                                    . round
+--                                                    . (/1000)
+--                                                    $ euclidean c_a c_b
+--                                            edgeSpline     eid False
+--                                            edgeStrength   eid d
+--                                            edgeLabel      eid (show d)
+--                                            edgeStroke     eid Dashed
+--                                            edgeShowstrain eid True
+--                                            edgeVisible    eid True
+--                                            return eid
+--                                    else return (-1)
+--                               ) >>= return . filter (> 0))
+--           vid_centers
 
 
   -- vertices for data points
@@ -77,3 +85,5 @@ serv = "http://127.0.0.1:20738/RPC2"
 h = initHubigraph serv
 
 main = initHubigraph serv >>= runHubigraph vis
+
+rerun = clear' >> main
