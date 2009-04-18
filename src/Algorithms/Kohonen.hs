@@ -13,7 +13,7 @@ import Control.Monad.State
 import Data.IORef
 import Control.Concurrent.MVar
 import Control.Applicative
-import System.Random.Shuffle
+-- import System.Random.Shuffle
 
 type Row = Integer
 type Col = Integer
@@ -48,27 +48,8 @@ type Weights a = Vector a
 type Input a = Vector a
 type Field a = Array Position (Weights a)
 
-weights_field :: MVar (Field Double)
-weights_field = unsafePerformIO $ do newEmptyMVar
 
-
-takeField = takeMVar weights_field
-writeField = putMVar weights_field
-modifyField f = modifyMVar_ weights_field (\field -> return $ f field)
-
-best_matching_unit :: MVar (Vector a)
-best_matching_unit = unsafePerformIO $ do newEmptyMVar
-
-takeBMU = takeMVar best_matching_unit
-writeBMU = putMVar best_matching_unit
-modifyBMU f = modifyMVar_ best_matching_unit (\bmu -> return $ f bmu)
-
-learning_restraint :: MVar Double
-learning_restraint = unsafePerformIO $ do newMVar 1.0
-inc_learning_restraint = modifyMVar_ learning_restraint
-                         (\lr -> return $ lr * 0.1)
-
-initField :: (Integral vlength) => Position -> vlength -> IO (Field Double)
+initField :: (Integral vlength, MTRandom a) => Position -> vlength -> IO (Field a)
 initField pos@(nrows,ncols) vlength = do
   ws <- sequence . replicate (fromIntegral (nrows * ncols))
         $ return . apply (take (fromIntegral vlength)) 
@@ -104,3 +85,40 @@ update_weights field input bmu restraint = field // mods
           update (pos,ws) = (pos,ws')
               where ws' = ws |+| ((n ws bmu) /*/ (restraint /*/ (input |-| ws)))
                     n = neighborhood
+
+
+sfoldl :: (a -> b -> a) -> (a -> Bool) -> a -> [b] -> a
+sfoldl _ _ o [] = o
+sfoldl f s o (x:xs)
+    | s o       = o
+    | otherwise = sfoldl f s (f o x) xs
+
+
+data SOMParams a = Params {
+      field     :: Field a
+    , restraint :: Double
+    , iteration :: Integer
+    , stop      :: Bool
+    }
+
+--som :: [Input a] -> SOMParams a -> Field a
+som inputs params =
+    field $ sfoldl (\params pattern -> project pattern params)
+          stop
+          params
+          (cycle . shuffle $ inputs)
+
+
+--project :: Input a -> SOMParams a -> SOMParams a
+project pattern state = let wfield = field state
+                            (pos,bmu)  = find_best_match wfield pattern
+                            wfield'    = update_weights
+                                         wfield
+                                         pattern
+                                         bmu
+                                         (restraint state)
+                            restraint' = restraint state * 0.1
+                        in state { field     = wfield'
+                                 , restraint = restraint'
+                                 , iteration = iteration state + 1 }
+
