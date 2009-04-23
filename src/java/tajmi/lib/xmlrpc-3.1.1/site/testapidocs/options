@@ -1,0 +1,19 @@
+-classpath '/home/jwi/workspace/ws-xmlrpc-3.1/target/classes:/home/jwi/workspace/ws-xmlrpc-3.1/target/test-classes:/home/jwi/workspace/ws-xmlrpc-3.1/common/target/classes:/home/jwi/workspace/ws-xmlrpc-3.1/common/target/test-classes:/home/jwi/workspace/ws-xmlrpc-3.1/client/target/classes:/home/jwi/workspace/ws-xmlrpc-3.1/client/target/test-classes:/home/jwi/workspace/ws-xmlrpc-3.1/server/target/classes:/home/jwi/workspace/ws-xmlrpc-3.1/server/target/test-classes:/home/jwi/workspace/ws-xmlrpc-3.1/tests/target/classes:/home/jwi/workspace/ws-xmlrpc-3.1/tests/target/test-classes:/home/jwi/.m2/repository/log4j/log4j/1.2.12/log4j-1.2.12.jar:/home/jwi/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar:/home/jwi/.m2/repository/org/apache/xmlrpc/xmlrpc-client/3.1.1/xmlrpc-client-3.1.1.jar:/home/jwi/.m2/repository/jaxme/jaxmeapi/0.5.1/jaxmeapi-0.5.1.jar:/home/jwi/.m2/repository/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar:/home/jwi/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/home/jwi/.m2/repository/commons-httpclient/commons-httpclient/3.0.1/commons-httpclient-3.0.1.jar:/home/jwi/.m2/repository/org/apache/xmlrpc/xmlrpc-common/3.1.1/xmlrpc-common-3.1.1.jar:/home/jwi/.m2/repository/org/apache/xmlrpc/xmlrpc-server/3.1.1/xmlrpc-server-3.1.1.jar:/home/jwi/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar:/home/jwi/.m2/repository/logkit/logkit/1.0.1/logkit-1.0.1.jar:/home/jwi/.m2/repository/org/apache/ws/commons/util/ws-commons-util/1.0.2/ws-commons-util-1.0.2.jar:/home/jwi/.m2/repository/commons-codec/commons-codec/1.2/commons-codec-1.2.jar'
+ -encoding
+'ISO-8859-1'
+-protected
+-sourcepath
+'/home/jwi/workspace/ws-xmlrpc-3.1/tests/src/test/java'
+-author
+-bottom
+'Copyright &#169; 2001-2008 <a href="http://www.apache.org/">The Apache Software Foundation</a>. All Rights Reserved.'
+-charset
+'ISO-8859-1'
+-d
+'/home/jwi/workspace/ws-xmlrpc-3.1/target/site/testapidocs'
+-doctitle
+'Apache XML-RPC 3.1.1 Test API'
+-use
+-version
+-windowtitle
+'Apache XML-RPC 3.1.1 Test API'
