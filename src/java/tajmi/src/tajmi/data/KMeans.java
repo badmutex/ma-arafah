@@ -1,7 +1,10 @@
 package tajmi.data;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 /**
@@ -21,12 +24,27 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
         this.k = k;
     }
 
-    private List<Distanceable> partition(List<Distanceable> vectors) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    /**
+     * Arbitrarily seeds the kmeans algorithms with chosen centers of mass
+     * @param vectors the vectors to choose from
+     * @return the centers of mass
+     */
+    private List<Distanceable> init_centers_of_mass_from(List<Distanceable> vectors) {
+
+        List<Distanceable> centers = new LinkedList<Distanceable>();
+        List<Distanceable> copied_vectors = new ArrayList<Distanceable>(vectors.size());
+        Collections.copy(copied_vectors, vectors);
+        Collections.shuffle(copied_vectors, new Random(42));
+
+        for(int i = 0; i < k; i++){
+            centers.add(copied_vectors.get(i));
+        }
+        
+        return centers;
     }
 
     public List<List<Distanceable>> call() throws Exception {
-        centers_of_mass = partition(vectors);
+        centers_of_mass = init_centers_of_mass_from(vectors);
 
         for (int z = 0; z < 100; z++) {
             step1();
