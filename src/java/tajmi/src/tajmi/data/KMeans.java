@@ -3,23 +3,21 @@ package tajmi.data;
 import tajmi.Util;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import scala.Tuple2;
 
 /**
  * Implements the KMeans algorithm for structured data. This structured data
- * should implement the Distanceable interface.
+ * should implement the Distanceable interface and override the Object.equals() method
  * @author badi
  */
 public class KMeans implements Callable<List<List<Distanceable>>> {
 
     List<Distanceable> vectors;
     int k;
-    List<List<Distanceable>> cluster_centers;   // C_i for all i in {1,...,k}
+    List<List<Distanceable>> clusters;   // C_i for all i in {1,...,k}
     List<Distanceable> centers_of_mass;         // c_i for all i in {1,...,k}
 
     public KMeans(List<Distanceable> vectors, int k) {
@@ -58,7 +56,7 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
             step2();
         } while( !done() );
 
-        return cluster_centers;
+        return clusters;
     }
 
     /**
@@ -69,7 +67,7 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
     private boolean done() {
 
         // save current state
-        List<List<Distanceable>> saved_cluster_centers = cluster_centers;
+        List<List<Distanceable>> saved_cluster_centers = clusters;
         List<Distanceable> saved_centers_of_mass = centers_of_mass;
 
         // next steps
@@ -84,14 +82,14 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
             same = false;
 
         // compare current clusters with previous state
-        if(saved_cluster_centers.size() != cluster_centers.size())
+        if(saved_cluster_centers.size() != clusters.size())
             same = false;
-        if(! Util.identical(saved_cluster_centers, cluster_centers))
+        if(! Util.identical(saved_cluster_centers, clusters))
             same = false;
 
         // reset to previous state if needed
         if(!same){
-            cluster_centers = saved_cluster_centers;
+            clusters = saved_cluster_centers;
             centers_of_mass = saved_centers_of_mass;
             return false;
         } else
@@ -99,29 +97,42 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
 
     }
 
+    /**
+     * Finds the data points closest to the current center of mass
+     * @param c_i the center of mass
+     * @param i the current position
+     * @return a list of points closest to `c_i` than `c_j` forall i != j
+     */
     private List<Distanceable> closest_points_to(Distanceable c_i, int i) {
 
-        // build a matrix of distances between each cluster center to the vectors
-        double[][] distances = new double[k][vectors.size()];
+        /* find the vectors closest to c_i over c_j where i != j
+         * :: For each vector, if there exists a distance  to another clusters center
+         * that is less than the distance to c_i, disregard that vector, else add it
+         */
+        List<Distanceable> selected_points = new LinkedList<Distanceable>();
+        for (Distanceable point : vectors){
+            double mydist = c_i.distance(point);
+            boolean this_point_ok = true;
 
-        for (int j = 0; j < k; j++) {
-            for (int l = 0; l < vectors.size(); l++) {
-                distances[j][l] = centers_of_mass.get(j).distance(vectors.get(l));
+            for (Distanceable c : centers_of_mass){
+                if(c.equals(c_i))
+                    continue;
+                if(c.distance(point) < mydist) {
+                    this_point_ok = false;
+                    break;
+                }
             }
+
+            if(this_point_ok)
+                selected_points.add(point);
         }
 
 
-        // find the vectors closest to c_i over c_j where i != j
-        List<Distanceable> selected_points = new LinkedList<Distanceable>();
-
-        //TODO
-
-
-        throw new UnsupportedOperationException("Not yet implemented");
+        return selected_points;
     }
 
     /**
-     * for each i in {1..k}, set the cluster center C_i to be the set of points in
+     * for each i in {1..k}, set the clusters center C_i to be the set of points in
      * X that are closer to c_i than they are to c_j for all i != j
      */
     private void step1() {
@@ -136,9 +147,10 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
             C.add(C_i);
         }
 
-        cluster_centers = C;
+        clusters = C;
     }
 
+    //TODO centers_of_mass implementation
     private Distanceable centers_of_mass(List<Distanceable> get) {
 
         //finding the center of mass of structured data could be problematic :(
@@ -152,7 +164,7 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
     private void step2() {
         Distanceable c;
         for (int i = 0; i < k; i++) {
-            c = centers_of_mass(cluster_centers.get(i));
+            c = centers_of_mass(clusters.get(i));
 
             centers_of_mass.set(i, c);
         }
