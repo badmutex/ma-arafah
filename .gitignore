@@ -1,0 +1,4 @@
+*.DS_Store
+src/java/tajmi/build/*
+src/java/tajmi/dist/*
+src/java/tajmi/nbproject/private/*
