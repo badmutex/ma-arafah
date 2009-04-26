@@ -1,11 +1,14 @@
 package tajmi.data;
 
+import tajmi.Util;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import scala.Tuple2;
 
 /**
  * Implements the KMeans algorithm for structured data. This structured data
@@ -36,22 +39,64 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
         Collections.copy(copied_vectors, vectors);
         Collections.shuffle(copied_vectors, new Random(42));
 
-        for(int i = 0; i < k; i++){
+        for (int i = 0; i < k; i++) {
             centers.add(copied_vectors.get(i));
         }
-        
+
         return centers;
     }
 
-    public List<List<Distanceable>> call() throws Exception {
+    /**
+     * Runs the KMeans algorithm
+     * @return the original input data clustered into `k` clusters
+     */
+    public List<List<Distanceable>> call() {
         centers_of_mass = init_centers_of_mass_from(vectors);
 
-        for (int z = 0; z < 100; z++) {
+        do{
             step1();
             step2();
-        }
+        } while( !done() );
 
         return cluster_centers;
+    }
+
+    /**
+     * Checks the state to see if the clusters and centers of mass have changed.
+     * If there is no chance, the we're done.
+     * @return true if `C` and `c` have stabilized
+     */
+    private boolean done() {
+
+        // save current state
+        List<List<Distanceable>> saved_cluster_centers = cluster_centers;
+        List<Distanceable> saved_centers_of_mass = centers_of_mass;
+
+        // next steps
+        step1();
+        step2();
+
+        // compare new current centers of mass with previous state
+        boolean same = true;
+        if(saved_centers_of_mass.size() != centers_of_mass.size())
+            same = false;
+        if(! Util.identical(saved_centers_of_mass, centers_of_mass))
+            same = false;
+
+        // compare current clusters with previous state
+        if(saved_cluster_centers.size() != cluster_centers.size())
+            same = false;
+        if(! Util.identical(saved_cluster_centers, cluster_centers))
+            same = false;
+
+        // reset to previous state if needed
+        if(!same){
+            cluster_centers = saved_cluster_centers;
+            centers_of_mass = saved_centers_of_mass;
+            return false;
+        } else
+            return true;
+
     }
 
     private List<Distanceable> closest_points_to(Distanceable c_i, int i) {
@@ -59,12 +104,12 @@ public class KMeans implements Callable<List<List<Distanceable>>> {
         // build a matrix of distances between each cluster center to the vectors
         double[][] distances = new double[k][vectors.size()];
 
-        for(int j = 0; j < k; j++){
-            for(int l = 0; l < vectors.size(); l++){
+        for (int j = 0; j < k; j++) {
+            for (int l = 0; l < vectors.size(); l++) {
                 distances[j][l] = centers_of_mass.get(j).distance(vectors.get(l));
             }
         }
-        
+
 
         // find the vectors closest to c_i over c_j where i != j
         List<Distanceable> selected_points = new LinkedList<Distanceable>();
