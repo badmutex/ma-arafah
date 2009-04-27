@@ -5,8 +5,14 @@
 
 package test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.interfaces.IMolecule;
 import scala.Tuple2;
 import tajmi.Util;
 
@@ -17,7 +23,20 @@ import tajmi.Util;
 public class tajmi_Util {
 
     public static void main(String[] args){
-        identical();
+        readMoleculeFile();
+    }
+
+    public static void readMoleculeFile() {
+        try {
+            IMolecule m = Util.readMoleculeFile("moleculefiles/B02.mol2");
+            System.out.println(m);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(tajmi_Util.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(tajmi_Util.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CDKException ex) {
+            Logger.getLogger(tajmi_Util.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void identical(){

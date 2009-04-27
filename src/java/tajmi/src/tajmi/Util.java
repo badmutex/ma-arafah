@@ -5,13 +5,23 @@
 
 package tajmi;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.io.ISimpleChemObjectReader;
+import org.openscience.cdk.io.ReaderFactory;
 import org.openscience.cdk.isomorphism.UniversalIsomorphismTester;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import scala.Tuple2;
@@ -81,6 +91,21 @@ public class Util {
     }
 
 
+    /**
+     * Guesses the file format of and reads in a molecule
+     * @param filename the path to the molecule file
+     * @return the molecule object
+     * @throws java.io.FileNotFoundException
+     * @throws java.io.IOException
+     * @throws org.openscience.cdk.exception.CDKException
+     */
+    public static IMolecule readMoleculeFile (final String filename) throws FileNotFoundException, IOException, CDKException{
+
+        Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
+        ISimpleChemObjectReader reader = new ReaderFactory().createReader(r);
+
+        return (IMolecule) reader.read(new Molecule());
+    }
 
 
 }
