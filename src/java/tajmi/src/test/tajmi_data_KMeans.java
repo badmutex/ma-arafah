@@ -17,6 +17,7 @@ public class tajmi_data_KMeans {
 
     /**
      * need to change visibility of tajmi.data.KMeans.closest_points_to
+     * default is private
      */
     public static void closest_points_to(){
         
