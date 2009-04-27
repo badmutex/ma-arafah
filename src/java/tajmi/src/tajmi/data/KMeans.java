@@ -41,8 +41,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     private List<T> init_centers_of_mass_from(List<T> vectors) {
 
         List<T> centers = new LinkedList<T>();
-        List<T> copied_vectors = new ArrayList<T>(vectors.size());
-        Collections.copy(copied_vectors, vectors);
+        List<T> copied_vectors = new ArrayList<T>(vectors);
         Collections.shuffle(copied_vectors, new Random(42));
 
         for (int i = 0; i < k; i++) {
