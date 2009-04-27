@@ -7,22 +7,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import tajmi.data.clusterable.CenterOfMassAlgorithm;
+import tajmi.data.clusterable.DistanceAlgorithm;
 
 /**
  * Implements the KMeans algorithm for structured data. This structured data
  * should implement the Clusterable interface and override the Object.equals() method
  * @author badi
  */
-public class KMeans implements Callable<List<List<Clusterable>>> {
+public class KMeans<T> implements Callable<List<List<T>>> {
 
-    List<Clusterable> vectors;
+    List<T> vectors;
     int k;
-    List<List<Clusterable>> clusters;   // C_i for all i in {1,...,k}
-    List<Clusterable> centers_of_mass;         // c_i for all i in {1,...,k}
+    List<List<T>> clusters;   // C_i for all i in {1,...,k}
+    List<T> centers_of_mass;  // c_i for all i in {1,...,k}
 
-    public KMeans(List<Clusterable> vectors, int k) {
+    DistanceAlgorithm<T> distance_computation;
+    CenterOfMassAlgorithm<T> center_of_mass_computation;
+
+    public KMeans(List<T> vectors, int k, DistanceAlgorithm<T> dist, CenterOfMassAlgorithm<T> cent) {
         this.vectors = vectors;
         this.k = k;
+
+        distance_computation = dist;
+        center_of_mass_computation = cent;
     }
 
     /**
@@ -30,10 +38,10 @@ public class KMeans implements Callable<List<List<Clusterable>>> {
      * @param vectors the vectors to choose from
      * @return the centers of mass
      */
-    private List<Clusterable> init_centers_of_mass_from(List<Clusterable> vectors) {
+    private List<T> init_centers_of_mass_from(List<T> vectors) {
 
-        List<Clusterable> centers = new LinkedList<Clusterable>();
-        List<Clusterable> copied_vectors = new ArrayList<Clusterable>(vectors.size());
+        List<T> centers = new LinkedList<T>();
+        List<T> copied_vectors = new ArrayList<T>(vectors.size());
         Collections.copy(copied_vectors, vectors);
         Collections.shuffle(copied_vectors, new Random(42));
 
@@ -48,7 +56,7 @@ public class KMeans implements Callable<List<List<Clusterable>>> {
      * Runs the KMeans algorithm
      * @return the original input data clustered into `k` clusters
      */
-    public List<List<Clusterable>> call() {
+    public List<List<T>> call() {
         centers_of_mass = init_centers_of_mass_from(vectors);
 
         do{
@@ -67,8 +75,8 @@ public class KMeans implements Callable<List<List<Clusterable>>> {
     private boolean done() {
 
         // save current state
-        List<List<Clusterable>> saved_cluster_centers = clusters;
-        List<Clusterable> saved_centers_of_mass = centers_of_mass;
+        List<List<T>> saved_cluster_centers = clusters;
+        List<T> saved_centers_of_mass = centers_of_mass;
 
         // next steps
         step1();
@@ -103,21 +111,22 @@ public class KMeans implements Callable<List<List<Clusterable>>> {
      * @param i the current position
      * @return a list of points closest to `c_i` than `c_j` forall i != j
      */
-    private List<Clusterable> closest_points_to(Clusterable c_i, int i) {
+    private List<T> closest_points_to(T c_i, int i) {
 
         /* find the vectors closest to c_i over c_j where i != j
          * :: For each vector, if there exists a distance  to another clusters center
          * that is less than the distance to c_i, disregard that vector, else add it
          */
-        List<Clusterable> selected_points = new LinkedList<Clusterable>();
-        for (Clusterable point : vectors){
-            double mydist = c_i.distance(point);
+        List<T> selected_points = new LinkedList<T>();
+        for (T point : vectors){
+            double mydist = distance_computation.distance(c_i, point);
             boolean this_point_ok = true;
 
-            for (Clusterable c : centers_of_mass){
-                if(c.equals(c_i))
+            for (int j = 0; j < centers_of_mass.size(); j++) {
+                if( j == i)
                     continue;
-                if(c.distance(point) < mydist) {
+                T c = centers_of_mass.get(j);
+                if(distance_computation.distance(c, point) < mydist) {
                     this_point_ok = false;
                     break;
                 }
@@ -136,9 +145,9 @@ public class KMeans implements Callable<List<List<Clusterable>>> {
      * X that are closer to c_i than they are to c_j for all i != j
      */
     private void step1() {
-        List<List<Clusterable>> C = new LinkedList<List<Clusterable>>();
-        List<Clusterable> C_i;
-        Clusterable c;
+        List<List<T>> C = new LinkedList<List<T>>();
+        List<T> C_i;
+        T c;
         for (int i = 0; i < k; i++) {
             c = centers_of_mass.get(i);
 
@@ -150,11 +159,14 @@ public class KMeans implements Callable<List<List<Clusterable>>> {
         clusters = C;
     }
 
-    //TODO centers_of_mass implementation
-    private Clusterable centers_of_mass(List<Clusterable> get) {
 
-        //finding the center of mass of structured data could be problematic :(
-        throw new UnsupportedOperationException("Not yet implemented");
+    /**
+     * Dispatches the computation to the CenterOfMassAlgorithm object
+     * @param cluster a list of the data points representing a cluster
+     * @return
+     */
+    private T centers_of_mass(List<T> cluster) {
+        return center_of_mass_computation.center(cluster);
     }
 
     /**
@@ -162,7 +174,7 @@ public class KMeans implements Callable<List<List<Clusterable>>> {
      * c_i = 1/|C_i| SUM_{x_j in C_i} x_j
      */
     private void step2() {
-        Clusterable c;
+        T c;
         for (int i = 0; i < k; i++) {
             c = centers_of_mass(clusters.get(i));
 
