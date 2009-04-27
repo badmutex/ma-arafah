@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package tajmi.data.clusterable.cdk;
 
 import java.util.List;
@@ -12,6 +11,7 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.isomorphism.UniversalIsomorphismTester;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+import tajmi.Util;
 import tajmi.data.clusterable.DistanceAlgorithm;
 
 /**
@@ -30,27 +30,18 @@ public class AtomContainer_DistanceAlgorithm implements DistanceAlgorithm<IAtomC
      * @return the distance in range [0,1] or -1 if the computation fails
      */
     public double distance(IAtomContainer g_1, IAtomContainer g_2) {
-        try {
-            IAtomContainer g1 = AtomContainerManipulator.removeHydrogens(g_1);
-            IAtomContainer g2 = AtomContainerManipulator.removeHydrogens(g_2);
-            List<IAtomContainer> mcss_list = UniversalIsomorphismTester.getOverlaps(g1, g2);
-            int max_mcss = Integer.MIN_VALUE;
-            IAtomContainer mcss = null;
-            for (IAtomContainer cs : mcss_list) {
-                if (cs.getAtomCount() > max_mcss) {
-                    max_mcss = cs.getAtomCount();
-                    mcss = cs;
-                }
-            }
+
+        IAtomContainer mcss = Util.mcss(g_1, g_2);
+
+        if (mcss == null) {
+            return -1;
+        } else {
+            IAtomContainer
+                    g1 = AtomContainerManipulator.removeHydrogens(g_1),
+                    g2 = AtomContainerManipulator.removeHydrogens(g_2);
             double distance = 1.0 - (mcss.getAtomCount() + 0.0) / Math.max(g1.getAtomCount(), g2.getAtomCount());
 
             return distance;
-            
-        } catch (CDKException ex) {
-            Logger.getLogger(AtomContainer_DistanceAlgorithm.class.getName()).log(Level.SEVERE, null, ex);
-            return -1;
         }
     }
-
-
 }

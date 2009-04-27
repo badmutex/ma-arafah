@@ -8,6 +8,12 @@ package tajmi;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.isomorphism.UniversalIsomorphismTester;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import scala.Tuple2;
 
 /**
@@ -47,6 +53,32 @@ public class Util {
     }
 
 
+    /**
+     * Finds the maximum common subgraph between tow IAtomContainer graphs.
+     * @param g_1 the first molecule
+     * @param g_2 the second molecule
+     * @return null if the computation fails, otherwise the mcss
+     */
+    public static IAtomContainer mcss(final IAtomContainer g_1, IAtomContainer g_2){
+        try {
+            IAtomContainer g1 = AtomContainerManipulator.removeHydrogens(g_1);
+            IAtomContainer g2 = AtomContainerManipulator.removeHydrogens(g_2);
+            List<IAtomContainer> mcss_list = UniversalIsomorphismTester.getOverlaps(g1, g2);
+            int max_mcss = Integer.MIN_VALUE;
+            IAtomContainer mcss = null;
+            for (IAtomContainer cs : mcss_list) {
+                if (cs.getAtomCount() > max_mcss) {
+                    max_mcss = cs.getAtomCount();
+                    mcss = cs;
+                }
+            }
+            return mcss;
+        } catch (CDKException ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+
+    }
 
 
 
