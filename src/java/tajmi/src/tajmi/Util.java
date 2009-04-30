@@ -5,9 +5,11 @@
 
 package tajmi;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -21,8 +23,12 @@ import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.io.IChemObjectWriter;
 import org.openscience.cdk.io.ISimpleChemObjectReader;
 import org.openscience.cdk.io.ReaderFactory;
+import org.openscience.cdk.io.WriterFactory;
+import org.openscience.cdk.io.formats.IChemFormat;
+import org.openscience.cdk.io.formats.SMILESFormat;
 import org.openscience.cdk.isomorphism.UniversalIsomorphismTester;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import scala.Tuple2;
@@ -73,7 +79,7 @@ public class Util {
     public static IAtomContainer mcss(final IAtomContainer g_1, IAtomContainer g_2){
         try {
 
-            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(new LogRecord(Level.INFO, g_1.getID() + " <-> " + g_2.getID()));
+//            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(new LogRecord(Level.INFO, g_1.getID() + " <-> " + g_2.getID()));
             
             IAtomContainer g1 = AtomContainerManipulator.removeHydrogens(g_1);
             IAtomContainer g2 = AtomContainerManipulator.removeHydrogens(g_2);
@@ -109,6 +115,14 @@ public class Util {
         ISimpleChemObjectReader reader = new ReaderFactory().createReader(r);
 
         return (IMolecule) reader.read(new Molecule());
+    }
+
+    public static void writeMoleculeFile (final String filename, IAtomContainer chemobj) throws CDKException, FileNotFoundException {
+//        AtomContainerManipulator.convertImplicitToExplicitHydrogens(chemobj);
+        
+        IChemObjectWriter writer = new WriterFactory().createWriter((IChemFormat) SMILESFormat.getInstance());
+        writer.setWriter(new BufferedOutputStream(new FileOutputStream(filename)));
+        writer.write(new Molecule(chemobj));
     }
 
 

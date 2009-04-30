@@ -10,12 +10,16 @@ import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.Util;
 import tajmi.data.KMeans;
 import tajmi.data.clusterable.CenterOfMassAlgorithm;
@@ -40,7 +44,7 @@ public class tajmi_data_KMeans {
 
             int chosen = 0;
             public boolean accept(File pathname) {
-                if(chosen < 5){
+                if(chosen < 15){
                     chosen++;
                     return pathname.getName().matches("\\w*\\.mol2");
                 } else return false;
@@ -55,18 +59,31 @@ public class tajmi_data_KMeans {
         List<IMolecule> ms = new LinkedList<IMolecule>();
         for (File f : files) {
             IMolecule m = Util.readMoleculeFile(f.getAbsolutePath());
+            AtomContainerManipulator.removeHydrogens(m);
             String n = f.getName().replace(".mol2", "");
             m.setID(n);
             ms.add(m);
         }
+        Collections.shuffle(ms, new Random(4224));
         System.out.println("Read in " + files.length + " =>? " + ms.size());
 
         DistanceAlgorithm da = new AtomContainer_DistanceAlgorithm();
         CenterOfMassAlgorithm coma = new AtomContainer_CenterOfMassAlgorithm();
 
-        KMeans<IMolecule> km = new KMeans<IMolecule>(ms, 1, da, coma);
+        KMeans<IMolecule> km = new KMeans<IMolecule>(ms, 2, da, coma);
+
+        List<List<IMolecule>> result = km.call();
+
+        int count = 0;
+        for(List<IMolecule> C : result){
+            String outdir = "c_i";
+            IAtomContainer c = (IAtomContainer) coma.center(C);
+            System.out.println("Writing " + outdir + File.separator + "c_" + (++count) + ".txt");
+            Util.writeMoleculeFile(outdir + File.separator + "c_" + count + ".txt", c);
+        }
+
         
-        System.out.println(km.call().size());
+        System.out.println();
     }
 
     public static void o4_results() throws FileNotFoundException, IOException {
