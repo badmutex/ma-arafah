@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
@@ -71,6 +72,9 @@ public class Util {
      */
     public static IAtomContainer mcss(final IAtomContainer g_1, IAtomContainer g_2){
         try {
+
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(new LogRecord(Level.INFO, g_1.getID() + " <-> " + g_2.getID()));
+            
             IAtomContainer g1 = AtomContainerManipulator.removeHydrogens(g_1);
             IAtomContainer g2 = AtomContainerManipulator.removeHydrogens(g_2);
             List<IAtomContainer> mcss_list = UniversalIsomorphismTester.getOverlaps(g1, g2);

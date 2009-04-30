@@ -56,12 +56,19 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      * @return the original input data clustered into `k` clusters
      */
     public List<List<T>> call() {
+        System.out.println("<========= Starting KMeans for [" + k + "] clusters =========>");
+
         centers_of_mass = init_centers_of_mass_from(vectors);
 
+        int count = 0;
         do{
             step1();
             step2();
+
+            System.out.println("* Iteration[" + (++count) + "]");
         } while( !done() );
+
+        System.out.println("<========= Finished KMeans for [" + k + "] clusters =========>");
 
         return clusters;
     }
@@ -112,29 +119,42 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      */
     private List<T> closest_points_to(T c_i, int i) {
 
+        System.out.print("**** closest points to c_" + i + "\t");
+
         /* find the vectors closest to c_i over c_j where i != j
          * :: For each vector, if there exists a distance  to another clusters center
          * that is less than the distance to c_i, disregard that vector, else add it
          */
-        List<T> selected_points = new LinkedList<T>();
+        List<T> selected_points = new ArrayList<T>();
         for (T point : vectors){
+
+            System.out.print("#");
+
             double mydist = distance_computation.distance(c_i, point);
             boolean this_point_ok = true;
 
             for (int j = 0; j < centers_of_mass.size(); j++) {
                 if( j == i)
                     continue;
+
+                System.out.print("+");
+
                 T c = centers_of_mass.get(j);
                 if(distance_computation.distance(c, point) < mydist) {
+                    System.out.print("-");
+
                     this_point_ok = false;
                     break;
                 }
             }
 
-            if(this_point_ok)
+            if(this_point_ok){
+                System.out.print("!");
                 selected_points.add(point);
+            }
         }
 
+        System.out.println("");
 
         return selected_points;
     }
@@ -144,6 +164,8 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      * X that are closer to c_i than they are to c_j for all i != j
      */
     private void step1() {
+        System.out.println("** Step 1");
+
         List<List<T>> C = new LinkedList<List<T>>();
         List<T> C_i;
         T c;
@@ -153,6 +175,8 @@ public class KMeans<T> implements Callable<List<List<T>>> {
             C_i = closest_points_to(c, i);
 
             C.add(C_i);
+
+            System.out.println("*** Found " + i + "/" + (k-1) + " clusters");
         }
 
         clusters = C;
@@ -173,11 +197,15 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      * c_i = 1/|C_i| SUM_{x_j in C_i} x_j
      */
     private void step2() {
+        System.out.println("** Step 2");
+
         T c;
         for (int i = 0; i < k; i++) {
             c = centers_of_mass(clusters.get(i));
 
             centers_of_mass.set(i, c);
+
+            System.out.println("*** Found " + i + "/" + (k-1) + " centers of mass");
         }
     }
 }

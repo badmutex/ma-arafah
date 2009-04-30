@@ -50,19 +50,23 @@ public class tajmi_data_KMeans {
         for (File f : files) {
             System.out.print(f.getName() + " ");
         }
+        System.out.println();
 
         List<IMolecule> ms = new LinkedList<IMolecule>();
         for (File f : files) {
-            ms.add(Util.readMoleculeFile(f.getAbsolutePath()));
+            IMolecule m = Util.readMoleculeFile(f.getAbsolutePath());
+            String n = f.getName().replace(".mol2", "");
+            m.setID(n);
+            ms.add(m);
         }
         System.out.println("Read in " + files.length + " =>? " + ms.size());
 
         DistanceAlgorithm da = new AtomContainer_DistanceAlgorithm();
         CenterOfMassAlgorithm coma = new AtomContainer_CenterOfMassAlgorithm();
 
-        KMeans<IMolecule> km = new KMeans<IMolecule>(ms, 5, da, coma);
+        KMeans<IMolecule> km = new KMeans<IMolecule>(ms, 1, da, coma);
         
-        System.out.println(km.call().get(0));
+        System.out.println(km.call().size());
     }
 
     public static void o4_results() throws FileNotFoundException, IOException {

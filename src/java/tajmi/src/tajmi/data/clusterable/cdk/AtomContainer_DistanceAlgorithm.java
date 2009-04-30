@@ -4,12 +4,7 @@
  */
 package tajmi.data.clusterable.cdk;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.isomorphism.UniversalIsomorphismTester;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.Util;
 import tajmi.data.clusterable.DistanceAlgorithm;
