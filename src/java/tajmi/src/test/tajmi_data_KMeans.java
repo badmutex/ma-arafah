@@ -4,12 +4,15 @@
  */
 package test;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,12 +42,17 @@ public class tajmi_data_KMeans {
     }
 
     public static void graphs() throws FileNotFoundException, IOException, CDKException {
+
+        final int POINTS = 9;
+        final int K = 5;
+        final String KMEANS_RESULTS_FILE = "kmeans-results.data";
+
         File dir = new File("moleculefiles");
         File[] files = dir.listFiles(new FileFilter() {
 
             int chosen = 0;
             public boolean accept(File pathname) {
-                if(chosen < 15){
+                if(chosen < POINTS){
                     chosen++;
                     return pathname.getName().matches("\\w*\\.mol2");
                 } else return false;
@@ -70,7 +78,7 @@ public class tajmi_data_KMeans {
         DistanceAlgorithm da = new AtomContainer_DistanceAlgorithm();
         CenterOfMassAlgorithm coma = new AtomContainer_CenterOfMassAlgorithm();
 
-        KMeans<IMolecule> km = new KMeans<IMolecule>(ms, 2, da, coma);
+        KMeans<IMolecule> km = new KMeans<IMolecule>(ms, K, da, coma);
 
         List<List<IMolecule>> result = km.call();
 
@@ -81,6 +89,10 @@ public class tajmi_data_KMeans {
             System.out.println("Writing " + outdir + File.separator + "c_" + (++count) + ".txt");
             Util.writeMoleculeFile(outdir + File.separator + "c_" + count + ".txt", c);
         }
+
+        System.out.println("+++++++++ Serializing results +++++++++");
+        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(KMEANS_RESULTS_FILE)))
+                .writeObject(result);
 
         
         System.out.println();
