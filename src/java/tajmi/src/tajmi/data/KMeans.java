@@ -171,7 +171,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
 
             C_i = closest_points_to(c, i);
 
-            System.out.println(" [" + C_i.size() + "]");
+            System.out.print(" [" + C_i.size() + "]\t");
 
             C.add(C_i);
 

@@ -86,7 +86,7 @@ public class Main {
             Util.writeMoleculeFile(outdir + File.separator + "c_" + count + ".txt", c);
         }
 
-        System.out.println("+++++++++ Serializing results +++++++++");
+        System.out.println("+++++++++ Serializing results [" + KMEANS_RESULTS_FILE + "] +++++++++");
         new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(KMEANS_RESULTS_FILE)))
                 .writeObject(result);
 
