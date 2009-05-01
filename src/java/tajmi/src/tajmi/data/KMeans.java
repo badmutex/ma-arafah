@@ -126,9 +126,10 @@ public class KMeans<T> implements Callable<List<List<T>>> {
          * that is less than the distance to c_i, disregard that vector, else add it
          */
         List<T> selected_points = new ArrayList<T>();
+        int id = 0;
         for (T point : vectors){
 
-            System.out.print("#");
+            System.out.print(id++);
 
             double mydist = distance_computation.distance(c_i, point);
             boolean this_point_ok = true;
