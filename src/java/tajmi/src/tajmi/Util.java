@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package tajmi;
 
 import java.io.BufferedOutputStream;
@@ -39,36 +38,34 @@ import scala.Tuple2;
  */
 public class Util {
 
-    public static List<Tuple2> zip(Iterable<?> a, Iterable<?> b){
+    public static List<Tuple2> zip(Iterable<?> a, Iterable<?> b) {
 
         List<Tuple2> result = new LinkedList<Tuple2>();
 
-        Iterator
-                itr_a = a.iterator(),
+        Iterator itr_a = a.iterator(),
                 itr_b = b.iterator();
-        while(itr_a.hasNext() && itr_b.hasNext()){
+        while (itr_a.hasNext() && itr_b.hasNext()) {
             result.add(new Tuple2(itr_a.next(), itr_b.next()));
         }
 
         return result;
     }
 
-    public static boolean identical(Iterable<?> a, Iterable<?> b){
-        
-        Iterator<Tuple2> itr = zip(a,b).iterator();
-        while(itr.hasNext()){
+    public static boolean identical(Iterable<?> a, Iterable<?> b) {
+
+        Iterator<Tuple2> itr = zip(a, b).iterator();
+        while (itr.hasNext()) {
             Tuple2 cmp = itr.next();
-            if(cmp._1() instanceof Iterable && cmp._2() instanceof Iterable){
-                return identical( (Iterable) cmp._1(), (Iterable) cmp._2());
-            }
-            else{
-                if(! cmp._1().equals(cmp._2()))
+            if (cmp._1() instanceof Iterable && cmp._2() instanceof Iterable) {
+                return identical((Iterable) cmp._1(), (Iterable) cmp._2());
+            } else {
+                if (!cmp._1().equals(cmp._2())) {
                     return false;
+                }
             }
         }
         return true;
     }
-
 
     /**
      * Finds the maximum common subgraph between tow IAtomContainer graphs.
@@ -76,11 +73,23 @@ public class Util {
      * @param g_2 the second molecule
      * @return null if the computation fails, otherwise the mcss
      */
-    public static IAtomContainer mcss(final IAtomContainer g_1, IAtomContainer g_2){
+    public static IAtomContainer mcss(final IAtomContainer g_1, IAtomContainer g_2) {
         try {
 
 //            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(new LogRecord(Level.INFO, g_1.getID() + " <-> " + g_2.getID()));
-            
+
+            Universe state = Universe.getInstance();
+
+
+            String n1 = g_1.getID(),
+                    n2 = g_2.getID();
+
+            if (n1 != null && n2 != null) {
+                if (state.mcsss.containsKey(state.hashPair(n1, n2))) {
+                    return state.mcsss.get(state.hashPair(n1, n2));
+                }
+            }
+
             IAtomContainer g1 = AtomContainerManipulator.removeHydrogens(g_1);
             IAtomContainer g2 = AtomContainerManipulator.removeHydrogens(g_2);
             List<IAtomContainer> mcss_list = UniversalIsomorphismTester.getOverlaps(g1, g2);
@@ -92,14 +101,19 @@ public class Util {
                     mcss = cs;
                 }
             }
+
+            if(n1 != null && n2 != null)
+                state.mcsss.put(state.hashPair(n1, n2), mcss);
+
             return mcss;
+
         } catch (CDKException ex) {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
 
-    }
 
+    }
 
     /**
      * Guesses the file format of and reads in a molecule
@@ -109,7 +123,7 @@ public class Util {
      * @throws java.io.IOException
      * @throws org.openscience.cdk.exception.CDKException
      */
-    public static IMolecule readMoleculeFile (final String filename) throws FileNotFoundException, IOException, CDKException{
+    public static IMolecule readMoleculeFile(final String filename) throws FileNotFoundException, IOException, CDKException {
 
         Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
         ISimpleChemObjectReader reader = new ReaderFactory().createReader(r);
@@ -117,13 +131,11 @@ public class Util {
         return (IMolecule) reader.read(new Molecule());
     }
 
-    public static void writeMoleculeFile (final String filename, IAtomContainer chemobj) throws CDKException, FileNotFoundException {
+    public static void writeMoleculeFile(final String filename, IAtomContainer chemobj) throws CDKException, FileNotFoundException {
 //        AtomContainerManipulator.convertImplicitToExplicitHydrogens(chemobj);
-        
+
         IChemObjectWriter writer = new WriterFactory().createWriter((IChemFormat) SMILESFormat.getInstance());
         writer.setWriter(new BufferedOutputStream(new FileOutputStream(filename)));
         writer.write(new Molecule(chemobj));
     }
-
-
 }

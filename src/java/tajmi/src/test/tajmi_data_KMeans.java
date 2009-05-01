@@ -43,8 +43,8 @@ public class tajmi_data_KMeans {
 
     public static void graphs() throws FileNotFoundException, IOException, CDKException {
 
-        final int POINTS = 9;
-        final int K = 5;
+        final int POINTS = 8;
+        final int K = 2;
         final String KMEANS_RESULTS_FILE = "kmeans-results.data";
 
         File dir = new File("moleculefiles");
