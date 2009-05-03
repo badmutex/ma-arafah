@@ -82,8 +82,8 @@ public class Main {
             f.mkdir();
         for(List<IMolecule> C : result){
             IAtomContainer c = (IAtomContainer) coma.center(C);
-            System.out.println("Writing " + outdir + File.separator + "c_" + (++count) + ".txt");
-            Util.writeMoleculeFile(outdir + File.separator + "c_" + count + ".txt", c);
+            System.out.println("Writing " + outdir + File.separator + "c_" + (++count) + ".smiles");
+            Util.writeMoleculeFile(outdir + File.separator + "c_" + count + ".smiles", c);
         }
 
         System.out.println("+++++++++ Serializing results [" + KMEANS_RESULTS_FILE + "] +++++++++");
