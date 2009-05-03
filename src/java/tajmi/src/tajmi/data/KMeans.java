@@ -25,12 +25,21 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     DistanceAlgorithm<T> distance_computation;
     CenterOfMassAlgorithm<T> center_of_mass_computation;
 
+    /**
+     * This will be used as a lookup table during step1. As data points are assigned
+     * into a cluster this is noted in <code>assigned</code>. Thus, before a potentially
+     * expensive distance is computed between a point and a center, this checked.
+     */
+    boolean[] assigned;
+
     public KMeans(List<T> vectors, int k, DistanceAlgorithm<T> dist, CenterOfMassAlgorithm<T> cent) {
         this.vectors = vectors;
         this.k = k;
 
         distance_computation = dist;
         center_of_mass_computation = cent;
+
+        assigned = new boolean[vectors.size()];
     }
 
     /**
@@ -128,15 +137,26 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         List<T> selected_points = new ArrayList<T>();
         int id = 0;
         for (T point : vectors){
+            System.out.print(id);
 
-            System.out.print(id++);
+            if ( assigned[id] ){
+                System.out.println("-");
+                continue;
+            }
+
+            id++;
 
             double mydist = distance_computation.distance(c_i, point);
             boolean this_point_ok = true;
 
             for (int j = 0; j < centers_of_mass.size(); j++) {
-                if( j == i)
+                if( j == i )
                     continue;
+
+                if( assigned[j] ){
+                    System.out.print("-");
+                    continue;
+                }
 
                 T c = centers_of_mass.get(j);
                 if(distance_computation.distance(c, point) < mydist) {
@@ -179,6 +199,11 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         }
 
         clusters = C;
+
+        // clear assigned
+        for(int i = 0; i < assigned.length; i++){
+            assigned[i] = false;
+        }
     }
 
 
