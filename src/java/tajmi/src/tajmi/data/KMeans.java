@@ -32,6 +32,12 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      */
     boolean[] assigned;
 
+    /**
+     * Holds the distances between each points to the centers as calculated during
+     * each step1. Serves as a lookup table so calculations aren't repeated.
+     */
+    double[][] distances;
+
     public KMeans(List<T> vectors, int k, DistanceAlgorithm<T> dist, CenterOfMassAlgorithm<T> cent) {
         this.vectors = vectors;
         this.k = k;
@@ -43,6 +49,10 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         for (int i = 0; i < assigned.length; i++)
             assigned[i] = false;
 
+        distances = new double[k][vectors.size()];
+        for (int i = 0; i < k; i++)
+            for (int j = 0; j < vectors.size(); j++)
+                distances[i][j] = Double.NEGATIVE_INFINITY;
     }
 
     /**
@@ -160,7 +170,11 @@ public class KMeans<T> implements Callable<List<List<T>>> {
                     continue;
 
                 T c = centers_of_mass.get(j);
-                if(distance_computation.distance(c, point) < mydist) {
+                double other_dist = distances[j][id] < 0.0
+                    ? distance_computation.distance(c, point)
+                    : distances[j][id];
+
+                if(other_dist < mydist) {
                     System.out.print("-");
 
                     this_point_ok = false;
@@ -209,6 +223,11 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         for(int i = 0; i < assigned.length; i++){
             assigned[i] = false;
         }
+
+        // clear dynamic distances
+        for(int i = 0; i < k; i++)
+            for( int j = 0; j < vectors.size(); j++)
+                distances[i][j] = Double.NEGATIVE_INFINITY;
     }
 
 
