@@ -40,6 +40,9 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         center_of_mass_computation = cent;
 
         assigned = new boolean[vectors.size()];
+        for (int i = 0; i < assigned.length; i++)
+            assigned[i] = false;
+
     }
 
     /**
@@ -135,28 +138,26 @@ public class KMeans<T> implements Callable<List<List<T>>> {
          * that is less than the distance to c_i, disregard that vector, else add it
          */
         List<T> selected_points = new ArrayList<T>();
-        int id = 0;
+        int id = 0; // incremented at end of loop
         for (T point : vectors){
             System.out.print(id);
 
+            // can we skip this point?
             if ( assigned[id] ){
-                System.out.println("-");
+                System.out.print("$");
+                id++;
                 continue;
             }
 
-            id++;
 
+            // can't skip this point
             double mydist = distance_computation.distance(c_i, point);
             boolean this_point_ok = true;
 
+            // is this point closer to another center?
             for (int j = 0; j < centers_of_mass.size(); j++) {
-                if( j == i )
+                if( j == i )    // j, i subscript the centers of mass
                     continue;
-
-                if( assigned[j] ){
-                    System.out.print("-");
-                    continue;
-                }
 
                 T c = centers_of_mass.get(j);
                 if(distance_computation.distance(c, point) < mydist) {
@@ -170,7 +171,11 @@ public class KMeans<T> implements Callable<List<List<T>>> {
             if(this_point_ok){
                 System.out.print("!");
                 selected_points.add(point);
+                assigned[id] = true;
             }
+
+
+            id++;
         }
 
         return selected_points;
