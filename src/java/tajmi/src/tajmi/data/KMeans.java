@@ -117,6 +117,8 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      * Finds the data points closest to the current center of mass
      * @param c_i the center of mass
      * @param i the current position
+     * @param assigned a <code>boolean[s]</code> where <code>s</code> is the is the input vector size
+     * @param distances a <code>double[k][s]</code>
      * @return a list of points closest to `c_i` than `c_j` forall i != j
      */
     private List<T> closest_points_to(T c_i, int i, boolean[] assigned, double[][] distances) {
@@ -221,15 +223,6 @@ public class KMeans<T> implements Callable<List<List<T>>> {
 
 
     /**
-     * Dispatches the computation to the CenterOfMassAlgorithm object
-     * @param cluster a list of the data points representing a cluster
-     * @return
-     */
-    private T centers_of_mass(List<T> cluster) {
-        return center_of_mass_computation.center(cluster);
-    }
-
-    /**
      * for each i in {1..k}, set c_i to be the center of mass of all points in C_i:
      * c_i = 1/|C_i| SUM_{x_j in C_i} x_j
      */
@@ -238,7 +231,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
 
         T c;
         for (int i = 0; i < k; i++) {
-            c = centers_of_mass(clusters.get(i));
+            c = center_of_mass_computation.center(clusters.get(i));
 
             centers_of_mass.set(i, c);
 
