@@ -25,18 +25,6 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     DistanceAlgorithm<T> distance_computation;
     CenterOfMassAlgorithm<T> center_of_mass_computation;
 
-    /**
-     * This will be used as a lookup table during step1. As data points are assigned
-     * into a cluster this is noted in <code>assigned</code>. Thus, before a potentially
-     * expensive distance is computed between a point and a center, this checked.
-     */
-    boolean[] assigned;
-
-    /**
-     * Holds the distances between each points to the centers as calculated during
-     * each step1. Serves as a lookup table so calculations aren't repeated.
-     */
-    double[][] distances;
 
     public KMeans(List<T> vectors, int k, DistanceAlgorithm<T> dist, CenterOfMassAlgorithm<T> cent) {
         this.vectors = vectors;
@@ -45,14 +33,6 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         distance_computation = dist;
         center_of_mass_computation = cent;
 
-        assigned = new boolean[vectors.size()];
-        for (int i = 0; i < assigned.length; i++)
-            assigned[i] = false;
-
-        distances = new double[k][vectors.size()];
-        for (int i = 0; i < k; i++)
-            for (int j = 0; j < vectors.size(); j++)
-                distances[i][j] = Double.NEGATIVE_INFINITY;
     }
 
     /**
@@ -139,7 +119,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      * @param i the current position
      * @return a list of points closest to `c_i` than `c_j` forall i != j
      */
-    private List<T> closest_points_to(T c_i, int i) {
+    private List<T> closest_points_to(T c_i, int i, boolean[] assigned, double[][] distances) {
 
         System.out.print(" **** closest points to c_" + i + "\t");
 
@@ -202,13 +182,31 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     private void step1() {
         System.out.println(" ** Step 1");
 
+        /**
+         * This will be used as a lookup table during step1. As data points are assigned
+         * into a cluster this is noted in <code>assigned</code>. Thus, before a potentially
+         * expensive distance is computed between a point and a center, this checked.
+         */
+        boolean[] assigned = new boolean[vectors.size()];
+        for (int i = 0; i < assigned.length; i++)
+            assigned[i] = false;
+
+        /**
+         * Holds the distances between each points to the centers as calculated during
+         * each step1. Serves as a lookup table so calculations aren't repeated.
+         */
+        double[][] distances = new double[k][vectors.size()];
+        for (int i = 0; i < k; i++)
+            for (int j = 0; j < vectors.size(); j++)
+                distances[i][j] = Double.NEGATIVE_INFINITY;
+
         List<List<T>> C = new LinkedList<List<T>>();
         List<T> C_i;
         T c;
         for (int i = 0; i < k; i++) {
             c = centers_of_mass.get(i);
 
-            C_i = closest_points_to(c, i);
+            C_i = closest_points_to(c, i, assigned, distances);
 
             System.out.print(" [" + C_i.size() + "]\t");
 
@@ -219,15 +217,6 @@ public class KMeans<T> implements Callable<List<List<T>>> {
 
         clusters = C;
 
-        // clear assigned
-        for(int i = 0; i < assigned.length; i++){
-            assigned[i] = false;
-        }
-
-        // clear dynamic distances
-        for(int i = 0; i < k; i++)
-            for( int j = 0; j < vectors.size(); j++)
-                distances[i][j] = Double.NEGATIVE_INFINITY;
     }
 
 
