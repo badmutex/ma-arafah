@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import scala.Tuple3;
 import tajmi.data.clusterable.CenterOfMassAlgorithm;
 import tajmi.data.clusterable.DistanceAlgorithm;
 
@@ -121,7 +122,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      * @param distances a <code>double[k][s]</code>
      * @return a list of points closest to `c_i` than `c_j` forall i != j
      */
-    private List<T> closest_points_to(T c_i, int i, boolean[] assigned, double[][] distances) {
+    private Tuple3<List<T>, boolean[], double[][]> closest_points_to(T c_i, int i, boolean[] assigned, double[][] distances) {
 
         System.out.print(" **** closest points to c_" + i + "\t");
 
@@ -178,7 +179,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
             id++;
         }
 
-        return selected_points;
+        return new Tuple3<List<T>, boolean[], double[][]> (selected_points, assigned, distances);
     }
 
     /**
@@ -212,7 +213,10 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         for (int i = 0; i < k; i++) {
             c = centers_of_mass.get(i);
 
-            C_i = closest_points_to(c, i, assigned, distances);
+            Tuple3<List<T>, boolean[], double[][]> result = closest_points_to(c, i, assigned, distances);
+            C_i = result._1();
+            assigned = result._2();
+            distances = result._3();
 
             System.out.print(" [" + C_i.size() + "]\t");
 
