@@ -156,6 +156,10 @@ public class KMeans<T> implements Callable<List<List<T>>> {
                     ? distance_computation.distance(c, point)
                     : distances[j][id];
 
+                distances[i][id] = distances[j][id] < 0.0
+                        ? other_dist
+                        : distances[i][id];
+
                 if(other_dist < mydist) {
                     System.out.print("-");
 
