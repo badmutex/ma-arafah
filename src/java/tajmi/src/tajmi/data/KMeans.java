@@ -124,8 +124,6 @@ public class KMeans<T> implements Callable<List<List<T>>> {
      */
     private Tuple3<List<T>, boolean[], double[][]> closest_points_to(T c_i, int i, boolean[] assigned, double[][] distances) {
 
-        System.out.print(" **** closest points to c_" + i + "\t");
-
         /* find the vectors closest to c_i over c_j where i != j
          * :: For each vector, if there exists a distance  to another clusters center
          * that is less than the distance to c_i, disregard that vector, else add it
@@ -141,7 +139,6 @@ public class KMeans<T> implements Callable<List<List<T>>> {
                 id++;
                 continue;
             }
-
 
             // can't skip this point
             double mydist = distance_computation.distance(c_i, point);
@@ -182,6 +179,25 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         return new Tuple3<List<T>, boolean[], double[][]> (selected_points, assigned, distances);
     }
 
+
+    private List<T> add_remaining(int c_id, boolean[] assigned, List<T> vectors){
+        List<T> chosen = new ArrayList(vectors.size());
+        int id = 0;
+        for(T v : vectors){
+            System.out.print(id);
+            if( !assigned[id] ){
+                chosen.add(v);
+                assigned[id] = true;
+                System.out.print("!");
+            } else {
+                System.out.print("$");
+            }
+            id++;
+        }
+        return chosen;
+
+    }
+
     /**
      * for each i in {1..k}, set the clusters center C_i to be the set of points in
      * X that are closer to c_i than they are to c_j for all i != j
@@ -211,12 +227,21 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         List<T> C_i;
         T c;
         for (int i = 0; i < k; i++) {
-            c = centers_of_mass.get(i);
 
-            Tuple3<List<T>, boolean[], double[][]> result = closest_points_to(c, i, assigned, distances);
-            C_i = result._1();
-            assigned = result._2();
-            distances = result._3();
+            System.out.print(" **** closest points to c_" + i + "\t");
+
+            if( i == k - 1 ){
+                C_i = add_remaining(i, assigned, vectors);
+            } else {
+
+                c = centers_of_mass.get(i);
+
+                Tuple3<List<T>, boolean[], double[][]> result = closest_points_to(c, i, assigned, distances);
+                C_i = result._1();
+                assigned = result._2();
+                distances = result._3();
+
+            }
 
             System.out.print(" [" + C_i.size() + "]\t");
 
