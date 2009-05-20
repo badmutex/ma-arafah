@@ -86,6 +86,18 @@ public class Main {
             Util.writeMoleculeFile(outdir + File.separator + "c_" + count + ".smiles", c);
         }
 
+
+        System.out.println("+++++++++ Results +++++++++");
+        int clust_id = 0;
+        for (List<IMolecule> cluster : result) {
+            String names = "";
+            for (IMolecule molec : cluster) {
+                names += " " + molec.getID();
+            }
+            System.out.println("[" + clust_id + "]\t" + names);
+            clust_id++;
+        }
+
         System.out.println("+++++++++ Serializing results [" + KMEANS_RESULTS_FILE + "] +++++++++");
         new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(KMEANS_RESULTS_FILE)))
                 .writeObject(result);
