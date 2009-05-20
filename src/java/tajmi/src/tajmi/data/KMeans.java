@@ -264,6 +264,10 @@ public class KMeans<T> implements Callable<List<List<T>>> {
 
         T c;
         for (int i = 0; i < k; i++) {
+            if (clusters.get(i).size() < 1) {
+                System.out.println(" *** c_" + i + " empty, skipping centering");
+                continue;
+            }
             c = center_of_mass_computation.center(clusters.get(i));
 
             centers_of_mass.set(i, c);
