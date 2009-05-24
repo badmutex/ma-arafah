@@ -4,17 +4,23 @@
  */
 package tajmi.data.clusterable;
 
+import java.util.concurrent.Callable;
+
 /**
  *
  * @author badi
  */
-public interface DistanceAlgorithm<T> {
+public interface DistanceAlgorithm<T> extends Callable<Double> {
 
     /**
-     * Compute the distance between this object and the other.
+     * Compute the params between this object and the other.
      * @para me the first object
      * @param you the other object
-     * @return a double representing the distance between the two objects
+     * @return a double representing the params between the two objects
      */
-    public double distance(T me, T you);
+    public DistanceAlgorithm params(T first, T second);
+
+
+
+    public Double call ();
 }

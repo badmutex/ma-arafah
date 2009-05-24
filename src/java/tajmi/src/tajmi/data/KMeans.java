@@ -125,8 +125,8 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     private Tuple3<List<T>, boolean[], double[][]> closest_points_to(T c_i, int i, boolean[] assigned, double[][] distances) {
 
         /* find the vectors closest to c_i over c_j where i != j
-         * :: For each vector, if there exists a distance  to another clusters center
-         * that is less than the distance to c_i, disregard that vector, else add it
+         * :: For each vector, if there exists a params  to another clusters center
+         * that is less than the params to c_i, disregard that vector, else add it
          */
         List<T> selected_points = new ArrayList<T>();
         int id = 0; // incremented at end of loop
@@ -141,7 +141,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
             }
 
             // can't skip this point
-            double mydist = distance_computation.distance(c_i, point);
+            double mydist = distance_computation.params(c_i, point).call();
             boolean this_point_ok = true;
 
             // is this point closer to another center?
@@ -151,7 +151,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
 
                 T c = centers_of_mass.get(j);
                 double other_dist = distances[j][id] < 0.0
-                    ? distance_computation.distance(c, point)
+                    ? distance_computation.params(c, point).call()
                     : distances[j][id];
 
                 distances[i][id] = distances[j][id] < 0.0
@@ -208,7 +208,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         /**
          * This will be used as a lookup table during step1. As data points are assigned
          * into a cluster this is noted in <code>assigned</code>. Thus, before a potentially
-         * expensive distance is computed between a point and a center, this checked.
+         * expensive params is computed between a point and a center, this checked.
          */
         boolean[] assigned = new boolean[vectors.size()];
         for (int i = 0; i < assigned.length; i++)

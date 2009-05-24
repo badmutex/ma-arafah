@@ -17,14 +17,22 @@ import tajmi.data.clusterable.DistanceAlgorithm;
  */
 public class Vector_DistanceAlgorithm implements DistanceAlgorithm<Vector> {
 
+    Vector me, you;
+
     /**
-     * Returns the Euclidean distance between two vectors
+     * Returns the Euclidean params between two vectors
      * @param me the first vector
      * @param you the second vector
-     * @return the distance
+     * @return the params
      */
-    public double distance(Vector me, Vector you) {
+    public Vector_DistanceAlgorithm params(Vector me, Vector you) {
+        this.me = me;
+        this.you = you;
 
+        return this;
+    }
+
+    public Double call () {
         List<Tuple2> zipped = Util.zip(me, you);
         List<Double> intermediate = new ArrayList<Double>(zipped.size());
 
@@ -38,7 +46,6 @@ public class Vector_DistanceAlgorithm implements DistanceAlgorithm<Vector> {
             result += acc;
 
         return Math.sqrt(result);
-
     }
 
 }
