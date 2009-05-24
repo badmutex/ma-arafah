@@ -18,27 +18,25 @@ public class Field<T> implements Iterable<Tuple2<Position, T>> {
     List<List<T>> field;
 
 
-    public Field (int length, int width) {
-        field = new ArrayList<List<T>>(length);
-        for (List<T> d : field)
-            d = new ArrayList<T>(width);
-    }
-
-
-    public Field<T> init (List<T> input_data, InitFunc initf) {
+    public Field (int length, int width, List<T> input_data, InitFunc initf) {
         Random rand = new Random(SOMConfig.getInstance().init_random_gen_seed());
 
-        for (List<T> d2 : field) {
-            for (T datum : d2) {
-                Tuple2< T,Random > res = initf.params(input_data, rand).call();
+        field = new ArrayList<List<T>>(length);
+        for (int x = 0; x < length; x++){
+            field.set(x, new ArrayList<T>(width));
+            for (int y = 0; y < width; y++) {
+                Tuple2<T, Random> res = initf.params(input_data, rand).call();
+                field = set(field, new Position(x, y), res._1());
                 rand = res._2();
-                datum = res._1(); // TODO: this may be a bug
             }
         }
-
-        return this;
     }
 
+
+    private List<List<T>> set (List<List<T>> field, Position pos, T datum) {
+        field.get(pos.x()).set(pos.y(), datum);
+        return field;
+    }
 
     public T get (Position pos) {
         return field.get(pos.x()).get(pos.y());
