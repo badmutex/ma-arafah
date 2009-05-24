@@ -1,18 +1,19 @@
 
 package tajmi.data.som;
 
+import java.util.Iterator;
 import tajmi.data.clusterable.interfaces.som.InitFunc;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import scala.Tuple2;
-import tajmi.data.clusterable.interfaces.DistanceFunc;
 
 /**
  * Implements a static 2D field for the SOM projection
  * @author badi
  */
-public class Field<T> {
+public class Field<T> implements Iterable<Tuple2<Position, T>> {
 
     List<List<T>> field;
 
@@ -39,24 +40,22 @@ public class Field<T> {
     }
 
 
-    public Tuple2<Position, T> find_best_match (T datum, DistanceFunc<T> distance) {
+    public T get (Position pos) {
+        return field.get(pos.x).get(pos.y);
+    }
 
-        T best = field.get(0).get(0);
-        Position best_position = new Position(0, 0);
-        double best_distance = distance.params(datum, best).call();
-        for (int x = 0; x < field.size(); x++) {
-            for (int y = 0; y < field.get(x).size(); y++) {
-                if (x == 0 && y == 0) continue;
-                T current = field.get(x).get(y);
-                double current_distance = distance.params(datum, current).call();
-                if (current_distance < best_distance) {
-                    best = current;
-                    best_position = new Position(x, y);
-                    best_distance = current_distance;
-                }
-            }
-        }
-        return new Tuple2<Position, T>(best_position, best);
+    /**
+     * @return an interator over a linked list of the elements in the field.
+     */
+    public Iterator<Tuple2<Position, T>> iterator() {
+        // this is ugly: Java needs lazy generators
+        List<Tuple2<Position, T>> l = new LinkedList<Tuple2<Position, T>>();
+        for (int x = 0; x < field.size(); x++)
+            for (int y = 0; y < field.get(x).size(); y++)
+                l.add(
+                        new Tuple2<Position, T>(new Position(x, y)
+                        , field.get(x).get(y)));
+        return l.iterator();
     }
 
 }
