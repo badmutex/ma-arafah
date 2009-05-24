@@ -15,11 +15,11 @@ import scala.Tuple2;
 public class SOM<T> implements Callable<Field<T>> {
 
     List<T> data;
-    SOMParams<T> params;
+    SOMParams<T> somparams;
 
     public SOM (List<T> data, SOMParams<T> params) {
         this.data = data;
-        this.params = params;
+        this.somparams = params;
     }
 
 
@@ -35,21 +35,21 @@ public class SOM<T> implements Callable<Field<T>> {
 
     public Field<T> call () {
 
-        Tuple2<List<T>, Random> res = shuffle(data, params.random_gen);
+        Tuple2<List<T>, Random> res = shuffle(data, somparams.random_gen);
         data = res._1();
-        params.random_gen = res._2();
+        somparams.random_gen = res._2();
 
         Iterator<T> itr = data.iterator();
-        while ( !params.stop_func.params(params).call() ){
+        while ( !somparams.stop_func.params(somparams).call() ){
 
             // we need to cycle over inputs
             if( !itr.hasNext() )
                 itr = data.iterator();
 
-            params = params.project_func.params(itr.next(), params).call();
+            somparams = somparams.project_func.params(itr.next(), somparams).call();
 
         }
-        return params.field;
+        return somparams.field;
     }
 
 
