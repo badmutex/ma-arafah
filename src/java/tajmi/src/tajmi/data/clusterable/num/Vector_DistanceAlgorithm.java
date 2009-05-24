@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import scala.Tuple2;
 import tajmi.Util;
-import tajmi.data.clusterable.DistanceAlgorithm;
+import tajmi.data.clusterable.DistanceFunc;
 
 /**
  *
  * @author badi
  */
-public class Vector_DistanceAlgorithm implements DistanceAlgorithm<Vector> {
+public class Vector_DistanceAlgorithm implements DistanceFunc<Vector> {
 
     Vector me, you;
 

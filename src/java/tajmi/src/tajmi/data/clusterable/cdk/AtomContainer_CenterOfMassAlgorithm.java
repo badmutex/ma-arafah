@@ -7,13 +7,13 @@ package tajmi.data.clusterable.cdk;
 import java.util.Iterator;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import tajmi.Util;
-import tajmi.data.clusterable.CenterOfMassAlgorithm;
+import tajmi.data.clusterable.CenterOfMassFunc;
 
 /**
  *
  * @author badi
  */
-public class AtomContainer_CenterOfMassAlgorithm implements CenterOfMassAlgorithm<IAtomContainer> {
+public class AtomContainer_CenterOfMassAlgorithm implements CenterOfMassFunc<IAtomContainer> {
 
     Iterable<IAtomContainer> cluster;
 

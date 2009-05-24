@@ -7,13 +7,13 @@ package tajmi.data.clusterable.cdk;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.Util;
-import tajmi.data.clusterable.DistanceAlgorithm;
+import tajmi.data.clusterable.DistanceFunc;
 
 /**
  *
  * @author badi
  */
-public class AtomContainer_DistanceAlgorithm implements DistanceAlgorithm<IAtomContainer> {
+public class AtomContainer_DistanceAlgorithm implements DistanceFunc<IAtomContainer> {
 
     IAtomContainer g_1, g_2;
 

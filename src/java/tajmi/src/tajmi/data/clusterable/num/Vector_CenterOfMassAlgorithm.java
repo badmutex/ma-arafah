@@ -6,13 +6,13 @@
 package tajmi.data.clusterable.num;
 
 import java.util.Iterator;
-import tajmi.data.clusterable.CenterOfMassAlgorithm;
+import tajmi.data.clusterable.CenterOfMassFunc;
 
 /**
  *
  * @author badi
  */
-public class Vector_CenterOfMassAlgorithm implements CenterOfMassAlgorithm<Vector> {
+public class Vector_CenterOfMassAlgorithm implements CenterOfMassFunc<Vector> {
 
     Iterable<Vector> cluster;
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import scala.Tuple2;
+import tajmi.data.clusterable.DistanceFunc;
 
 /**
  * Implements a static 2D field for the SOM projection

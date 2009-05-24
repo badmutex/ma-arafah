@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
  *
  * @author badi
  */
-public interface DistanceAlgorithm<T> extends Callable<Double> {
+public interface DistanceFunc<T> extends Callable<Double> {
 
     /**
      * Compute the params between this object and the other.
@@ -18,7 +18,7 @@ public interface DistanceAlgorithm<T> extends Callable<Double> {
      * @param you the other object
      * @return a double representing the params between the two objects
      */
-    public DistanceAlgorithm params(T first, T second);
+    public DistanceFunc params(T first, T second);
 
 
 

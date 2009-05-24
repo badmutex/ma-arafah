@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import scala.Tuple3;
-import tajmi.data.clusterable.CenterOfMassAlgorithm;
-import tajmi.data.clusterable.DistanceAlgorithm;
+import tajmi.data.clusterable.CenterOfMassFunc;
+import tajmi.data.clusterable.DistanceFunc;
 
 /**
  * Implements the KMeans algorithm for structured data. This structured data
@@ -23,16 +23,16 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     List<List<T>> clusters;   // C_i for all i in {1,...,k}
     List<T> centers_of_mass;  // c_i for all i in {1,...,k}
 
-    DistanceAlgorithm<T> distance_computation;
-    CenterOfMassAlgorithm<T> center_of_mass_computation;
+    DistanceFunc<T> distance_func;
+    CenterOfMassFunc<T> center_of_mass_func;
 
 
-    public KMeans(List<T> vectors, int k, DistanceAlgorithm<T> dist, CenterOfMassAlgorithm<T> cent) {
+    public KMeans(List<T> vectors, int k, DistanceFunc<T> dist, CenterOfMassFunc<T> cent) {
         this.vectors = vectors;
         this.k = k;
 
-        distance_computation = dist;
-        center_of_mass_computation = cent;
+        distance_func = dist;
+        center_of_mass_func = cent;
 
     }
 
@@ -141,7 +141,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
             }
 
             // can't skip this point
-            double mydist = distance_computation.params(c_i, point).call();
+            double mydist = distance_func.params(c_i, point).call();
             boolean this_point_ok = true;
 
             // is this point closer to another params?
@@ -151,7 +151,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
 
                 T c = centers_of_mass.get(j);
                 double other_dist = distances[j][id] < 0.0
-                    ? distance_computation.params(c, point).call()
+                    ? distance_func.params(c, point).call()
                     : distances[j][id];
 
                 distances[i][id] = distances[j][id] < 0.0
@@ -268,7 +268,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
                 System.out.println(" *** c_" + i + " empty, skipping centering");
                 continue;
             }
-            c = center_of_mass_computation.params(clusters.get(i)).call();
+            c = center_of_mass_func.params(clusters.get(i)).call();
 
             centers_of_mass.set(i, c);
 

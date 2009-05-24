@@ -10,9 +10,9 @@ import java.util.concurrent.Callable;
  *
  * @author badi
  */
-public interface CenterOfMassAlgorithm<T> extends Callable<T> {
+public interface CenterOfMassFunc<T> extends Callable<T> {
 
-    public CenterOfMassAlgorithm<T> params(Iterable<T> cluster);
+    public CenterOfMassFunc<T> params(Iterable<T> cluster);
 
     public T call ();
 }
