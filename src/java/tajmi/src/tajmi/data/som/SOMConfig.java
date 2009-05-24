@@ -5,17 +5,17 @@ package tajmi.data.som;
  * Singleton to hold the extraneous configuration details for the SOM
  * @author badi
  */
-public class Config {
+public class SOMConfig {
 
-    private static Config INSTANCE;
+    private static SOMConfig INSTANCE;
 
-    private Config () {
+    private SOMConfig () {
         init_random_gen_seed = 101010;
     }
 
-    public static synchronized Config getInstance () {
+    public static synchronized SOMConfig getInstance () {
         if (INSTANCE == null)
-            INSTANCE = new Config();
+            INSTANCE = new SOMConfig();
         return INSTANCE;
     }
 

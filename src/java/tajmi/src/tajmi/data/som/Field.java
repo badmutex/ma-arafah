@@ -25,7 +25,7 @@ public class Field<T> {
 
 
     public Field<T> init (List<T> input_data, InitFunc initf) {
-        Random rand = new Random(Config.getInstance().init_random_gen_seed());
+        Random rand = new Random(SOMConfig.getInstance().init_random_gen_seed());
 
         for (List<T> d2 : field) {
             for (T datum : d2) {
