@@ -1,5 +1,3 @@
-/*
- */
 
 package tajmi.data.som;
 

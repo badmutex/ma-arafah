@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package tajmi.data.clusterable.instances.num;
 
@@ -23,6 +19,8 @@ public class Vector extends ArrayList implements List, Iterable {
 
     public Vector sum(Vector other){
         Vector result = new Vector(Math.min(this.size(), other.size()));
+
+        // Java needs Type Classes! Have to use Double to ensure accuracy
         for(Tuple2<Double,Double> tup : Util.zip(this, other)){
             result.add(tup._1() + tup._2());
         }
