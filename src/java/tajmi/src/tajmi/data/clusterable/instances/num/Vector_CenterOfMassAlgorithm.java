@@ -1,8 +1,8 @@
 
-package tajmi.data.clusterable.num;
+package tajmi.data.clusterable.instances.num;
 
 import java.util.Iterator;
-import tajmi.data.clusterable.CenterOfMassFunc;
+import tajmi.data.clusterable.interfaces.CenterOfMassFunc;
 
 /**
  *

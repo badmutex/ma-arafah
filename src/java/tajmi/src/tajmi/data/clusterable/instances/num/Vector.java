@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package tajmi.data.clusterable.num;
+package tajmi.data.clusterable.instances.num;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tajmi.data.clusterable.cdk;
+package tajmi.data.clusterable.instances.cdk;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.Util;
-import tajmi.data.clusterable.DistanceFunc;
+import tajmi.data.clusterable.interfaces.DistanceFunc;
 
 /**
  *

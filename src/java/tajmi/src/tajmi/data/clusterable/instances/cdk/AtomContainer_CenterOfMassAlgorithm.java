@@ -1,10 +1,10 @@
 
-package tajmi.data.clusterable.cdk;
+package tajmi.data.clusterable.instances.cdk;
 
 import java.util.Iterator;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import tajmi.Util;
-import tajmi.data.clusterable.CenterOfMassFunc;
+import tajmi.data.clusterable.interfaces.CenterOfMassFunc;
 
 /**
  *

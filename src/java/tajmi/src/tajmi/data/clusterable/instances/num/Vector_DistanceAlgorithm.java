@@ -1,11 +1,11 @@
 
-package tajmi.data.clusterable.num;
+package tajmi.data.clusterable.instances.num;
 
 import java.util.ArrayList;
 import java.util.List;
 import scala.Tuple2;
 import tajmi.Util;
-import tajmi.data.clusterable.DistanceFunc;
+import tajmi.data.clusterable.interfaces.DistanceFunc;
 
 /**
  *

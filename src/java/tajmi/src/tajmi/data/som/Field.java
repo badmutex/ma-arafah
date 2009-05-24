@@ -1,12 +1,12 @@
 
 package tajmi.data.som;
 
-import tajmi.data.clusterable.som.InitFunc;
+import tajmi.data.clusterable.interfaces.som.InitFunc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import scala.Tuple2;
-import tajmi.data.clusterable.DistanceFunc;
+import tajmi.data.clusterable.interfaces.DistanceFunc;
 
 /**
  * Implements a static 2D field for the SOM projection
@@ -31,7 +31,7 @@ public class Field<T> {
             for (T datum : d2) {
                 Tuple2< T,Random > res = initf.params(input_data, rand).call();
                 rand = res._2();
-                datum = res._1();
+                datum = res._1(); // TODO: this may be a bug
             }
         }
 
