@@ -31,8 +31,6 @@ public class Vector extends ArrayList implements List, Iterable {
     }
 
     public double distance (Vector other) {
-        assert this.size() == other.size() : "Vector size mismatch: " + this.size() + " <-> " + other.size();
-
         DistanceFunc distancef = new Vector_DistanceAlgorithm();
         return distancef.params(this, other).call();
     }

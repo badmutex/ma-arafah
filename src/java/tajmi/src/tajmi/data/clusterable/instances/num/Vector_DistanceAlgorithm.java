@@ -13,17 +13,19 @@ import tajmi.data.clusterable.interfaces.DistanceFunc;
  */
 public class Vector_DistanceAlgorithm implements DistanceFunc<Vector> {
 
-    Vector me, you;
+    Vector first, second;
 
-    public Vector_DistanceAlgorithm params(Vector me, Vector you) {
-        this.me = me;
-        this.you = you;
+    public Vector_DistanceAlgorithm params(Vector first, Vector second) {
+        assert first.size() == second.size() : "Vector size mismatch: " + first.size() + " <-> " + second.size();
+
+        this.first = first;
+        this.second = second;
 
         return this;
     }
 
     public Double call () {
-        List<Tuple2> zipped = Util.zip(me, you);
+        List<Tuple2> zipped = Util.zip(first, second);
         List<Double> intermediate = new ArrayList<Double>(zipped.size());
 
         for(Tuple2<Double,Double> tup : zipped){
