@@ -8,7 +8,7 @@ import tajmi.data.clusterable.instances.som.NaiveFindBestMatchFunc;
 import tajmi.data.clusterable.interfaces.DistanceFunc;
 import tajmi.data.clusterable.interfaces.som.FindBestMatchFunc;
 import tajmi.data.clusterable.interfaces.som.ProjectionFunc;
-import tajmi.data.clusterable.interfaces.som.Update;
+import tajmi.data.clusterable.interfaces.som.UpdateFunc;
 import tajmi.data.som.Field;
 import tajmi.data.som.Position;
 import tajmi.data.som.SOMConfig;
@@ -25,7 +25,7 @@ public class VectorProjectionFunc implements ProjectionFunc<Vector> {
 
     FindBestMatchFunc<Vector> find_best_match;
     DistanceFunc<Vector> distancef;
-    Update<Vector> updatef;
+    UpdateFunc<Vector> updatef;
 
     public ProjectionFunc<Vector> params(Vector datum, SOMParams<Vector> state) {
         this.datum = datum;
@@ -33,7 +33,7 @@ public class VectorProjectionFunc implements ProjectionFunc<Vector> {
 
         find_best_match = new NaiveFindBestMatchFunc<Vector>();
         distancef = new Vector_DistanceAlgorithm();
-        updatef = null; // TODO: implement Update<Vector> function
+        updatef = null; // TODO: implement UpdateFunc<Vector> function
 
         return this;
     }
