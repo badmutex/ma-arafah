@@ -47,7 +47,7 @@ public class SOM<T> implements Callable<Field<T>> {
                 itr = data.iterator();
 
             // the magic happens here
-            somparams.field = somparams.project_func.params(itr.next(), somparams.field).call();
+            somparams = somparams.project_func.params(itr.next(), somparams).call();
 
         }
         return somparams.field;

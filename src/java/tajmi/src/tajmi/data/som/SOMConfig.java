@@ -20,9 +20,17 @@ public class SOMConfig {
     }
 
 
+    /** used to initialize the Field */
     private long init_random_gen_seed;
 
     public long init_random_gen_seed () {
         return init_random_gen_seed;
+    }
+
+    /** used as change the restraint this much each time */
+    private double restraint_modifier;
+
+    public double restraint_modifier () {
+        return restraint_modifier;
     }
 }

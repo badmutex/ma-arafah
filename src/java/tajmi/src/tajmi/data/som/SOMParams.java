@@ -20,4 +20,15 @@ public class SOMParams<T> {
 
     public Random random_gen;
 
+    public SOMParams<T> copy () {
+        SOMParams<T> novel = new SOMParams();
+
+        novel.field = this.field;
+        novel.project_func = this.project_func;
+        novel.random_gen = this.random_gen;
+        novel.restraint = this.restraint;
+        novel.stop_func = this.stop_func;
+
+        return novel;
+    }
 }
