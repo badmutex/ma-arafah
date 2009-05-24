@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package tajmi.data.clusterable.num;
 
@@ -19,12 +15,6 @@ public class Vector_DistanceAlgorithm implements DistanceFunc<Vector> {
 
     Vector me, you;
 
-    /**
-     * Returns the Euclidean params between two vectors
-     * @param me the first vector
-     * @param you the second vector
-     * @return the params
-     */
     public Vector_DistanceAlgorithm params(Vector me, Vector you) {
         this.me = me;
         this.you = you;
