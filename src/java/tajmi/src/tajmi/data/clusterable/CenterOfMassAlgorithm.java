@@ -4,16 +4,15 @@
  */
 package tajmi.data.clusterable;
 
+import java.util.concurrent.Callable;
+
 /**
  *
  * @author badi
  */
-public interface CenterOfMassAlgorithm<T> {
+public interface CenterOfMassAlgorithm<T> extends Callable<T> {
 
-    /**
-     * Compute the center of mass for a cluster
-     * @param cluster the points in a cluster
-     * @return a single instance representing the center of mass
-     */
-    public T center(Iterable<T> cluster);
+    public CenterOfMassAlgorithm<T> params(Iterable<T> cluster);
+
+    public T call ();
 }

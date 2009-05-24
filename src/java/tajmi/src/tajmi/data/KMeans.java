@@ -115,8 +115,8 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     }
 
     /**
-     * Finds the data points closest to the current center of mass
-     * @param c_i the center of mass
+     * Finds the data points closest to the current params of mass
+     * @param c_i the params of mass
      * @param i the current position
      * @param assigned a <code>boolean[s]</code> where <code>s</code> is the is the input vector size
      * @param distances a <code>double[k][s]</code>
@@ -125,7 +125,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     private Tuple3<List<T>, boolean[], double[][]> closest_points_to(T c_i, int i, boolean[] assigned, double[][] distances) {
 
         /* find the vectors closest to c_i over c_j where i != j
-         * :: For each vector, if there exists a params  to another clusters center
+         * :: For each vector, if there exists a params  to another clusters params
          * that is less than the params to c_i, disregard that vector, else add it
          */
         List<T> selected_points = new ArrayList<T>();
@@ -144,7 +144,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
             double mydist = distance_computation.params(c_i, point).call();
             boolean this_point_ok = true;
 
-            // is this point closer to another center?
+            // is this point closer to another params?
             for (int j = 0; j < centers_of_mass.size(); j++) {
                 if( j == i )    // j, i subscript the centers of mass
                     continue;
@@ -199,7 +199,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     }
 
     /**
-     * for each i in {1..k}, set the clusters center C_i to be the set of points in
+     * for each i in {1..k}, set the clusters params C_i to be the set of points in
      * X that are closer to c_i than they are to c_j for all i != j
      */
     private void step1() {
@@ -208,7 +208,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
         /**
          * This will be used as a lookup table during step1. As data points are assigned
          * into a cluster this is noted in <code>assigned</code>. Thus, before a potentially
-         * expensive params is computed between a point and a center, this checked.
+         * expensive params is computed between a point and a params, this checked.
          */
         boolean[] assigned = new boolean[vectors.size()];
         for (int i = 0; i < assigned.length; i++)
@@ -256,7 +256,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
 
 
     /**
-     * for each i in {1..k}, set c_i to be the center of mass of all points in C_i:
+     * for each i in {1..k}, set c_i to be the params of mass of all points in C_i:
      * c_i = 1/|C_i| SUM_{x_j in C_i} x_j
      */
     private void step2() {
@@ -268,7 +268,7 @@ public class KMeans<T> implements Callable<List<List<T>>> {
                 System.out.println(" *** c_" + i + " empty, skipping centering");
                 continue;
             }
-            c = center_of_mass_computation.center(clusters.get(i));
+            c = center_of_mass_computation.params(clusters.get(i)).call();
 
             centers_of_mass.set(i, c);
 

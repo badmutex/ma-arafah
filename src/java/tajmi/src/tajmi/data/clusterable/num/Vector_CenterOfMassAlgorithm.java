@@ -14,12 +14,14 @@ import tajmi.data.clusterable.CenterOfMassAlgorithm;
  */
 public class Vector_CenterOfMassAlgorithm implements CenterOfMassAlgorithm<Vector> {
 
-    /**
-     * c_i = 1/|C_i| SUM_{x in C_i} x
-     * @param cluster
-     * @return
-     */
-    public Vector center(Iterable<Vector> cluster) {
+    Iterable<Vector> cluster;
+
+    public Vector_CenterOfMassAlgorithm params(Iterable<Vector> cluster) {
+        this.cluster = cluster;
+        return this;
+    }
+
+    public Vector call () {
         int size = 0;
         Iterator<Vector> itr = cluster.iterator();
         Vector accum = itr.next();
@@ -39,6 +41,5 @@ public class Vector_CenterOfMassAlgorithm implements CenterOfMassAlgorithm<Vecto
 
         return result;
     }
-
 
 }

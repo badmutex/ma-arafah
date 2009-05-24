@@ -15,14 +15,15 @@ import tajmi.data.clusterable.CenterOfMassAlgorithm;
  */
 public class AtomContainer_CenterOfMassAlgorithm implements CenterOfMassAlgorithm<IAtomContainer> {
 
-    /**
-     * Finds the center of mass of the cluster of IAtomContainer objects by folding
-     * a maximum common subgraph computation through it sequence
-     * @param cluster sequence of IAtomContainer instances. There should be at least one item in the sequence
-     * @return result of the fold
-     */
-    public IAtomContainer center(Iterable<IAtomContainer> cluster) {
+    Iterable<IAtomContainer> cluster;
 
+    public AtomContainer_CenterOfMassAlgorithm params(Iterable<IAtomContainer> cluster) {
+
+        this.cluster = cluster;
+        return this;
+    }
+
+    public IAtomContainer call () {
         Iterator<IAtomContainer> itr = cluster.iterator();
         IAtomContainer accum = itr.next();
         if (!itr.hasNext()) {
