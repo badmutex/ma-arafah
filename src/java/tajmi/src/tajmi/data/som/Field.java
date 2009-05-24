@@ -1,6 +1,7 @@
 
 package tajmi.data.som;
 
+import tajmi.data.clusterable.som.InitFunc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

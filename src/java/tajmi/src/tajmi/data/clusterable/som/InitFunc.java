@@ -1,5 +1,5 @@
 
-package tajmi.data.som;
+package tajmi.data.clusterable.som;
 
 import java.util.List;
 import java.util.Random;

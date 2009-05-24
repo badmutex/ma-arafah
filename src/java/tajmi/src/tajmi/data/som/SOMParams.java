@@ -1,6 +1,9 @@
 
 package tajmi.data.som;
 
+import tajmi.data.clusterable.som.ProjectionFunc;
+import tajmi.data.clusterable.som.NeighborhoodFunc;
+import tajmi.data.clusterable.som.StopFunc;
 import java.util.Random;
 import tajmi.data.clusterable.DistanceFunc;
 

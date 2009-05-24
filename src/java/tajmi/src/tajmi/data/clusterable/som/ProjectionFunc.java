@@ -1,6 +1,7 @@
 
-package tajmi.data.som;
+package tajmi.data.clusterable.som;
 
+import tajmi.data.som.*;
 import java.util.concurrent.Callable;
 
 /**
