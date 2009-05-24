@@ -8,10 +8,10 @@ import java.util.concurrent.Callable;
  *
  * @author badi
  */
-public interface ProjectionFunc<T> extends Callable<SOMParams<T>> {
+public interface ProjectionFunc<T> extends Callable<Field<T>> {
 
-    public ProjectionFunc<T> params (T datum, SOMParams<T> current_state);
+    public ProjectionFunc<T> params (T datum, Field<T> field);
 
-    public SOMParams<T> call();
+    public Field<T> call();
 
 }
