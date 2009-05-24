@@ -18,7 +18,9 @@ public class Vector extends ArrayList implements List, Iterable {
     public Vector(Collection c){ super(c); }
 
     public Vector sum(Vector other){
-        Vector result = new Vector(Math.min(this.size(), other.size()));
+        assert this.size() == other.size() : "Vector size mismatch: " + this.size() + " <-> " + other.size();
+
+        Vector result = new Vector(this.size());
 
         // Java needs Type Classes! Have to use Double to ensure accuracy
         for(Tuple2<Double,Double> tup : Util.zip(this, other)){
