@@ -41,7 +41,7 @@ public class Field<T> implements Iterable<Tuple2<Position, T>> {
 
 
     public T get (Position pos) {
-        return field.get(pos.x).get(pos.y);
+        return field.get(pos.x()).get(pos.y());
     }
 
     /**
