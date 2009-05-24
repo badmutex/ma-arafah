@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import scala.Tuple2;
 import tajmi.Util;
+import tajmi.data.clusterable.interfaces.DistanceFunc;
 
 /**
  * Vector of numerical data to be clustered
@@ -27,5 +28,12 @@ public class Vector extends ArrayList implements List, Iterable {
             result.add(tup._1() + tup._2());
         }
         return result;
+    }
+
+    public double distance (Vector other) {
+        assert this.size() == other.size() : "Vector size mismatch: " + this.size() + " <-> " + other.size();
+
+        DistanceFunc distancef = new Vector_DistanceAlgorithm();
+        return distancef.params(this, other).call();
     }
 }
