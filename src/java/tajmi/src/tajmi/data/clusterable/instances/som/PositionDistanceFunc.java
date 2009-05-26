@@ -1,5 +1,5 @@
 
-package tajmi.data.clusterable.instances.num.som;
+package tajmi.data.clusterable.instances.som;
 
 import tajmi.data.clusterable.interfaces.DistanceFunc;
 import tajmi.data.som.Position;

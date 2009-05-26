@@ -5,8 +5,8 @@
 
 package test;
 
-import tajmi.data.clusterable.num.Vector;
-import tajmi.data.clusterable.num.Vector_DistanceAlgorithm;
+import tajmi.data.clusterable.instances.num.Vector;
+import tajmi.data.clusterable.instances.num.Vector_DistanceAlgorithm;
 
 /**
  *
@@ -26,6 +26,6 @@ public class tajmi_data_clusterable_num_Vector_DistanceAlgorithm {
             v2.add((double) i + 1);
         }
 
-        System.out.println("distance(v1,v2): " + new Vector_DistanceAlgorithm().distance(v1, v2));
+        System.out.println("distance(v1,v2): " + new Vector_DistanceAlgorithm().params(v1, v2));
     }
 }

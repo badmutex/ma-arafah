@@ -6,8 +6,8 @@ package test;
 
 import java.util.ArrayList;
 import java.util.List;
-import tajmi.data.clusterable.num.Vector;
-import tajmi.data.clusterable.num.Vector_CenterOfMassAlgorithm;
+import tajmi.data.clusterable.instances.num.Vector;
+import tajmi.data.clusterable.instances.num.Vector_CenterOfMassAlgorithm;
 
 /**
  *
@@ -30,7 +30,7 @@ public class tajmi_data_clusterable_num_Vector_CenterOfMassAlgorithm {
         List<Vector> vs = new ArrayList(2);
         vs.add(v1);
         vs.add(v2);
-        System.out.println("Center(v1,v2): " + new Vector_CenterOfMassAlgorithm().center(vs));
+        System.out.println("Center(v1,v2): " + new Vector_CenterOfMassAlgorithm().params(vs));
 
     }
 }

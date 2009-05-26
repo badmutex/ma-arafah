@@ -25,11 +25,11 @@ import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.Util;
 import tajmi.data.KMeans;
-import tajmi.data.clusterable.CenterOfMassAlgorithm;
-import tajmi.data.clusterable.DistanceAlgorithm;
-import tajmi.data.clusterable.cdk.AtomContainer_CenterOfMassAlgorithm;
-import tajmi.data.clusterable.cdk.AtomContainer_DistanceAlgorithm;
-import tajmi.data.clusterable.num.Vector;
+import tajmi.data.clusterable.interfaces.CenterOfMassFunc;
+import tajmi.data.clusterable.interfaces.DistanceFunc;
+import tajmi.data.clusterable.instances.cdk.AtomContainer_CenterOfMassAlgorithm;
+import tajmi.data.clusterable.instances.cdk.AtomContainer_DistanceAlgorithm;
+import tajmi.data.clusterable.instances.num.Vector;
 
 /**
  *
@@ -75,8 +75,8 @@ public class tajmi_data_KMeans {
         Collections.shuffle(ms, new Random(4224));
         System.out.println("Read in " + files.length + " =>? " + ms.size());
 
-        DistanceAlgorithm da = new AtomContainer_DistanceAlgorithm();
-        CenterOfMassAlgorithm coma = new AtomContainer_CenterOfMassAlgorithm();
+        DistanceFunc da = new AtomContainer_DistanceAlgorithm();
+        CenterOfMassFunc coma = new AtomContainer_CenterOfMassAlgorithm();
 
         KMeans<IMolecule> km = new KMeans<IMolecule>(ms, K, da, coma);
 
@@ -85,7 +85,7 @@ public class tajmi_data_KMeans {
         int count = 0;
         for(List<IMolecule> C : result){
             String outdir = "c_i";
-            IAtomContainer c = (IAtomContainer) coma.center(C);
+            IAtomContainer c = (IAtomContainer) coma.params(C);
             System.out.println("Writing " + outdir + File.separator + "c_" + (++count) + ".txt");
             Util.writeMoleculeFile(outdir + File.separator + "c_" + count + ".txt", c);
         }

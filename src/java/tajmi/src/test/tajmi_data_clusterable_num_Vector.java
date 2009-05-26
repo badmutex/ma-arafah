@@ -4,7 +4,7 @@
  */
 package test;
 
-import tajmi.data.clusterable.num.Vector;
+import tajmi.data.clusterable.instances.num.Vector;
 
 /**
  *

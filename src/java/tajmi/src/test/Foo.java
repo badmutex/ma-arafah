@@ -6,6 +6,9 @@ package test;
 
 import java.util.LinkedList;
 import java.util.List;
+import tajmi.data.clusterable.instances.som.EuclideanBasedNeighborhoodFunc;
+import tajmi.data.clusterable.interfaces.som.NeighborhoodFunc;
+import tajmi.data.som.Position;
 
 /**
  *
@@ -17,7 +20,11 @@ public class Foo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        eq();
+        Position a = new Position(0, 0),
+                b = new Position(1,1);
+        double n = new EuclideanBasedNeighborhoodFunc().params(a, b, 1).call();
+        System.out.println("neighborhood " + n);
+
     }
 
     public static void copy() {
