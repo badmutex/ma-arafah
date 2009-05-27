@@ -32,8 +32,14 @@ public class Field<T> implements Iterable<Tuple2<Position, T>> {
         }
     }
 
-    public Field (List<Tuple2<Position, T>> data) {
-        
+    public Field (int length, int width, List<Tuple2<Position, T>> data) {
+        field = new ArrayList<List<T>>(length);
+        for (int x = 0; x < length; x++) {
+            field.set(x, new ArrayList<T>(width));
+        }
+
+        for (Tuple2<Position, T> datum : data)
+            field = set (field, datum._1(), datum._2());
     }
 
 
