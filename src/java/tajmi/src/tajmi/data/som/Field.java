@@ -4,6 +4,7 @@ package tajmi.data.som;
 import java.util.Iterator;
 import tajmi.data.clusterable.interfaces.som.InitFunc;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -18,8 +19,7 @@ public class Field<T> implements Iterable<Tuple2<Position, T>> {
     List<List<T>> field;
 
 
-    public Field (int length, int width, List<T> input_data, InitFunc initf) {
-        Random rand = new Random(SOMConfig.getInstance().init_random_gen_seed());
+    public Field (int length, int width, List<T> input_data, Random rand, InitFunc initf) {
 
         field = new ArrayList<List<T>>(length);
         for (int x = 0; x < length; x++){
@@ -32,6 +32,7 @@ public class Field<T> implements Iterable<Tuple2<Position, T>> {
         }
     }
 
+    /** @deprecated */
     public Field (int length, int width, List<Tuple2<Position, T>> data) {
         field = new ArrayList<List<T>>(length);
         for (int x = 0; x < length; x++) {
@@ -40,6 +41,24 @@ public class Field<T> implements Iterable<Tuple2<Position, T>> {
 
         for (Tuple2<Position, T> datum : data)
             field = set (field, datum._1(), datum._2());
+    }
+
+    public Field (Field old_field, List<Tuple2<Position, T>> data) {
+
+        List<List<T>> new_field = new ArrayList<List<T>>();
+
+        for (Tuple2<Position, T> datum : data) {
+            Position pos = datum._1();
+            T info = datum._2();
+
+            if( new_field.get(pos.x()) == null )
+                new_field.add(new ArrayList<T>(100));
+            else
+                new_field = set(new_field, pos, info);
+        }
+
+        field = new_field;
+
     }
 
 
