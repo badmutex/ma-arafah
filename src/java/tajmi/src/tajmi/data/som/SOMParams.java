@@ -20,6 +20,8 @@ public class SOMParams<T> {
 
     public Random random_gen;
 
+    public int iteration;
+
     public SOMParams<T> copy () {
         SOMParams<T> novel = new SOMParams();
 
@@ -28,6 +30,7 @@ public class SOMParams<T> {
         novel.random_gen = this.random_gen;
         novel.learning_restraint = this.learning_restraint;
         novel.stop_func = this.stop_func;
+        novel.iteration = this.iteration;
 
         return novel;
     }

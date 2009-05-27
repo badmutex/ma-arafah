@@ -43,13 +43,15 @@ public class SOM<T> implements Callable<Field<T>> {
         while ( !somparams.stop_func.params(somparams).call() ){
 
             // we need to cycle over inputs
-            if( !itr.hasNext() )
+            if( !itr.hasNext() ) {
                 itr = data.iterator();
+                somparams.iteration++;
+            }
 
             // the magic happens here
             somparams = somparams.project_func.params(itr.next(), somparams).call();
-
         }
+        
         return somparams.field;
     }
 
