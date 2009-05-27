@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import tajmi.data.clusterable.instances.num.Vector;
 import tajmi.data.clusterable.instances.num.Vector_DistanceAlgorithm;
+import tajmi.data.clusterable.instances.num.som.VectorInitFunc;
 import tajmi.data.clusterable.instances.num.som.VectorProjectionFunc;
 import tajmi.data.clusterable.instances.num.som.VectorStopFunc;
 import tajmi.data.clusterable.instances.num.som.VectorUpdateFunc;
@@ -38,13 +39,16 @@ public class SOMMaker<T> {
     UpdateFunc<T> update_func;
 
     public SOMMaker () {
+        params = new SOMParams<T>();
+
+        
         params.iteration = 0;
         params.learning_restraint = 0.1;
         params.random_gen = new Random(42);
         params.restraint_modifier = 0.01;
 
-        field_len = 100;
-        field_width = 100;
+        field_len = 50;
+        field_width = 50;
     }
 
     public SOMMaker<T> randomSeed (long seed) {
@@ -60,7 +64,7 @@ public class SOMMaker<T> {
         return this;
     }
 
-    private SOM<T> makeSOM () {
+    private SOM<T> makeSOM (List data) {
         assert data != null : "Cannot create a SOM on empty data";
 
         Field<T> field = new Field<T>(field_len, field_width, data, params.random_gen, init_func);
@@ -68,10 +72,10 @@ public class SOMMaker<T> {
 
         params.iteration = 0;
 
-        return null;
+        return new SOM<T>(data, params);
     }
 
-    public SOM<Vector> makeVectorialSOM () {
+    public SOM<Vector> makeVectorialSOM (List<T> data) {
 
         VectorProjectionFunc projectf = new VectorProjectionFunc();
 
@@ -83,7 +87,8 @@ public class SOMMaker<T> {
 
         params.stop_func = (StopFunc<T>) new VectorStopFunc();
 
+        init_func = (InitFunc<T>) new VectorInitFunc();
 
-        return (SOM<Vector>) makeSOM();
+        return (SOM<Vector>) makeSOM(data);
     }
 }

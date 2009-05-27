@@ -40,19 +40,24 @@ public class SOM<T> implements Callable<Field<T>> {
         somparams.random_gen = res._2();
 
         Iterator<T> itr = data.iterator();
+        int count = 0;
         while ( !somparams.stop_func.params(somparams).call() ){
+
+//            System.out.print("+");
+            System.out.println("[" + somparams.iteration + "]\t[" + count + "]");
+
 
             // we need to cycle over inputs
             if( !itr.hasNext() ) {
                 itr = data.iterator();
                 somparams.iteration++;
-                System.out.println("!");
+//                System.out.println("!");
+                count = 0;
             }
 
             // the magic happens here
             somparams = somparams.project_func.params(itr.next(), somparams).call();
-
-            System.out.print("+");
+            count++;
         }
         
         return somparams.field;

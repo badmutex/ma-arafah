@@ -26,17 +26,17 @@ public class Vector extends ArrayList implements List, Iterable {
 
         // Java needs Type Classes! Have to use Double to ensure accuracy
         for(Tuple2<Double,Double> tup : Util.zip(this, other)){
-            result.add(tup._1() + tup._2());
+            result.sum(tup._1() + tup._2());
         }
         return result;
     }
 
-    public Vector add (double scalar) {
+    public Vector sum (double scalar) {
         Vector result = new Vector(this.size());
 
         Iterator<Double> itr = this.iterator();
         while (itr.hasNext())
-            result.add( itr.next() + scalar );
+            result.sum( itr.next() + scalar );
 
         return result;
     }
@@ -46,7 +46,7 @@ public class Vector extends ArrayList implements List, Iterable {
 
         Iterator<Double> itr = this.iterator();
         while (itr.hasNext())
-            result.add( itr.next() + scalar );
+            result.sum( itr.next() + scalar );
 
         return result;
     }
@@ -58,7 +58,7 @@ public class Vector extends ArrayList implements List, Iterable {
 
         // Java needs Type Classes! Have to use Double to ensure accuracy
         for(Tuple2<Double,Double> tup : Util.zip(this, other)){
-            result.add(tup._1() - tup._2());
+            result.sum(tup._1() - tup._2());
         }
         return result;
     }
