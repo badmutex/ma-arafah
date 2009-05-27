@@ -42,7 +42,6 @@ public class VectorProjectionFunc implements ProjectionFunc<Vector> {
     public SOMParams<Vector> call() {
         Tuple2<Position, Vector> res = find_best_match.params(state.field, datum, distancef).call();
         Position best_pos = res._1();
-        Vector best = res._2();
 
         Field<Vector> new_field = updatef.params(state.field, datum, best_pos, state.learning_restraint).call();
 
