@@ -66,7 +66,7 @@ public class VectorUpdateFunc implements UpdateFunc<Vector> {
             field_info.add(new_item);
         }
 
-        Field<Vector> new_field = new Field<Vector>(field_info);
+        Field<Vector> new_field = new Field<Vector>(field, field_info);
         return new_field;
     }
 }

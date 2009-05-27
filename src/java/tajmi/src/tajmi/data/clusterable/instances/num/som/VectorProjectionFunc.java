@@ -5,14 +5,12 @@ import scala.Tuple2;
 import tajmi.data.clusterable.instances.num.Vector;
 import tajmi.data.clusterable.instances.num.Vector_DistanceAlgorithm;
 import tajmi.data.clusterable.instances.som.NaiveFindBestMatchFunc;
-import tajmi.data.clusterable.instances.som.PositionDistanceFunc;
 import tajmi.data.clusterable.interfaces.DistanceFunc;
 import tajmi.data.clusterable.interfaces.som.FindBestMatchFunc;
 import tajmi.data.clusterable.interfaces.som.ProjectionFunc;
 import tajmi.data.clusterable.interfaces.som.UpdateFunc;
 import tajmi.data.som.Field;
 import tajmi.data.som.Position;
-import tajmi.data.som.SOMConfig;
 import tajmi.data.som.SOMParams;
 
 /**
@@ -28,13 +26,21 @@ public class VectorProjectionFunc implements ProjectionFunc<Vector> {
     DistanceFunc<Vector> distancef;
     UpdateFunc<Vector> updatef;
 
+    public void setDistanceFunc(DistanceFunc<Vector> distancef) {
+        this.distancef = distancef;
+    }
+
+    public void setFindBestMatchFunc(FindBestMatchFunc<Vector> find_best_match) {
+        this.find_best_match = find_best_match;
+    }
+
+    public void setUpdateFunc(UpdateFunc<Vector> updatef) {
+        this.updatef = updatef;
+    }
+
     public ProjectionFunc<Vector> params(Vector datum, SOMParams<Vector> state) {
         this.datum = datum;
         this.state = state;
-
-        find_best_match = new NaiveFindBestMatchFunc<Vector>();
-        distancef = new Vector_DistanceAlgorithm();
-        updatef = new VectorUpdateFunc();
 
         return this;
     }
