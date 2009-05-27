@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
  */
 public interface NeighborhoodFunc extends Callable<Double> {
 
-    public NeighborhoodFunc params (Position first, Position second, double restraint);
+    public NeighborhoodFunc params (Position first, Position second);
 
     public Double call();
 

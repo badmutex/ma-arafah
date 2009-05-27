@@ -11,12 +11,10 @@ import tajmi.data.som.Position;
 public class EuclideanBasedNeighborhoodFunc implements NeighborhoodFunc {
 
     Position first, second;
-    double restraint;
 
-    public NeighborhoodFunc params(Position first, Position second, double restraint) {
+    public NeighborhoodFunc params(Position first, Position second) {
         this.first = first;
         this.second = second;
-        this.restraint = restraint;
         return this;
     }
 
@@ -25,7 +23,7 @@ public class EuclideanBasedNeighborhoodFunc implements NeighborhoodFunc {
             return 1.0;
         else {
             double dist = new PositionDistanceFunc().params(first, second).call();
-            return (1.0 / dist) * restraint;
+            return (1.0 / dist);
         }
     }
 

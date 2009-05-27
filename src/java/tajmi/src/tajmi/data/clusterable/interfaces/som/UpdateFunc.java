@@ -3,6 +3,7 @@ package tajmi.data.clusterable.interfaces.som;
 
 import java.util.concurrent.Callable;
 import tajmi.data.som.Field;
+import tajmi.data.som.Position;
 
 /**
  *
@@ -17,7 +18,7 @@ public interface UpdateFunc<T> extends Callable<Field<T>> {
      * @param restraint determined by the neightborhood function
      * @return
      */
-    public UpdateFunc<T> params (Field<T> field, T datum, T bmu, double restraint);
+    public UpdateFunc<T> params (Field<T> field, T datum, Position bmu_pos, double restraint);
 
 
     public Field<T> call ();

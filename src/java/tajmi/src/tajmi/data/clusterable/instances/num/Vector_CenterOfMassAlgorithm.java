@@ -26,7 +26,7 @@ public class Vector_CenterOfMassAlgorithm implements CenterOfMassFunc<Vector> {
         // SUM_{x in C} x
         while(itr.hasNext()){
             size++;
-            accum = accum.sum(itr.next());
+            accum = accum.add(itr.next());
         }
 
         // result = map (* (1/|C_i|)) accum

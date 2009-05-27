@@ -32,6 +32,10 @@ public class Field<T> implements Iterable<Tuple2<Position, T>> {
         }
     }
 
+    public Field (List<Tuple2<Position, T>> data) {
+        
+    }
+
 
     private List<List<T>> set (List<List<T>> field, Position pos, T datum) {
         field.get(pos.x()).set(pos.y(), datum);
@@ -40,6 +44,10 @@ public class Field<T> implements Iterable<Tuple2<Position, T>> {
 
     public T get (Position pos) {
         return field.get(pos.x()).get(pos.y());
+    }
+
+    public int size () {
+        return field.size() * field.get(0).size();
     }
 
     /**
