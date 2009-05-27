@@ -45,7 +45,7 @@ public class VectorProjectionFunc implements ProjectionFunc<Vector> {
 
         Field<Vector> new_field = updatef.params(state.field, datum, best_pos, state.learning_restraint).call();
 
-        double new_restraint = state.learning_restraint * SOMConfig.getInstance().restraint_modifier();
+        double new_restraint = state.learning_restraint * state.restraint_modifier;
 
         SOMParams<Vector> new_state = state.copy();
         new_state.field = new_field;

@@ -17,6 +17,7 @@ public class SOMParams<T> {
     public StopFunc<T> stop_func;
 
     public double learning_restraint;
+    public double restraint_modifier;
 
     public Random random_gen;
 
