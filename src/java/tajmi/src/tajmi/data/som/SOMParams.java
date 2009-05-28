@@ -4,6 +4,7 @@ package tajmi.data.som;
 import tajmi.data.clusterable.interfaces.som.ProjectionFunc;
 import tajmi.data.clusterable.interfaces.som.StopFunc;
 import java.util.Random;
+import tajmi.data.clusterable.interfaces.som.ShowStatusFunc;
 
 /**
  *
@@ -21,7 +22,13 @@ public class SOMParams<T> {
 
     public Random random_gen;
 
-    public int iteration;
+    /** times the entire dataset has been projected */
+    public int iterations;
+    /** times a projection has been done in the current iteration */
+    public int projections;
+
+    /** function responsible for notifying the user of the progress */
+    public ShowStatusFunc show_status_func;
 
     public SOMParams<T> copy () {
         SOMParams<T> novel = new SOMParams();
@@ -31,7 +38,9 @@ public class SOMParams<T> {
         novel.random_gen = this.random_gen;
         novel.learning_restraint = this.learning_restraint;
         novel.stop_func = this.stop_func;
-        novel.iteration = this.iteration;
+        novel.iterations = this.iterations;
+        novel.projections = this.projections;
+        novel.show_status_func = this.show_status_func;
 
         return novel;
     }
