@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
-import tajmi.data.SOMMaker;
-import tajmi.data.clusterable.instances.num.Vector;
-import tajmi.data.som.SOM;
+import tajmi.frontends.SOMMaker;
+import tajmi.instances.vectorial.Vector;
+import tajmi.som.SOM;
 
 /**
  *

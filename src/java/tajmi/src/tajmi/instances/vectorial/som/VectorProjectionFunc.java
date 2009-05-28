@@ -1,0 +1,63 @@
+
+package tajmi.instances.vectorial.som;
+
+import scala.Tuple2;
+import tajmi.instances.vectorial.Vector;
+import tajmi.instances.vectorial.VectorDistanceFunc;
+import tajmi.instances.som.NaiveFindBestMatchFunc;
+import tajmi.interfaces.DistanceFunc;
+import tajmi.interfaces.som.FindBestMatchFunc;
+import tajmi.interfaces.som.ProjectionFunc;
+import tajmi.interfaces.som.UpdateFunc;
+import tajmi.som.Field;
+import tajmi.som.Position;
+import tajmi.som.SOMParams;
+
+/**
+ *
+ * @author badi
+ */
+public class VectorProjectionFunc implements ProjectionFunc<Vector> {
+
+    Vector datum;
+    SOMParams<Vector> state;
+
+    FindBestMatchFunc<Vector> find_best_match;
+    DistanceFunc<Vector> distancef;
+    UpdateFunc<Vector> updatef;
+
+    public void setDistanceFunc(DistanceFunc<Vector> distancef) {
+        this.distancef = distancef;
+    }
+
+    public void setFindBestMatchFunc(FindBestMatchFunc<Vector> find_best_match) {
+        this.find_best_match = find_best_match;
+    }
+
+    public void setUpdateFunc(UpdateFunc<Vector> updatef) {
+        this.updatef = updatef;
+    }
+
+    public ProjectionFunc<Vector> params(Vector datum, SOMParams<Vector> state) {
+        this.datum = datum;
+        this.state = state;
+
+        return this;
+    }
+
+    public SOMParams<Vector> call() {
+        Tuple2<Position, Vector> res = find_best_match.params(state.field, datum, distancef).call();
+        Position best_pos = res._1();
+
+        Field<Vector> new_field = updatef.params(state.field, datum, best_pos, state.learning_restraint).call();
+
+        double new_restraint = state.learning_restraint * state.restraint_modifier;
+
+        SOMParams<Vector> new_state = state.copy();
+        new_state.field = new_field;
+        new_state.learning_restraint = new_restraint;
+
+        return new_state;
+    }
+
+}
