@@ -1,7 +1,7 @@
 
 package tajmi.instances.som;
 
-import tajmi.interfaces.som.NeighborhoodFunc;
+import tajmi.abstracts.som.NeighborhoodFunc;
 import tajmi.som.Position;
 
 /**

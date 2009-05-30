@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 import scala.Tuple2;
 import tajmi.instances.vectorial.Vector;
-import tajmi.interfaces.som.InitFunc;
+import tajmi.abstracts.som.InitFunc;
 
 /**
  * Randomly generates a vector, ignoring the parameterized vector seed

@@ -4,23 +4,19 @@ package tajmi.instances.cdk;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.Util;
-import tajmi.functional.interfaces.Fun;
-import tajmi.interfaces.DistanceFunc;
+import tajmi.abstracts.DistanceFunc;
 
 /**
  *
  * @author badi
  */
-public class AtomContainerDistanceFunc implements DistanceFunc<IAtomContainer> {
-
-    IAtomContainer g_1, g_2;
-
-
-    public AtomContainerDistanceFunc params(IAtomContainer g_1, IAtomContainer g_2) {
-        return (AtomContainerDistanceFunc) this.curry(g_1).curry(g_2);
-    }
+public class AtomContainerDistanceFunc extends DistanceFunc<IAtomContainer> {
 
     public Double call () {
+        IAtomContainer g_1 = getFirst(),
+                g_2 = getSecond();
+
+
         IAtomContainer mcss = Util.mcss(g_1, g_2);
 
         if (mcss == null) {
@@ -33,18 +29,5 @@ public class AtomContainerDistanceFunc implements DistanceFunc<IAtomContainer> {
 
             return distance;
         }
-    }
-
-    public Fun copy() {
-        return new AtomContainerDistanceFunc().curry(g_1).curry(g_2);
-    }
-
-    public Fun curry(Object arg) {
-        if (g_1 == null)
-            g_1 = (IAtomContainer) arg;
-        else if (g_2 == null)
-            g_2 = (IAtomContainer) arg;
-
-        return this;
     }
 }

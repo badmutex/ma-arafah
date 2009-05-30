@@ -3,10 +3,10 @@ package tajmi.instances.vectorial.som;
 
 import scala.Tuple2;
 import tajmi.instances.vectorial.Vector;
-import tajmi.interfaces.DistanceFunc;
-import tajmi.interfaces.som.FindBestMatchFunc;
-import tajmi.interfaces.som.ProjectionFunc;
-import tajmi.interfaces.som.UpdateFunc;
+import tajmi.abstracts.DistanceFunc;
+import tajmi.abstracts.som.FindBestMatchFunc;
+import tajmi.abstracts.som.ProjectionFunc;
+import tajmi.abstracts.som.UpdateFunc;
 import tajmi.som.Field;
 import tajmi.som.Position;
 import tajmi.som.SOMParams;

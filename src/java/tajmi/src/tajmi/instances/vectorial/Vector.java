@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import scala.Tuple2;
 import tajmi.Util;
-import tajmi.interfaces.DistanceFunc;
+import tajmi.abstracts.DistanceFunc;
 
 /**
  * Vector of numerical data to be clustered

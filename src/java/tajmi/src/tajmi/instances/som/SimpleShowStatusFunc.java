@@ -1,7 +1,7 @@
 
 package tajmi.instances.som;
 
-import tajmi.interfaces.som.ShowStatusFunc;
+import tajmi.abstracts.som.ShowStatusFunc;
 import tajmi.som.SOMParams;
 
 /**

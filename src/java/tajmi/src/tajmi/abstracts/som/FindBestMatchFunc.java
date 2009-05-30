@@ -1,9 +1,9 @@
 
-package tajmi.interfaces.som;
+package tajmi.abstracts.som;
 
 import java.util.concurrent.Callable;
 import scala.Tuple2;
-import tajmi.interfaces.DistanceFunc;
+import tajmi.abstracts.DistanceFunc;
 import tajmi.som.Field;
 import tajmi.som.Position;
 

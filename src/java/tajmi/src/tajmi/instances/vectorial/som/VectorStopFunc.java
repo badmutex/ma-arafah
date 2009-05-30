@@ -2,7 +2,7 @@
 package tajmi.instances.vectorial.som;
 
 import tajmi.instances.vectorial.Vector;
-import tajmi.interfaces.som.StopFunc;
+import tajmi.abstracts.som.StopFunc;
 import tajmi.som.SOMParams;
 
 /**

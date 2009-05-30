@@ -2,7 +2,7 @@
 package tajmi.som;
 
 import java.util.Iterator;
-import tajmi.interfaces.som.InitFunc;
+import tajmi.abstracts.som.InitFunc;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

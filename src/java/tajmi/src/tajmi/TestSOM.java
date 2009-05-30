@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import tajmi.frontends.SOMMaker;
 import tajmi.instances.vectorial.Vector;
-import tajmi.interfaces.som.StopFunc;
+import tajmi.abstracts.som.StopFunc;
 import tajmi.som.SOM;
 import tajmi.som.SOMParams;
 

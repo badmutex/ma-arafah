@@ -16,8 +16,8 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.frontends.KMeans;
-import tajmi.interfaces.CenterOfMassFunc;
-import tajmi.interfaces.DistanceFunc;
+import tajmi.abstracts.CenterOfMassFunc;
+import tajmi.abstracts.DistanceFunc;
 import tajmi.instances.cdk.AtomContainerCenterOfMassFunc;
 import tajmi.instances.cdk.AtomContainerDistanceFunc;
 

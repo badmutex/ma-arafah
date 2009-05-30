@@ -1,5 +1,5 @@
 
-package tajmi.interfaces;
+package tajmi.abstracts;
 
 import java.util.concurrent.Callable;
 

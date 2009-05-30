@@ -2,8 +2,8 @@
 package tajmi.instances.som;
 
 import scala.Tuple2;
-import tajmi.interfaces.DistanceFunc;
-import tajmi.interfaces.som.FindBestMatchFunc;
+import tajmi.abstracts.DistanceFunc;
+import tajmi.abstracts.som.FindBestMatchFunc;
 import tajmi.som.Field;
 import tajmi.som.Position;
 

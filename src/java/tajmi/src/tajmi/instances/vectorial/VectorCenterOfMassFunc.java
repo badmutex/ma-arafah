@@ -2,7 +2,7 @@
 package tajmi.instances.vectorial;
 
 import java.util.Iterator;
-import tajmi.interfaces.CenterOfMassFunc;
+import tajmi.abstracts.CenterOfMassFunc;
 
 /**
  *

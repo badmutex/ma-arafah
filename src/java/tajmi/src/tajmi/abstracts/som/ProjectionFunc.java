@@ -1,9 +1,9 @@
 
-package tajmi.interfaces.som;
+package tajmi.abstracts.som;
 
 import tajmi.som.*;
 import java.util.concurrent.Callable;
-import tajmi.interfaces.DistanceFunc;
+import tajmi.abstracts.DistanceFunc;
 
 /**
  * Projects a datum onto the field, updates the field, and returns it.

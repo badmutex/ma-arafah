@@ -1,5 +1,5 @@
 
-package tajmi.interfaces.som;
+package tajmi.abstracts.som;
 
 import java.util.List;
 import java.util.Random;

@@ -5,7 +5,7 @@ import java.util.List;
 import scala.Tuple2;
 import tajmi.instances.vectorial.Vector;
 import tajmi.instances.som.PositionDistanceFunc;
-import tajmi.interfaces.som.UpdateFunc;
+import tajmi.abstracts.som.UpdateFunc;
 import tajmi.som.Field;
 import tajmi.som.Position;
 

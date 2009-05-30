@@ -1,5 +1,5 @@
 
-package tajmi.interfaces.som;
+package tajmi.abstracts.som;
 
 import java.util.concurrent.Callable;
 import tajmi.som.Field;

@@ -4,7 +4,7 @@ package tajmi.instances.cdk;
 import java.util.Iterator;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import tajmi.Util;
-import tajmi.interfaces.CenterOfMassFunc;
+import tajmi.abstracts.CenterOfMassFunc;
 
 /**
  *

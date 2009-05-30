@@ -1,10 +1,10 @@
 
 package tajmi.som;
 
-import tajmi.interfaces.som.ProjectionFunc;
-import tajmi.interfaces.som.StopFunc;
+import tajmi.abstracts.som.ProjectionFunc;
+import tajmi.abstracts.som.StopFunc;
 import java.util.Random;
-import tajmi.interfaces.som.ShowStatusFunc;
+import tajmi.abstracts.som.ShowStatusFunc;
 
 /**
  *

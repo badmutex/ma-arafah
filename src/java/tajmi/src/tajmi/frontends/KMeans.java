@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import scala.Tuple3;
-import tajmi.interfaces.CenterOfMassFunc;
-import tajmi.interfaces.DistanceFunc;
+import tajmi.abstracts.CenterOfMassFunc;
+import tajmi.abstracts.DistanceFunc;
 
 /**
  * Implements the KMeans algorithm for structured data. This structured data
