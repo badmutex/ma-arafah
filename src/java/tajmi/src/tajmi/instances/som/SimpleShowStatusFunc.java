@@ -8,18 +8,12 @@ import tajmi.som.SOMParams;
  *
  * @author badi
  */
-public class SimpleShowStatusFunc implements ShowStatusFunc {
-
-    SOMParams state;
-
-    public ShowStatusFunc params(SOMParams state) {
-        this.state = state;
-
-        return this;
-    }
+public class SimpleShowStatusFunc extends ShowStatusFunc {
 
     public Void call() {
 
+        SOMParams state = getState();
+        
         int i = state.iterations;
         int p = state.projections;
 
@@ -27,6 +21,5 @@ public class SimpleShowStatusFunc implements ShowStatusFunc {
 
         return null;
     }
-
 
 }
