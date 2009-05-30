@@ -11,21 +11,15 @@ import tajmi.som.Position;
  *
  * @author badi
  */
-public class NaiveFindBestMatchFunc<T> implements FindBestMatchFunc<T> {
-
-    Field<T> field;
-    T datum;
-    DistanceFunc<T> distancef;
-
-    public FindBestMatchFunc params(Field<T> field, T datum, DistanceFunc<T> distancef) {
-        this.field = field;
-        this.datum = datum;
-        this.distancef = distancef;
-
-        return this;
-    }
+public class NaiveFindBestMatchFunc<T> extends FindBestMatchFunc<T> {
 
     public Tuple2<Position, T> call() {
+        // setup
+        Field<T> field = getField();
+        DistanceFunc<T> distancef = getDistancef();
+
+
+        /* implementation: */
 
         double best_distance = Double.POSITIVE_INFINITY,
                 current_distance = Double.POSITIVE_INFINITY;

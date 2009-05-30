@@ -11,10 +11,32 @@ import tajmi.som.Position;
  *
  * @author badi
  */
-public interface FindBestMatchFunc<T> extends Callable<Tuple2<Position,T>> {
+public abstract class FindBestMatchFunc<T> implements Callable<Tuple2<Position,T>> {
 
-    public FindBestMatchFunc params (Field<T> field, T datum, DistanceFunc<T> distancef);
+    Field<T> field;
+    T datum;
+    DistanceFunc<T> distancef;
 
-    public Tuple2<Position, T> call ();
+    public T getDatum() {
+        return datum;
+    }
+
+    public DistanceFunc<T> getDistancef() {
+        return distancef;
+    }
+
+    public Field<T> getField() {
+        return field;
+    }
+
+    public FindBestMatchFunc params(Field<T> field, T datum, DistanceFunc<T> distancef) {
+        this.field = field;
+        this.datum = datum;
+        this.distancef = distancef;
+
+        return this;
+    }
+
+    public abstract Tuple2<Position, T> call ();
 
 }
