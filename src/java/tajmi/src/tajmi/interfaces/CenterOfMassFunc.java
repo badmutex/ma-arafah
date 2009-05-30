@@ -1,13 +1,13 @@
 
 package tajmi.interfaces;
 
-import java.util.concurrent.Callable;
+import tajmi.functional.interfaces.Fun;
 
 /**
  *
  * @author badi
  */
-public interface CenterOfMassFunc<T> extends Callable<T> {
+public interface CenterOfMassFunc<T> extends  Fun {
 
     public CenterOfMassFunc<T> params(Iterable<T> cluster);
 

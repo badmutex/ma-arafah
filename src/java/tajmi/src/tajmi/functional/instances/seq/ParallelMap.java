@@ -18,7 +18,7 @@ import tajmi.functional.interfaces.Fun;
 public class ParallelMap extends Map {
 
     @Override
-    public Object call () throws ExecutionException, InterruptedException {
+    public List call () throws ExecutionException, InterruptedException {
         List res = new LinkedList();
         ExecutorService pool = Executors.newCachedThreadPool();
         List<Future> futures = new LinkedList<Future>();

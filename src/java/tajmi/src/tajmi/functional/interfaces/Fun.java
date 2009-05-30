@@ -5,10 +5,10 @@ package tajmi.functional.interfaces;
  *
  * @author badi
  */
-public interface Fun<P,R> extends Result<R> {
+public interface Fun extends Result {
 
-    public Fun<P,R> copy();
+    public Fun copy();
 
-    public Fun<R,?> curry (Object arg);
+    public Fun curry (Object arg);
 
 }

@@ -12,20 +12,24 @@ import java.util.List;
  */
 public class Map implements Fun {
 
+    /** First argument */
     Fun f;
+    /** Second argument */
     Iterable l;
 
     public Fun curry(Object arg) {
 
-        if (f == null)
+        if (f == null) {
             f = (Fun) arg;
-        else if (l == null)
+        }
+        else if (l == null) {
             l = (Iterable) arg;
+        }
 
         return this;
     }
 
-    public Object call() throws Exception {
+    public List call() throws Exception {
 
         List res = new LinkedList();
         for (Object o : l) {

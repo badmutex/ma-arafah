@@ -20,7 +20,7 @@ public class VectorStopFunc implements StopFunc<Vector> {
     }
 
     public Boolean call() {
-        if (state.iterations < 50)
+        if (state.iterations < 100)
             return false;
         else return true;
     }

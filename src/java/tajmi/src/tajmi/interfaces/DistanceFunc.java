@@ -1,13 +1,13 @@
 
 package tajmi.interfaces;
 
-import java.util.concurrent.Callable;
+import tajmi.functional.interfaces.Fun;
 
 /**
  *
  * @author badi
  */
-public interface DistanceFunc<T> extends Callable<Double> {
+public interface DistanceFunc<T> extends Fun {
 
     public DistanceFunc params(T first, T second);
 

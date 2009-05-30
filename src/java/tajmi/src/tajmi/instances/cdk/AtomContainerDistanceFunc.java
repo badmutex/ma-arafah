@@ -4,6 +4,7 @@ package tajmi.instances.cdk;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.Util;
+import tajmi.functional.interfaces.Fun;
 import tajmi.interfaces.DistanceFunc;
 
 /**
@@ -16,10 +17,7 @@ public class AtomContainerDistanceFunc implements DistanceFunc<IAtomContainer> {
 
 
     public AtomContainerDistanceFunc params(IAtomContainer g_1, IAtomContainer g_2) {
-        this.g_1 = g_1;
-        this.g_2 = g_2;
-
-        return this;
+        return (AtomContainerDistanceFunc) this.curry(g_1).curry(g_2);
     }
 
     public Double call () {
@@ -35,5 +33,18 @@ public class AtomContainerDistanceFunc implements DistanceFunc<IAtomContainer> {
 
             return distance;
         }
+    }
+
+    public Fun copy() {
+        return new AtomContainerDistanceFunc().curry(g_1).curry(g_2);
+    }
+
+    public Fun curry(Object arg) {
+        if (g_1 == null)
+            g_1 = (IAtomContainer) arg;
+        else if (g_2 == null)
+            g_2 = (IAtomContainer) arg;
+
+        return this;
     }
 }

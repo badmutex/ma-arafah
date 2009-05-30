@@ -4,6 +4,7 @@ package tajmi.instances.cdk;
 import java.util.Iterator;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import tajmi.Util;
+import tajmi.functional.interfaces.Fun;
 import tajmi.interfaces.CenterOfMassFunc;
 
 /**
@@ -15,9 +16,7 @@ public class AtomContainerCenterOfMassFunc implements CenterOfMassFunc<IAtomCont
     Iterable<IAtomContainer> cluster;
 
     public AtomContainerCenterOfMassFunc params(Iterable<IAtomContainer> cluster) {
-
-        this.cluster = cluster;
-        return this;
+        return (AtomContainerCenterOfMassFunc) this.curry(cluster);
     }
 
     public IAtomContainer call () {
@@ -31,5 +30,16 @@ public class AtomContainerCenterOfMassFunc implements CenterOfMassFunc<IAtomCont
             }
             return accum;
         }
+    }
+
+    public Fun copy() {
+        return new AtomContainerCenterOfMassFunc().curry(cluster);
+    }
+
+    public Fun curry(Object arg) {
+        if (cluster == null)
+            cluster = (Iterable<IAtomContainer>) arg;
+
+        return this;
     }
 }

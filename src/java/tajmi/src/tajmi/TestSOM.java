@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 import tajmi.frontends.SOMMaker;
 import tajmi.instances.vectorial.Vector;
+import tajmi.interfaces.som.StopFunc;
 import tajmi.som.SOM;
+import tajmi.som.SOMParams;
 
 /**
  *
@@ -24,7 +26,10 @@ public class TestSOM {
             List<Vector> data = readVectorData("test-data" + File.separator + "yeast.data.short");
             System.out.println(data);
 
-            SOM<Vector> result = new SOMMaker().makeVectorialSOM(data);
+            SOMMaker sommaker = new SOMMaker();
+            sommaker.field_size(10, 10);
+            
+            SOM<Vector> result = sommaker.makeVectorialSOM(data);
             
             System.out.println("Running SOM");
             result.call();

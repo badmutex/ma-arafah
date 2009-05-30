@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import scala.Tuple2;
 import tajmi.Util;
+import tajmi.functional.interfaces.Fun;
 import tajmi.interfaces.DistanceFunc;
 
 /**
@@ -38,6 +39,19 @@ public class VectorDistanceFunc implements DistanceFunc<Vector> {
             result += acc;
 
         return Math.sqrt(result);
+    }
+
+    public Fun copy() {
+        return new VectorDistanceFunc().curry(first).curry(second);
+    }
+
+    public Fun curry(Object arg) {
+        if (first == null)
+            first = (Vector) arg;
+        else if (second == null)
+            second = (Vector) arg;
+
+        return this;
     }
 
 }
