@@ -9,7 +9,31 @@ import tajmi.som.Position;
  * Updates the field after determining the best matching unit (bmu) to a datum projected.
  * @author badi
  */
-public interface UpdateFunc<T> extends Callable<Field<T>> {
+public abstract class UpdateFunc<T> implements Callable<Field<T>> {
+
+
+    Field<T> field;
+    T datum;
+    Position bmu_pos;
+    double learning_restraint;
+
+    public Position getBestMatchingUnitPosition() {
+        return bmu_pos;
+    }
+
+    public T getDatum() {
+        return datum;
+    }
+
+    public Field<T> getField() {
+        return field;
+    }
+
+    public double getLearningRestraint() {
+        return learning_restraint;
+    }
+
+
 
     /**
      * @param field
@@ -18,9 +42,16 @@ public interface UpdateFunc<T> extends Callable<Field<T>> {
      * @param restraint determined by the neightborhood function
      * @return
      */
-    public UpdateFunc<T> params (Field<T> field, T datum, Position bmu_pos, double restraint);
+    public UpdateFunc<T> params(Field<T> field, T datum, Position bmu_pos, double learning_restraint) {
+        this.field = field;
+        this.datum = datum;
+        this.bmu_pos = bmu_pos;
+        this.learning_restraint = learning_restraint;
+
+        return this;
+    }
 
 
-    public Field<T> call ();
+    public abstract Field<T> call ();
 
 }
