@@ -3,8 +3,6 @@ package tajmi.instances.vectorial.som;
 
 import scala.Tuple2;
 import tajmi.instances.vectorial.Vector;
-import tajmi.instances.vectorial.VectorDistanceFunc;
-import tajmi.instances.som.NaiveFindBestMatchFunc;
 import tajmi.interfaces.DistanceFunc;
 import tajmi.interfaces.som.FindBestMatchFunc;
 import tajmi.interfaces.som.ProjectionFunc;
@@ -17,46 +15,35 @@ import tajmi.som.SOMParams;
  *
  * @author badi
  */
-public class VectorProjectionFunc implements ProjectionFunc<Vector> {
-
-    Vector datum;
-    SOMParams<Vector> state;
-
-    FindBestMatchFunc<Vector> find_best_match;
-    DistanceFunc<Vector> distancef;
-    UpdateFunc<Vector> updatef;
-
-    public void setDistanceFunc(DistanceFunc<Vector> distancef) {
-        this.distancef = distancef;
-    }
-
-    public void setFindBestMatchFunc(FindBestMatchFunc<Vector> find_best_match) {
-        this.find_best_match = find_best_match;
-    }
-
-    public void setUpdateFunc(UpdateFunc<Vector> updatef) {
-        this.updatef = updatef;
-    }
-
-    public ProjectionFunc<Vector> params(Vector datum, SOMParams<Vector> state) {
-        this.datum = datum;
-        this.state = state;
-
-        return this;
-    }
+public class VectorProjectionFunc extends ProjectionFunc<Vector> {
 
     public SOMParams<Vector> call() {
+
+        SOMParams<Vector> state = getState();
+        Vector datum = getDatum();
+
+        FindBestMatchFunc<Vector> find_best_match = getFindBestMatchFunc();
+        DistanceFunc<Vector> distancef = getDistanceFunc();
+        UpdateFunc<Vector> updatef = getUpdateFunc();
+
+
+        /* implementation: */
+
+        // 1) find the best matching unit
         Tuple2<Position, Vector> res = find_best_match.params(state.field, datum, distancef).call();
         Position best_pos = res._1();
 
+        // 2) update the field weights using the restraint due to distance and time
         Field<Vector> new_field = updatef.params(state.field, datum, best_pos, state.learning_restraint).call();
 
         double new_restraint = state.learning_restraint * state.restraint_modifier;
 
+        // 3) done. copy into a new state to return
         SOMParams<Vector> new_state = state.copy();
         new_state.field = new_field;
         new_state.learning_restraint = new_restraint;
 
+        // ok!
         return new_state;
     }
 
