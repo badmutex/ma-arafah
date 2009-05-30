@@ -8,10 +8,24 @@ import java.util.concurrent.Callable;
  *
  * @author badi
  */
-public interface NeighborhoodFunc extends Callable<Double> {
+public abstract class NeighborhoodFunc implements Callable<Double> {
 
-    public NeighborhoodFunc params (Position first, Position second);
+    Position first, second;
 
-    public Double call();
+    public Position getFirst() {
+        return first;
+    }
+
+    public Position getSecond() {
+        return second;
+    }
+    
+    public NeighborhoodFunc params(Position first, Position second) {
+        this.first = first;
+        this.second = second;
+        return this;
+    }
+
+    public abstract Double call();
 
 }
