@@ -11,24 +11,15 @@ import tajmi.interfaces.som.InitFunc;
  * Randomly generates a vector, ignoring the parameterized vector seed
  * @author badi
  */
-public class VectorInitFunc implements InitFunc<Vector> {
-
-    List<Vector> seed;
-    Random randgen;
-
-    int size;
-
-    public InitFunc<Vector> params(List<Vector> seed, Random randgen) {
-
-        this.seed = seed;
-        this.randgen = randgen;
-
-        this.size = this.seed.get(0).size();
-
-        return this;
-    }
+public class VectorInitFunc extends InitFunc<Vector> {
 
     public Tuple2<Vector, Random> call() {
+
+        Random randgen = getRandgen();
+        List<Vector> seed = getSeed();
+        int size = seed.get(0).size();
+
+
 
         Vector v = new Vector(size);
 

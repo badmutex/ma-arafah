@@ -11,10 +11,27 @@ import scala.Tuple2;
  * Is allowed to save state between calls
  * @author badi
  */
-public interface InitFunc<T> extends Callable< Tuple2< T,Random >> {
+public abstract class InitFunc<T> implements Callable< Tuple2< T,Random >> {
 
-    public InitFunc<T> params (List<T> seed, Random randgen);
+    List<T> seed;
+    Random randgen;
 
-    public Tuple2< T,Random > call ();
+    public Random getRandgen() {
+        return randgen;
+    }
+
+    public List<T> getSeed() {
+        return seed;
+    }
+
+    public InitFunc<T> params(List<T> seed, Random randgen) {
+
+        this.seed = seed;
+        this.randgen = randgen;
+
+        return this;
+    }
+
+    public abstract Tuple2< T,Random > call ();
 
 }
