@@ -8,10 +8,20 @@ import java.util.concurrent.Callable;
  * Determins if the SOM should stop training.
  * @author badi
  */
-public interface StopFunc<T> extends Callable<Boolean> {
+public abstract class StopFunc<T> implements Callable<Boolean> {
 
-    public StopFunc<T> params (SOMParams<T> state);
+    SOMParams<T> state;
 
-    public Boolean call ();
+    public SOMParams<T> getState() {
+        return state;
+    }
+
+    public StopFunc<T> params(SOMParams<T> state) {
+        this.state = state;
+
+        return this;
+    }
+
+    public abstract Boolean call ();
 
 }
