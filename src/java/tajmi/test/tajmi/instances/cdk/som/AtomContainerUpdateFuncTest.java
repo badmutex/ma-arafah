@@ -1,14 +1,10 @@
 
 package tajmi.instances.cdk.som;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.Molecule;
-import scala.Tuple2;
 import tajmi.som.Field;
 
 import java.util.*;
@@ -34,12 +30,13 @@ public class AtomContainerUpdateFuncTest {
         InitFunc initf = new InitFunc() {
 
             @Override
-            public Tuple2 call() {
-                return new Tuple2(getSeed(), getRandgen());
+            public List<IAtomContainer> call() {
+                return getSeed();
             }
         };
 
-        Field field = new Field(10, 1, input_data, rand, initf);
+        initf.params(input_data, rand);
+        Field field = new Field(10, 1, initf);
 
         new AtomContainerUpdateFunc().params(field, atom, new Position(0, 0), 1.0).call();
 

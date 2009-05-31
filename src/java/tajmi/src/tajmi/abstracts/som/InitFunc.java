@@ -4,14 +4,13 @@ package tajmi.abstracts.som;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import scala.Tuple2;
 
 /**
  * Is used when initializing the tajmi.som.Field <br>
  * Is allowed to save state between calls
  * @author badi
  */
-public abstract class InitFunc implements Callable< Tuple2< Object,Random >> {
+public abstract class InitFunc implements Callable<Object> {
 
     List seed;
     Random randgen;
@@ -32,6 +31,6 @@ public abstract class InitFunc implements Callable< Tuple2< Object,Random >> {
         return this;
     }
 
-    public abstract Tuple2< Object,Random > call ();
+    public abstract Object call ();
 
 }

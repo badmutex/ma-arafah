@@ -6,7 +6,6 @@ import tajmi.abstracts.som.InitFunc;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import scala.Tuple2;
 
 /**
@@ -19,7 +18,7 @@ public class Field implements Iterable<Tuple2<Position, Object>> {
     int length, width;
 
 
-    public Field (int length, int width, List input_data, Random rand, InitFunc initf) {
+    public Field (int length, int width, InitFunc initf) {
 
         this.length = length;
         this.width = width;
@@ -28,9 +27,8 @@ public class Field implements Iterable<Tuple2<Position, Object>> {
         for (int x = 0; x < length; x++){
             field.add(new ArrayList(width));
             for (int y = 0; y < width; y++) {
-                Tuple2<Object, Random> res = initf.params(input_data, rand).call();
-                field.get(x).add(res._1());
-                rand = res._2();
+                Object res = initf.call();
+                field.get(x).add(res);
             }
         }
     }

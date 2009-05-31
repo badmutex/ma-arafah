@@ -101,7 +101,9 @@ public class SOMMaker {
     private SOM makeSOM(List data) {
         assert data != null : "Cannot create a SOM on empty data";
 
-        Field field = new Field(field_len, field_width, data, params.random_gen, init_func);
+        InitFunc initf = init_func.params(data, params.random_gen);
+
+        Field field = new Field(field_len, field_width, initf);
         params.field = field;
 
         params.iterations = 0;

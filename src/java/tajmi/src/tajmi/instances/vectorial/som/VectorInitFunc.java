@@ -13,7 +13,7 @@ import tajmi.abstracts.som.InitFunc;
  */
 public class VectorInitFunc extends InitFunc {
 
-    public Tuple2<Object, Random> call() {
+    public Vector call() {
 
         Random randgen = getRandgen();
         List<Vector> seed = getSeed();
@@ -28,7 +28,7 @@ public class VectorInitFunc extends InitFunc {
             v.sum(d);
         }
 
-        return new Tuple2<Object, Random>(v, randgen);
+        return v;
     }
 
 }
