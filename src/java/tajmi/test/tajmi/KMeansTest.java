@@ -1,5 +1,6 @@
 package tajmi;
 
+import tajmi.*;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import org.junit.Test;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
@@ -25,22 +27,20 @@ import tajmi.instances.cdk.AtomContainerDistanceFunc;
  *
  * @author badi
  */
-public class Main {
+public class KMeansTest {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException, CDKException {
+    @Test
+    public void KMeansTest() throws FileNotFoundException, IOException, CDKException {
 
-        if(args.length < 2){
-            System.out.println("Usage: java -jar path/to/tajmi.jar <n data points> <k>");
-            System.exit(0);
-        }
-        final int POINTS = Integer.parseInt(args[0]);
-        final int K = Integer.parseInt(args[1]);
-        final String KMEANS_RESULTS_FILE = "kmeans-results.data";
+        final int POINTS = 3; // Integer.parseInt(args[0]);
+        final int K = 2; //Integer.parseInt(args[1]);
+        final String DATA_DIR = "test-data";
+        final String KMEANS_RESULTS_FILE = DATA_DIR + File.separator + "kmeans-results.data";
 
-        File dir = new File("moleculefiles");
+        File dir = new File(DATA_DIR + File.separator + "hiv1-inhibitors");
         File[] files = dir.listFiles(new FileFilter() {
 
             int chosen = 0;
@@ -76,7 +76,7 @@ public class Main {
         List<List<IMolecule>> result = km.call();
 
         int count = 0;
-        String outdir = "c_i";
+        String outdir = DATA_DIR + File.separator + "c_i";
         File f = new File(outdir);
         if(!f.exists())
             f.mkdir();
