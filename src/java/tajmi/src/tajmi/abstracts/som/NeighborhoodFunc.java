@@ -10,19 +10,19 @@ import java.util.concurrent.Callable;
  */
 public abstract class NeighborhoodFunc implements Callable<Double> {
 
-    Position first, second;
+    Position origin, target;
 
-    public Position getFirst() {
-        return first;
+    public Position getOrigin() {
+        return origin;
     }
 
-    public Position getSecond() {
-        return second;
+    public Position getTarget() {
+        return target;
     }
     
-    public NeighborhoodFunc params(Position first, Position second) {
-        this.first = first;
-        this.second = second;
+    public NeighborhoodFunc params(Position origin, Position target) {
+        this.origin = origin;
+        this.target = target;
         return this;
     }
 

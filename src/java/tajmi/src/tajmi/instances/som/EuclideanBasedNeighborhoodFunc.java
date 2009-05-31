@@ -11,8 +11,8 @@ import tajmi.som.Position;
 public class EuclideanBasedNeighborhoodFunc extends NeighborhoodFunc {
 
     public Double call() {
-        Position first = getFirst(),
-                second = getSecond();
+        Position first = getOrigin(),
+                second = getTarget();
         
         if (first.equals(second))
             return 1.0;
