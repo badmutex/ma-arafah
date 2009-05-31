@@ -20,7 +20,7 @@ public class IterationsStopFunc extends StopFunc {
     public Boolean call() {
         SOMParams state = getState();
 
-        if (state.iterations < this.iterations)
+        if (state.iterations <= this.iterations)
             return false;
         else return true;
     }

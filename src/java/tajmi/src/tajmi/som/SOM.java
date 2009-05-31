@@ -46,7 +46,8 @@ public class SOM<F,D> implements Callable<Field<F>> {
             if( !itr.hasNext() ) {
                 itr = data.iterator();
                 somparams.iterations++;
-                somparams.projections = 0;
+                somparams.projections = 1;
+                continue;
             }
 
             // the magic happens here

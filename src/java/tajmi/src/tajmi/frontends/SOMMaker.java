@@ -50,7 +50,8 @@ public class SOMMaker<F,D> {
         params = new SOMParams<F,D>();
 
 
-        params.iterations = 100;
+        params.iterations = 1;
+        params.projections = 1;
         params.learning_restraint = 0.1;
         params.random_gen = new Random(42);
         params.restraint_modifier = 0.01;
@@ -59,8 +60,6 @@ public class SOMMaker<F,D> {
         field_width = 50;
 
         maxSOMIterations = 50;
-
-
     }
 
     public void setMaxSOMIterations(int maxSOMIterations) {
@@ -113,8 +112,6 @@ public class SOMMaker<F,D> {
 
         Field<F> field = new Field<F>(field_len, field_width, initf);
         params.field = field;
-
-        params.iterations = 0;
 
         return new SOM(data, params);
     }

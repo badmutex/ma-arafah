@@ -30,7 +30,7 @@ public class SOMTest {
                 return null;
             }
         });
-        sommaker.setMaxSOMIterations(20);
+        sommaker.setMaxSOMIterations(1);
 
         SOM result = sommaker.makeVectorialSOM(data);
 
