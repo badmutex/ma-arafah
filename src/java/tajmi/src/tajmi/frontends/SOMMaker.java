@@ -23,27 +23,29 @@ import tajmi.som.SOMParams;
 
 /**
  * This is where one should set the parameters for the SOM before creating it. <br>
+ * The type parameters <code>F</code> and <code>D</code> are the types of the
+ * Field and data, respectively. <br>
  * Be aware: very stateful
  * @author badi
  */
-public class SOMMaker {
+public class SOMMaker<F,D> {
 
-    SOMParams params;
-    List data = null;
+    SOMParams<F,D> params;
+    List<D> data = null;
     int field_len, field_width;
 
-    FindBestMatchFunc find_bmu_func;
-    InitFunc init_func;
+    FindBestMatchFunc<F,D> find_bmu_func;
+    InitFunc<F,D> init_func;
     NeighborhoodFunc neighborhood_func;
-    ProjectionFunc projection_func;
+    ProjectionFunc<F,D> projection_func;
 //    StopFunc stop_func;
-    UpdateFunc update_func;
+    UpdateFunc<F,D> update_func;
 //    ShowStatusFunc show_status_func;
 
     public SOMMaker() {
 
 
-        params = new SOMParams();
+        params = new SOMParams<F,D>();
 
 
         params.iterations = 100;
@@ -57,24 +59,24 @@ public class SOMMaker {
 
     }
 
-    public SOMMaker randomSeed(long seed) {
+    public SOMMaker<F,D> randomSeed(long seed) {
         params.random_gen = new Random(seed);
 
         return this;
     }
 
-    public SOMMaker field_size(int len, int width) {
+    public SOMMaker<F,D> field_size(int len, int width) {
         field_len = len;
         field_width = width;
 
         return this;
     }
 
-    public void setFind_bmu_func(FindBestMatchFunc find_bmu_func) {
+    public void setFind_bmu_func(FindBestMatchFunc<F,D> find_bmu_func) {
         this.find_bmu_func = find_bmu_func;
     }
 
-    public void setInit_func(InitFunc init_func) {
+    public void setInit_func(InitFunc<F,D> init_func) {
         this.init_func = init_func;
     }
 
@@ -82,7 +84,7 @@ public class SOMMaker {
         this.neighborhood_func = neighborhood_func;
     }
 
-    public void setProjection_func(ProjectionFunc projection_func) {
+    public void setProjection_func(ProjectionFunc<F,D> projection_func) {
         this.projection_func = projection_func;
     }
 
@@ -94,16 +96,14 @@ public class SOMMaker {
         params.stop_func = stop_func;
     }
 
-    public void setUpdate_func(UpdateFunc update_func) {
+    public void setUpdate_func(UpdateFunc<F,D> update_func) {
         this.update_func = update_func;
     }
 
-    private SOM makeSOM(List data) {
-        assert data != null : "Cannot create a SOM on empty data";
+    private SOM<F,D> makeSOM(List<D> data) {
+        InitFunc<F,D> initf = init_func.params(data, params.random_gen);
 
-        InitFunc initf = init_func.params(data, params.random_gen);
-
-        Field field = new Field(field_len, field_width, initf);
+        Field<F> field = new Field<F>(field_len, field_width, initf);
         params.field = field;
 
         params.iterations = 0;
@@ -128,10 +128,10 @@ public class SOMMaker {
      * @param data a sequence of data that the SOM should be trained with
      * @return a SOM over vectorial data
      */
-    public SOM makeVectorialSOM(List data) {
+    public SOM<F,D> makeVectorialSOM(List<D> data) {
 
         if (params.project_func == null) {
-            ProjectionFunc projectf = new GeneralProjectionFunc();
+            ProjectionFunc<F,D> projectf = new GeneralProjectionFunc();
 
             projectf.setDistanceFunc(new VectorDistanceFunc());
             projectf.setFindBestMatchFunc(new NaiveFindBestMatchFunc());
@@ -152,6 +152,6 @@ public class SOMMaker {
             params.show_status_func = new SimpleShowStatusFunc();
         }
 
-        return (SOM) makeSOM(data);
+        return makeSOM(data);
     }
 }

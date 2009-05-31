@@ -11,13 +11,13 @@ import tajmi.som.Position;
  *
  * @author badi
  */
-public abstract class FindBestMatchFunc implements Callable<Tuple2<Position,Object>> {
+public abstract class FindBestMatchFunc<F,D> implements Callable<Tuple2<Position,F>> {
 
-    Field field;
-    Object datum;
+    Field<F> field;
+    D datum;
     DistanceFunc distancef;
 
-    public Object getDatum() {
+    public D getDatum() {
         return datum;
     }
 
@@ -25,11 +25,11 @@ public abstract class FindBestMatchFunc implements Callable<Tuple2<Position,Obje
         return distancef;
     }
 
-    public Field getField() {
+    public Field<F> getField() {
         return field;
     }
 
-    public FindBestMatchFunc params(Field field, Object datum, DistanceFunc distancef) {
+    public FindBestMatchFunc params(Field<F> field, D datum, DistanceFunc distancef) {
         this.field = field;
         this.datum = datum;
         this.distancef = distancef;
@@ -37,6 +37,6 @@ public abstract class FindBestMatchFunc implements Callable<Tuple2<Position,Obje
         return this;
     }
 
-    public abstract Tuple2<Position, Object> call ();
+    public abstract Tuple2<Position, F> call ();
 
 }

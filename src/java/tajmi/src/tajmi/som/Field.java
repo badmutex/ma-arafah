@@ -12,9 +12,9 @@ import scala.Tuple2;
  * Implements a static 2D field for the SOM projection
  * @author badi
  */
-public class Field implements Iterable<Tuple2<Position, Object>> {
+public class Field<F> implements Iterable<Tuple2<Position, F>> {
 
-    List<List> field;
+    List<List<F>> field;
     int length, width;
 
 
@@ -23,21 +23,21 @@ public class Field implements Iterable<Tuple2<Position, Object>> {
         this.length = length;
         this.width = width;
         
-        field = new ArrayList<List>(length);
+        field = new ArrayList<List<F>>(length);
         for (int x = 0; x < length; x++){
-            field.add(new ArrayList(width));
+            field.add(new ArrayList<F>(width));
             for (int y = 0; y < width; y++) {
-                Object res = initf.call();
+                F res = (F) initf.call();
                 field.get(x).add(res);
             }
         }
     }
 
-    public Field (Field old_field) {
+    public Field (Field<F> old_field) {
         this.length = old_field.length;
         this.width = old_field.width;
 
-        this.field = new ArrayList<List>(length);
+        this.field = new ArrayList<List<F>>(length);
 
         for (int i = 0; i < length; i++) {
             this.field.add(new ArrayList(width));
@@ -46,18 +46,18 @@ public class Field implements Iterable<Tuple2<Position, Object>> {
         }
     }
 
-    public Object get (Position pos) {
-        return field.get(pos.x()).get(pos.y());
+    public F get (Position pos) {
+        return (F) field.get(pos.x()).get(pos.y());
     }
 
-    public void set (Position pos, Object datum) {
+    public void set (Position pos, F datum) {
         field.get(pos.x()).set(pos.y(), datum);
     }
 
-    public Field set (List<Tuple2<Position,Object>> info) {
-        for (Tuple2<Position, Object> item : info) {
+    public Field set (List<Tuple2<Position,F>> info) {
+        for (Tuple2<Position, F> item : info) {
             Position pos = item._1();
-            Object datum = item._2();
+            F datum = item._2();
             set( pos, datum );
         }
         return this;
@@ -74,13 +74,13 @@ public class Field implements Iterable<Tuple2<Position, Object>> {
     /**
      * @return an interator over a linked list of the elements in the field.
      */
-    public Iterator<Tuple2<Position, Object>> iterator() {
+    public Iterator<Tuple2<Position, F>> iterator() {
         // this is ugly: Java needs lazy generators
-        List<Tuple2<Position, Object>> l = new LinkedList<Tuple2<Position, Object>>();
+        List<Tuple2<Position, F>> l = new LinkedList<Tuple2<Position, F>>();
         for (int x = 0; x < field.size(); x++)
             for (int y = 0; y < field.get(x).size(); y++)
                 l.add(
-                        new Tuple2<Position, Object>(new Position(x, y)
+                        new Tuple2<Position, F>(new Position(x, y)
                         , field.get(x).get(y)));
         return l.iterator();
     }

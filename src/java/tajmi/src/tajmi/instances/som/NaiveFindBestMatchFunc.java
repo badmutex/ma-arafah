@@ -11,11 +11,11 @@ import tajmi.som.Position;
  *
  * @author badi
  */
-public class NaiveFindBestMatchFunc extends FindBestMatchFunc {
+public class NaiveFindBestMatchFunc<F,D> extends FindBestMatchFunc<F,D> {
 
-    public Tuple2<Position, Object> call() {
+    public Tuple2<Position, F> call() {
         // setup
-        Field field = getField();
+        Field<F> field = getField();
         DistanceFunc distancef = getDistancef();
         Object datum = getDatum();
 
@@ -24,8 +24,8 @@ public class NaiveFindBestMatchFunc extends FindBestMatchFunc {
 
         double best_distance = Double.POSITIVE_INFINITY,
                 current_distance = Double.POSITIVE_INFINITY;
-        Tuple2<Position, Object> best = null;
-        for (Tuple2<Position, Object> elem : field) {
+        Tuple2<Position, F> best = null;
+        for (Tuple2<Position, F> elem : field) {
             if (best == null) {
                 best = elem;
                 best_distance = distancef.params(datum, best._2()).call();

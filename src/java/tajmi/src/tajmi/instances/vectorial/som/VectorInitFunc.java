@@ -3,7 +3,6 @@ package tajmi.instances.vectorial.som;
 
 import java.util.List;
 import java.util.Random;
-import scala.Tuple2;
 import tajmi.instances.vectorial.Vector;
 import tajmi.abstracts.som.InitFunc;
 
@@ -11,7 +10,7 @@ import tajmi.abstracts.som.InitFunc;
  * Randomly generates a vector, ignoring the parameterized vector seed
  * @author badi
  */
-public class VectorInitFunc extends InitFunc {
+public class VectorInitFunc extends InitFunc<Vector,Vector> {
 
     public Vector call() {
 

@@ -20,17 +20,17 @@ import tajmi.som.Position;
  * α(t) = learning learning_restraint due to time <br>
  * @author badi
  */
-public class VectorUpdateFunc extends UpdateFunc {
+public class VectorUpdateFunc extends UpdateFunc<Vector, Vector> {
 
     @Override
-    public Field call() {
-        Field field = getField();
+    public Field<Vector> call() {
+        Field<Vector> field = getField();
         Vector datum = (Vector) getDatum();
         Position bmu_pos = getBestMatchingUnitPosition();
         double learning_restraint = getLearningRestraint();
 
-        List<Tuple2<Position, Object>> field_info = new ArrayList<Tuple2<Position, Object>>(field.size());
-        for (Tuple2<Position, Object> item : field) {
+        List<Tuple2<Position, Vector>> field_info = new ArrayList<Tuple2<Position, Vector>>(field.size());
+        for (Tuple2<Position, Vector> item : field) {
             Position pos = item._1();
 
             // Wv(t)
@@ -52,7 +52,7 @@ public class VectorUpdateFunc extends UpdateFunc {
             Vector v2 = v1.add(v__);
 
 
-            Tuple2<Position, Object> new_item = new Tuple2<Position, Object>(pos, v2);
+            Tuple2<Position, Vector> new_item = new Tuple2<Position, Vector>(pos, v2);
             field_info.add(new_item);
         }
 

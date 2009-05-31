@@ -10,20 +10,20 @@ import java.util.concurrent.Callable;
  * Is allowed to save state between calls
  * @author badi
  */
-public abstract class InitFunc implements Callable<Object> {
+public abstract class InitFunc<F,D> implements Callable<F> {
 
-    List seed;
+    List<D> seed;
     Random randgen;
 
     public Random getRandgen() {
         return randgen;
     }
 
-    public List getSeed() {
+    public List<D> getSeed() {
         return seed;
     }
 
-    public InitFunc params(List seed, Random randgen) {
+    public InitFunc params(List<D> seed, Random randgen) {
 
         this.seed = seed;
         this.randgen = randgen;
@@ -31,6 +31,6 @@ public abstract class InitFunc implements Callable<Object> {
         return this;
     }
 
-    public abstract Object call ();
+    public abstract F call ();
 
 }

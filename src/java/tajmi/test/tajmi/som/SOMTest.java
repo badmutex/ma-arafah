@@ -19,7 +19,7 @@ public class SOMTest {
         List<Vector> data = readVectorData("test-data" + File.separator + "yeast.data.short");
         System.out.println(data);
 
-        SOMMaker sommaker = new SOMMaker();
+        SOMMaker<Vector, Vector> sommaker = new SOMMaker();
         sommaker.field_size(10, 10);
         sommaker.setShow_status_func(new ShowStatusFunc() {
 

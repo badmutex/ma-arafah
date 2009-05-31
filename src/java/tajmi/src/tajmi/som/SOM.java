@@ -12,34 +12,34 @@ import scala.Tuple2;
  *
  * @author badi
  */
-public class SOM implements Callable<Field> {
+public class SOM<F,D> implements Callable<Field<F>> {
 
-    List data;
-    SOMParams somparams;
+    List<D> data;
+    SOMParams<F,D> somparams;
 
-    public SOM (List data, SOMParams params) {
+    public SOM (List<D> data, SOMParams<F,D> params) {
         this.data = data;
         this.somparams = params;
     }
 
 
-    private Tuple2<List,Random> shuffle (List data, Random random_gen){
+    private Tuple2<List<D>,Random> shuffle (List<D> data, Random random_gen){
         synchronized(data){
             if(random_gen == null)
                 Collections.shuffle(data);
             else
                 Collections.shuffle(data, random_gen);
         }
-        return new Tuple2<List, Random> (data, random_gen);
+        return new Tuple2<List<D>, Random> (data, random_gen);
     }
 
-    public Field call () {
+    public Field<F> call () {
 
-        Tuple2<List, Random> res = shuffle(data, somparams.random_gen);
+        Tuple2<List<D>, Random> res = shuffle(data, somparams.random_gen);
         data = res._1();
         somparams.random_gen = res._2();
 
-        Iterator itr = data.iterator();
+        Iterator<D> itr = data.iterator();
         while ( !somparams.stop_func.params(somparams).call() ){
 
             // we need to cycle over inputs
