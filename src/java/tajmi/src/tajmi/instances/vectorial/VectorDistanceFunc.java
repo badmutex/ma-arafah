@@ -11,7 +11,7 @@ import tajmi.abstracts.DistanceFunc;
  * d(v1,v2) = √(∑ (v1_i - v2_i)^2)
  * @author badi
  */
-public class VectorDistanceFunc extends DistanceFunc<Vector> {
+public class VectorDistanceFunc extends DistanceFunc<Vector, Vector> {
 
     public Double call () {
         Vector first = getFirst(),

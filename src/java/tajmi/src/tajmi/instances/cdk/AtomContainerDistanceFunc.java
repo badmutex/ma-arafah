@@ -10,7 +10,7 @@ import tajmi.abstracts.DistanceFunc;
  *
  * @author badi
  */
-public class AtomContainerDistanceFunc extends DistanceFunc<IAtomContainer> {
+public class AtomContainerDistanceFunc extends DistanceFunc<IAtomContainer,IAtomContainer> {
 
     public Double call () {
         IAtomContainer g_1 = getFirst(),

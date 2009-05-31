@@ -14,7 +14,7 @@ public abstract class ProjectionFunc<F,D> implements Callable<SOMParams<F,D>> {
     D datum;
     SOMParams<F,D> state;
 
-    DistanceFunc<D> distancef;
+    DistanceFunc distancef;
     FindBestMatchFunc<F,D> find_best_match;
     UpdateFunc<F,D> updatef;
 
@@ -34,7 +34,7 @@ public abstract class ProjectionFunc<F,D> implements Callable<SOMParams<F,D>> {
         return datum;
     }
 
-    public DistanceFunc<D> getDistanceFunc() {
+    public DistanceFunc getDistanceFunc() {
         return distancef;
     }
 

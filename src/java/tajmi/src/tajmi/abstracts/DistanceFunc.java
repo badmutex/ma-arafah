@@ -3,22 +3,24 @@ package tajmi.abstracts;
 import java.util.concurrent.Callable;
 
 /**
- *
+ * The type parameters <code>A</code> and <code>B</code>
+ * are the types of the instances to have a distance computed between them.
  * @author badi
  */
-public abstract class DistanceFunc<T> implements Callable<Double> {
+public abstract class DistanceFunc<A,B> implements Callable<Double> {
 
-    T first, second;
+    A first;
+    B second;
 
-    public T getFirst() {
+    public A getFirst() {
         return first;
     }
 
-    public T getSecond() {
+    public B getSecond() {
         return second;
     }
 
-    public DistanceFunc params(T first, T second) {
+    public DistanceFunc params(A first, B second) {
         this.first = first;
         this.second = second;
 

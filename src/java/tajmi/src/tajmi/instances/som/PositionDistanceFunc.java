@@ -8,7 +8,7 @@ import tajmi.som.Position;
  *
  * @author badi
  */
-public class PositionDistanceFunc extends DistanceFunc<Position> {
+public class PositionDistanceFunc extends DistanceFunc<Position,Position> {
 
     public Double call() {
         Position first = getFirst(),

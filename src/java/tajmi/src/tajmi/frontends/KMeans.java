@@ -23,11 +23,11 @@ public class KMeans<T> implements Callable<List<List<T>>> {
     List<List<T>> clusters;   // C_i for all i in {1,...,k}
     List<T> centers_of_mass;  // c_i for all i in {1,...,k}
 
-    DistanceFunc<T> distance_func;
+    DistanceFunc distance_func;
     CenterOfMassFunc<T> center_of_mass_func;
 
 
-    public KMeans(List<T> vectors, int k, DistanceFunc<T> dist, CenterOfMassFunc<T> cent) {
+    public KMeans(List<T> vectors, int k, DistanceFunc dist, CenterOfMassFunc<T> cent) {
         this.vectors = vectors;
         this.k = k;
 

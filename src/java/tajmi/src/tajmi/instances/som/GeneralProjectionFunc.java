@@ -21,7 +21,7 @@ public class GeneralProjectionFunc<F,D> extends ProjectionFunc<F,D> {
         D datum = getDatum();
 
         FindBestMatchFunc<F,D> find_best_match = getFindBestMatchFunc();
-        DistanceFunc<D> distancef = getDistanceFunc();
+        DistanceFunc distancef = getDistanceFunc();
         UpdateFunc<F,D> updatef = getUpdateFunc();
 
 
