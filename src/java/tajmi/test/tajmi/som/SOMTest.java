@@ -25,9 +25,12 @@ public class SOMTest {
 
             @Override
             public Void call() {
+                SOMParams state = getState();
+                System.out.println(state.iterations + "\t" + state.projections);
                 return null;
             }
         });
+        sommaker.setMaxSOMIterations(20);
 
         SOM result = sommaker.makeVectorialSOM(data);
 

@@ -5,7 +5,7 @@ import java.util.Random;
 import tajmi.instances.vectorial.Vector;
 import tajmi.instances.vectorial.VectorDistanceFunc;
 import tajmi.instances.vectorial.som.VectorInitFunc;
-import tajmi.instances.vectorial.som.VectorStopFunc;
+import tajmi.instances.som.IterationsStopFunc;
 import tajmi.instances.vectorial.som.VectorUpdateFunc;
 import tajmi.instances.som.NaiveFindBestMatchFunc;
 import tajmi.instances.som.SimpleShowStatusFunc;
@@ -42,6 +42,8 @@ public class SOMMaker<F,D> {
     UpdateFunc<F,D> update_func;
 //    ShowStatusFunc show_status_func;
 
+    int maxSOMIterations;
+
     public SOMMaker() {
 
 
@@ -56,7 +58,13 @@ public class SOMMaker<F,D> {
         field_len = 50;
         field_width = 50;
 
+        maxSOMIterations = 50;
 
+
+    }
+
+    public void setMaxSOMIterations(int maxSOMIterations) {
+        this.maxSOMIterations = maxSOMIterations;
     }
 
     public SOMMaker<F,D> randomSeed(long seed) {
@@ -118,7 +126,7 @@ public class SOMMaker<F,D> {
      * find_best_match = NaiveFindBestMatchFunc <br>
      * update_func = VectorUpdateFunc <br>
      * show_status_func = SimpleShowStatusFunc <br> <br>
-     * iterations = 100 <br>
+     * iterations = 50 <br>
      * learning_restraint = 0.1 <br>
      * random_gen = Random(42) <br>
      * restraint_modifier = 0.01 <br>
@@ -141,7 +149,7 @@ public class SOMMaker<F,D> {
         }
 
         if (params.stop_func == null) {
-            params.stop_func = (StopFunc) new VectorStopFunc();
+            params.stop_func = new IterationsStopFunc().setIterations(maxSOMIterations);
         }
 
         if (init_func == null) {

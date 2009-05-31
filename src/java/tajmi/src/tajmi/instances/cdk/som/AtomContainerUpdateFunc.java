@@ -10,15 +10,15 @@ import tajmi.som.Position;
  *
  * @author badi
  */
-public class AtomContainerUpdateFunc extends UpdateFunc {
+public class AtomContainerUpdateFunc extends UpdateFunc<List<IAtomContainer>, IAtomContainer> {
 
     @Override
-    public Field call() {
-        Field field = getField();
-        IAtomContainer datum = (IAtomContainer) getDatum();
+    public Field<List<IAtomContainer>> call() {
+        Field<List<IAtomContainer>> field = getField();
+        IAtomContainer datum = getDatum();
         Position bmu_pos = getBestMatchingUnitPosition();
 
-        ( (List) field.get(bmu_pos) ).add(datum);
+        field.get(bmu_pos).add(datum);
 
         return field;
     }
