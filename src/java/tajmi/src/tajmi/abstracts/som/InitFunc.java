@@ -1,6 +1,7 @@
 
 package tajmi.abstracts.som;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -25,7 +26,7 @@ public abstract class InitFunc<F,D> implements Callable<F> {
 
     public InitFunc params(List<D> seed, Random randgen) {
 
-        this.seed = seed;
+        this.seed = new ArrayList<D>(seed);
         this.randgen = randgen;
 
         return this;
