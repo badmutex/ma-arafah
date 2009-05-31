@@ -17,6 +17,7 @@ public class NaiveFindBestMatchFunc extends FindBestMatchFunc {
         // setup
         Field field = getField();
         DistanceFunc distancef = getDistancef();
+        Object datum = getDatum();
 
 
         /* implementation: */
@@ -27,9 +28,10 @@ public class NaiveFindBestMatchFunc extends FindBestMatchFunc {
         for (Tuple2<Position, Object> elem : field) {
             if (best == null) {
                 best = elem;
+                best_distance = distancef.params(datum, best._2()).call();
                 continue;
             } else {
-                current_distance = distancef.params(best._2(), elem._2()).call();
+                current_distance = distancef.params(datum, elem._2()).call();
                 if (current_distance < best_distance)
                     best = elem;
             }
