@@ -9,10 +9,10 @@ import tajmi.som.SOMParams;
  * Stops after 50 SOMParams.iterations
  * @author badi
  */
-public class VectorStopFunc extends StopFunc<Vector> {
+public class VectorStopFunc extends StopFunc {
 
     public Boolean call() {
-        SOMParams<Vector> state = getState();
+        SOMParams state = getState();
 
         if (state.iterations < 100)
             return false;

@@ -11,9 +11,9 @@ import tajmi.abstracts.som.InitFunc;
  * Randomly generates a vector, ignoring the parameterized vector seed
  * @author badi
  */
-public class VectorInitFunc extends InitFunc<Vector> {
+public class VectorInitFunc extends InitFunc {
 
-    public Tuple2<Vector, Random> call() {
+    public Tuple2<Object, Random> call() {
 
         Random randgen = getRandgen();
         List<Vector> seed = getSeed();
@@ -28,7 +28,7 @@ public class VectorInitFunc extends InitFunc<Vector> {
             v.sum(d);
         }
 
-        return new Tuple2<Vector, Random>(v, randgen);
+        return new Tuple2<Object, Random>(v, randgen);
     }
 
 }

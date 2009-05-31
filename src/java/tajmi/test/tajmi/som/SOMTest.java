@@ -29,10 +29,10 @@ public class SOMTest {
             }
         });
 
-        SOM<Vector> result = sommaker.makeVectorialSOM(data);
+        SOM result = sommaker.makeVectorialSOM(data);
 
-        System.out.println("Running SOM");
         result.call();
+        System.out.println("TestSOM");
     }
 
     public List<Vector> readVectorData(String path) throws FileNotFoundException, IOException {

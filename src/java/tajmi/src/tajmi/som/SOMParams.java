@@ -10,12 +10,12 @@ import tajmi.abstracts.som.ShowStatusFunc;
  *
  * @author badi
  */
-public class SOMParams<T> {
+public class SOMParams {
 
-    public Field<T> field;
+    public Field field;
 
-    public ProjectionFunc<T> project_func;
-    public StopFunc<T> stop_func;
+    public ProjectionFunc project_func;
+    public StopFunc stop_func;
 
     public double learning_restraint;
     public double restraint_modifier;
@@ -31,8 +31,8 @@ public class SOMParams<T> {
     public ShowStatusFunc show_status_func;
 
     
-    public SOMParams<T> copy () {
-        SOMParams<T> novel = new SOMParams();
+    public SOMParams copy () {
+        SOMParams novel = new SOMParams();
 
         novel.field = this.field;
         novel.project_func = this.project_func;

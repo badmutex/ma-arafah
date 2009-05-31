@@ -9,53 +9,53 @@ import tajmi.abstracts.DistanceFunc;
  * Projects a datum onto the field, updates the field, and returns it.
  * @author badi
  */
-public abstract class ProjectionFunc<T> implements Callable<SOMParams<T>> {
+public abstract class ProjectionFunc implements Callable<SOMParams> {
 
-    T datum;
-    SOMParams<T> state;
+    Object datum;
+    SOMParams state;
 
-    DistanceFunc<T> distancef;
-    FindBestMatchFunc<T> find_best_match;
-    UpdateFunc<T> updatef;
+    DistanceFunc distancef;
+    FindBestMatchFunc find_best_match;
+    UpdateFunc updatef;
 
-    public void setDistanceFunc(DistanceFunc<T> distancef){
+    public void setDistanceFunc(DistanceFunc distancef){
         this.distancef = distancef;
     }
 
-    public void setFindBestMatchFunc(FindBestMatchFunc<T> find_best_match) {
+    public void setFindBestMatchFunc(FindBestMatchFunc find_best_match) {
         this.find_best_match = find_best_match;
     }
 
-    public void setUpdateFunc(UpdateFunc<T> updatef){
+    public void setUpdateFunc(UpdateFunc updatef){
         this.updatef = updatef;
     }
 
-    public T getDatum() {
+    public Object getDatum() {
         return datum;
     }
 
-    public DistanceFunc<T> getDistanceFunc() {
+    public DistanceFunc getDistanceFunc() {
         return distancef;
     }
 
-    public FindBestMatchFunc<T> getFindBestMatchFunc() {
+    public FindBestMatchFunc getFindBestMatchFunc() {
         return find_best_match;
     }
 
-    public SOMParams<T> getState() {
+    public SOMParams getState() {
         return state;
     }
 
-    public UpdateFunc<T> getUpdateFunc() {
+    public UpdateFunc getUpdateFunc() {
         return updatef;
     }
 
-    public ProjectionFunc<T> params (T datum, SOMParams<T> state) {
+    public ProjectionFunc params (Object datum, SOMParams state) {
         this.datum = datum;
         this.state = state;
         return this;
     }
 
-    public abstract SOMParams<T> call();
+    public abstract SOMParams call();
 
 }

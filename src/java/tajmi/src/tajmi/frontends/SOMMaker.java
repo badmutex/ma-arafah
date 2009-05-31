@@ -26,24 +26,24 @@ import tajmi.som.SOMParams;
  * Be aware: very stateful
  * @author badi
  */
-public class SOMMaker<T> {
+public class SOMMaker {
 
-    SOMParams<T> params;
-    List<T> data = null;
+    SOMParams params;
+    List data = null;
     int field_len, field_width;
-    FindBestMatchFunc<T> find_bmu_func;
-    InitFunc<T> init_func;
+
+    FindBestMatchFunc find_bmu_func;
+    InitFunc init_func;
     NeighborhoodFunc neighborhood_func;
-    ProjectionFunc<T> projection_func;
-    StopFunc<T> stop_func;
-    UpdateFunc<T> update_func;
-    ShowStatusFunc show_status_func;
+    ProjectionFunc projection_func;
+//    StopFunc stop_func;
+    UpdateFunc update_func;
+//    ShowStatusFunc show_status_func;
 
     public SOMMaker() {
 
-        show_status_func = new SimpleShowStatusFunc();
 
-        params = new SOMParams<T>();
+        params = new SOMParams();
 
 
         params.iterations = 100;
@@ -54,28 +54,27 @@ public class SOMMaker<T> {
         field_len = 50;
         field_width = 50;
 
-        params.show_status_func = this.show_status_func;
 
     }
 
-    public SOMMaker<T> randomSeed(long seed) {
+    public SOMMaker randomSeed(long seed) {
         params.random_gen = new Random(seed);
 
         return this;
     }
 
-    public SOMMaker<T> field_size(int len, int width) {
+    public SOMMaker field_size(int len, int width) {
         field_len = len;
         field_width = width;
 
         return this;
     }
 
-    public void setFind_bmu_func(FindBestMatchFunc<T> find_bmu_func) {
+    public void setFind_bmu_func(FindBestMatchFunc find_bmu_func) {
         this.find_bmu_func = find_bmu_func;
     }
 
-    public void setInit_func(InitFunc<T> init_func) {
+    public void setInit_func(InitFunc init_func) {
         this.init_func = init_func;
     }
 
@@ -83,31 +82,31 @@ public class SOMMaker<T> {
         this.neighborhood_func = neighborhood_func;
     }
 
-    public void setProjection_func(ProjectionFunc<T> projection_func) {
+    public void setProjection_func(ProjectionFunc projection_func) {
         this.projection_func = projection_func;
     }
 
     public void setShow_status_func(ShowStatusFunc show_status_func) {
-        this.show_status_func = show_status_func;
+        params.show_status_func = show_status_func;
     }
 
-    public void setStop_func(StopFunc<T> stop_func) {
-        this.stop_func = stop_func;
+    public void setStop_func(StopFunc stop_func) {
+        params.stop_func = stop_func;
     }
 
-    public void setUpdate_func(UpdateFunc<T> update_func) {
+    public void setUpdate_func(UpdateFunc update_func) {
         this.update_func = update_func;
     }
 
-    private SOM<T> makeSOM(List data) {
+    private SOM makeSOM(List data) {
         assert data != null : "Cannot create a SOM on empty data";
 
-        Field<T> field = new Field<T>(field_len, field_width, data, params.random_gen, init_func);
+        Field field = new Field(field_len, field_width, data, params.random_gen, init_func);
         params.field = field;
 
         params.iterations = 0;
 
-        return new SOM<T>(data, params);
+        return new SOM(data, params);
     }
 
     /**
@@ -127,26 +126,30 @@ public class SOMMaker<T> {
      * @param data a sequence of data that the SOM should be trained with
      * @return a SOM over vectorial data
      */
-    public SOM<Vector> makeVectorialSOM(List<T> data) {
+    public SOM makeVectorialSOM(List data) {
 
         if (params.project_func == null) {
-            ProjectionFunc<Vector> projectf = new GeneralProjectionFunc<Vector>();
+            ProjectionFunc projectf = new GeneralProjectionFunc();
 
             projectf.setDistanceFunc(new VectorDistanceFunc());
-            projectf.setFindBestMatchFunc(new NaiveFindBestMatchFunc<Vector>());
+            projectf.setFindBestMatchFunc(new NaiveFindBestMatchFunc());
             projectf.setUpdateFunc(new VectorUpdateFunc());
 
-            params.project_func = (ProjectionFunc<T>) projectf;
+            params.project_func = (ProjectionFunc) projectf;
         }
 
         if (params.stop_func == null) {
-            params.stop_func = (StopFunc<T>) new VectorStopFunc();
+            params.stop_func = (StopFunc) new VectorStopFunc();
         }
 
         if (init_func == null) {
-            init_func = (InitFunc<T>) new VectorInitFunc();
+            init_func = (InitFunc) new VectorInitFunc();
         }
 
-        return (SOM<Vector>) makeSOM(data);
+        if (params.show_status_func == null) {
+            params.show_status_func = new SimpleShowStatusFunc();
+        }
+
+        return (SOM) makeSOM(data);
     }
 }
