@@ -17,6 +17,7 @@ public abstract class ProjectionFunc<F,D> implements Callable<SOMParams<F,D>> {
     DistanceFunc distancef;
     FindBestMatchFunc<F,D> find_best_match;
     UpdateFunc<F,D> updatef;
+    NeighborhoodFunc neighborhoodf;
 
     public void setDistanceFunc(DistanceFunc distancef){
         this.distancef = distancef;
@@ -28,6 +29,10 @@ public abstract class ProjectionFunc<F,D> implements Callable<SOMParams<F,D>> {
 
     public void setUpdateFunc(UpdateFunc updatef){
         this.updatef = updatef;
+    }
+
+    public void setNeighborhoodFunc(NeighborhoodFunc neighborhoodf) {
+        this.neighborhoodf = neighborhoodf;
     }
 
     public D getDatum() {
@@ -48,6 +53,10 @@ public abstract class ProjectionFunc<F,D> implements Callable<SOMParams<F,D>> {
 
     public UpdateFunc<F,D> getUpdateFunc() {
         return updatef;
+    }
+
+    public NeighborhoodFunc getNeighborhoodFunc() {
+        return neighborhoodf;
     }
 
     public ProjectionFunc<F,D> params (D datum, SOMParams<F,D> state) {

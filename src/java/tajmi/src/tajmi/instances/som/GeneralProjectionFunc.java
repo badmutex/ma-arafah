@@ -31,8 +31,14 @@ public class GeneralProjectionFunc<F,D> extends ProjectionFunc<F,D> {
         Tuple2<Position, F> res = find_best_match.params(state.field, datum, distancef).call();
         Position best_pos = res._1();
 
-        // 2) update the field weights using the restraint due to distance and time
-        Field<F> new_field = updatef.params(state.field, datum, best_pos, state.learning_restraint).call();
+        // 2) update the field using the restraint due to distance and time
+        Field<F> new_field = updatef.params(
+                  state.field
+                , datum
+                , best_pos
+                , state.learning_restraint
+                , getNeighborhoodFunc()
+                ).call();
 
         double new_restraint = state.learning_restraint * state.restraint_modifier;
 

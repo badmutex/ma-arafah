@@ -2,6 +2,7 @@
 package tajmi.abstracts.som;
 
 import java.util.concurrent.Callable;
+import tajmi.abstracts.som.NeighborhoodFunc;
 import tajmi.som.Field;
 import tajmi.som.Position;
 
@@ -16,6 +17,7 @@ public abstract class UpdateFunc<F,D> implements Callable<Field<F>> {
     D datum;
     Position bmu_pos;
     double learning_restraint;
+    NeighborhoodFunc neighborhoodf;
 
     public Position getBestMatchingUnitPosition() {
         return bmu_pos;
@@ -33,6 +35,11 @@ public abstract class UpdateFunc<F,D> implements Callable<Field<F>> {
         return learning_restraint;
     }
 
+    public NeighborhoodFunc getNeighborhoodFunc() {
+        return neighborhoodf;
+    }
+
+
 
 
     /**
@@ -42,11 +49,12 @@ public abstract class UpdateFunc<F,D> implements Callable<Field<F>> {
      * @param restraint determined by the neightborhood function
      * @return
      */
-    public UpdateFunc params(Field<F> field, D datum, Position bmu_pos, double learning_restraint) {
+    public UpdateFunc params(Field<F> field, D datum, Position bmu_pos, double learning_restraint, NeighborhoodFunc neighborhoodf) {
         this.field = field;
         this.datum = datum;
         this.bmu_pos = bmu_pos;
         this.learning_restraint = learning_restraint;
+        this.neighborhoodf = neighborhoodf;
 
         return this;
     }

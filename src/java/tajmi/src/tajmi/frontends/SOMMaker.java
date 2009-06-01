@@ -16,6 +16,7 @@ import tajmi.abstracts.som.ProjectionFunc;
 import tajmi.abstracts.som.ShowStatusFunc;
 import tajmi.abstracts.som.StopFunc;
 import tajmi.abstracts.som.UpdateFunc;
+import tajmi.instances.som.GaussianNeighborhoodFunc;
 import tajmi.instances.som.GeneralProjectionFunc;
 import tajmi.som.Field;
 import tajmi.som.SOM;
@@ -28,26 +29,23 @@ import tajmi.som.SOMParams;
  * Be aware: very stateful
  * @author badi
  */
-public class SOMMaker<F,D> {
+public class SOMMaker<F, D> {
 
-    SOMParams<F,D> params;
+    SOMParams<F, D> params;
     List<D> data = null;
     int field_len, field_width;
-
-    FindBestMatchFunc<F,D> find_bmu_func;
-    InitFunc<F,D> init_func;
+    FindBestMatchFunc<F, D> find_bmu_func;
+    InitFunc<F, D> init_func;
     NeighborhoodFunc neighborhood_func;
-    ProjectionFunc<F,D> projection_func;
+    ProjectionFunc<F, D> projection_func;
 //    StopFunc stop_func;
-    UpdateFunc<F,D> update_func;
-//    ShowStatusFunc show_status_func;
-
+    UpdateFunc<F, D> update_func;
     int maxSOMIterations;
 
     public SOMMaker() {
 
 
-        params = new SOMParams<F,D>();
+        params = new SOMParams<F, D>();
 
 
         params.iterations = 1;
@@ -66,24 +64,24 @@ public class SOMMaker<F,D> {
         this.maxSOMIterations = maxSOMIterations;
     }
 
-    public SOMMaker<F,D> randomSeed(long seed) {
+    public SOMMaker<F, D> randomSeed(long seed) {
         params.random_gen = new Random(seed);
 
         return this;
     }
 
-    public SOMMaker<F,D> field_size(int len, int width) {
+    public SOMMaker<F, D> field_size(int len, int width) {
         field_len = len;
         field_width = width;
 
         return this;
     }
 
-    public void setFind_bmu_func(FindBestMatchFunc<F,D> find_bmu_func) {
+    public void setFind_bmu_func(FindBestMatchFunc<F, D> find_bmu_func) {
         this.find_bmu_func = find_bmu_func;
     }
 
-    public void setInit_func(InitFunc<F,D> init_func) {
+    public void setInit_func(InitFunc<F, D> init_func) {
         this.init_func = init_func;
     }
 
@@ -91,7 +89,7 @@ public class SOMMaker<F,D> {
         this.neighborhood_func = neighborhood_func;
     }
 
-    public void setProjection_func(ProjectionFunc<F,D> projection_func) {
+    public void setProjection_func(ProjectionFunc<F, D> projection_func) {
         this.projection_func = projection_func;
     }
 
@@ -103,12 +101,12 @@ public class SOMMaker<F,D> {
         params.stop_func = stop_func;
     }
 
-    public void setUpdate_func(UpdateFunc<F,D> update_func) {
+    public void setUpdate_func(UpdateFunc<F, D> update_func) {
         this.update_func = update_func;
     }
 
-    private SOM<F,D> makeSOM(List<D> data) {
-        InitFunc<F,D> initf = init_func.params(data, params.random_gen);
+    private SOM<F, D> makeSOM(List<D> data) {
+        InitFunc<F, D> initf = init_func.params(data, params.random_gen);
 
         Field<F> field = new Field<F>(field_len, field_width, initf);
         params.field = field;
@@ -133,16 +131,29 @@ public class SOMMaker<F,D> {
      * @param data a sequence of data that the SOM should be trained with
      * @return a SOM over vectorial data
      */
-    public SOM<F,D> makeVectorialSOM(List<D> data) {
+    public SOM<F, D> makeVectorialSOM(List<D> data) {
 
         if (params.project_func == null) {
-            ProjectionFunc<F,D> projectf = new GeneralProjectionFunc();
+            params.project_func = new GeneralProjectionFunc();
+        }
 
-            projectf.setDistanceFunc(new VectorDistanceFunc());
-            projectf.setFindBestMatchFunc(new NaiveFindBestMatchFunc());
-            projectf.setUpdateFunc(new VectorUpdateFunc());
+        if (params.project_func.getDistanceFunc() == null) {
+            params.project_func.setDistanceFunc(new VectorDistanceFunc());
+        }
 
-            params.project_func = (ProjectionFunc) projectf;
+        if (params.project_func.getFindBestMatchFunc() == null) {
+            params.project_func.setFindBestMatchFunc(new NaiveFindBestMatchFunc());
+        }
+
+        if (params.project_func.getUpdateFunc() == null) {
+            params.project_func.setUpdateFunc(new VectorUpdateFunc());
+        }
+
+        if (params.project_func.getNeighborhoodFunc() == null &&
+                this.neighborhood_func != null) {
+            params.project_func.setNeighborhoodFunc(this.neighborhood_func);
+        } else if (this.neighborhood_func == null) {
+            params.project_func.setNeighborhoodFunc(new GaussianNeighborhoodFunc());
         }
 
         if (params.stop_func == null) {

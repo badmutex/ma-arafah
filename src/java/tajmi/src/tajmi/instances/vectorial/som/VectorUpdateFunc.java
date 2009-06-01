@@ -40,7 +40,7 @@ public class VectorUpdateFunc extends UpdateFunc<Vector, Vector> {
             Vector v_ = datum.subtract(v1);
 
             // Θ(t)
-            double bmu_restraint = new PositionDistanceFunc().params(pos, bmu_pos).call();
+            double bmu_restraint = getNeighborhoodFunc().params(bmu_pos, pos).call();
 
             // Θ(t)α(t)
             double restraint = bmu_restraint * learning_restraint;
