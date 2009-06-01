@@ -50,7 +50,7 @@ public class AtomContainerInitFunc extends InitFunc<List<IAtomContainer>, IAtomC
         IAtomContainer choice;
 
         if (seed.size() > 0) {
-            choice = (AtomContainer) seed.remove(seed.size() - 1);
+            choice = (AtomContainer) seed.remove(0); // should a linked list
         } else {
             choice = (AtomContainer) chosen.remove(0);
         }
