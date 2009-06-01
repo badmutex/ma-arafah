@@ -10,6 +10,17 @@ import tajmi.som.Position;
  */
 public class GaussianNeighborhoodFunc extends NeighborhoodFunc {
 
+    double A = 1;
+    double SIGMA = 2.0;
+
+    public void setA(double A) {
+        this.A = A;
+    }
+
+    public void setSIGMA(double SIGMA) {
+        this.SIGMA = SIGMA;
+    }
+
     @Override
     public Double call() {
         Position origin = getOrigin(),
@@ -20,12 +31,11 @@ public class GaussianNeighborhoodFunc extends NeighborhoodFunc {
     private double gaussian(double x, double y, Position origin) {
         double xpart = gaussian_part(x, origin.x());
         double ypart = gaussian_part(y, origin.y());
-        return xpart * ypart;
+        return A * Math.pow(Math.E, -( xpart + ypart));
     }
 
     private double gaussian_part (double val, double ori) {
-        double part = Math.pow(val - ori, 2) / (2 * Math.pow(0.5, 2));
-        return 1 * Math.pow(Math.E, part);
+        return Math.pow(val - ori, 2) / Math.pow(SIGMA, 2);
     }
 
 }
