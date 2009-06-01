@@ -37,4 +37,11 @@ public class Position {
         hash = 67 * hash + this.y;
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "(" + x() + "," + y() + ")";
+    }
+
+
 }
