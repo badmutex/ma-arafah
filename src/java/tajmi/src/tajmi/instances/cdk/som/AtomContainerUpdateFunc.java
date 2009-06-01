@@ -2,6 +2,8 @@ package tajmi.instances.cdk.som;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import scala.Tuple2;
 import tajmi.abstracts.som.NeighborhoodFunc;
@@ -33,14 +35,32 @@ public class AtomContainerUpdateFunc extends UpdateFunc<FieldModel<IAtomContaine
 
         // 2) find the models within the neighborhood of the BMU
         List<FieldModel<IAtomContainer>> would_you_be = new LinkedList<FieldModel<IAtomContainer>>();
+        // neighborhood set
+        List<Tuple2<Double, IAtomContainer>> nset = new LinkedList<Tuple2<Double, IAtomContainer>>();
+
         for (Tuple2<Position, FieldModel<IAtomContainer>> model : field) {
             Position pos = model._1();
             FieldModel<IAtomContainer> my_neighbor = model._2();
             double distance = neighborhoodf.params(bmu_pos, pos).call();
 
-            if( distance >= distance_cutoff)
+            if( distance >= distance_cutoff) {
                 would_you_be.add(my_neighbor);
+
+                for (IAtomContainer m : my_neighbor) {
+                    Tuple2<Double, IAtomContainer> M = new Tuple2<Double, IAtomContainer>(distance, m);
+                    nset.add(M);
+                }
+            }
         }
+
+        //   i) save generate the set N of all molecules in a neighborhood
+        //      and find the generalized median thereof
+        IAtomContainer median = new FindGeneralizedMedian().params(nset).call();
+            for (FieldModel m : would_you_be) {
+            m.setGeneralizeMedian(median);
+        }
+
+
 
         return field;
     }
