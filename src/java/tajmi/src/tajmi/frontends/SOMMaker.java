@@ -16,7 +16,7 @@ import tajmi.abstracts.som.ProjectionFunc;
 import tajmi.abstracts.som.ShowStatusFunc;
 import tajmi.abstracts.som.StopFunc;
 import tajmi.abstracts.som.UpdateFunc;
-import tajmi.instances.som.GaussianNeighborhoodFunc;
+import tajmi.instances.som.Gaussian2DNeighborhoodFunc;
 import tajmi.instances.som.GeneralProjectionFunc;
 import tajmi.som.Field;
 import tajmi.som.SOM;
@@ -153,7 +153,7 @@ public class SOMMaker<F, D> {
                 this.neighborhood_func != null) {
             params.project_func.setNeighborhoodFunc(this.neighborhood_func);
         } else if (this.neighborhood_func == null) {
-            params.project_func.setNeighborhoodFunc(new GaussianNeighborhoodFunc());
+            params.project_func.setNeighborhoodFunc(new Gaussian2DNeighborhoodFunc());
         }
 
         if (params.stop_func == null) {

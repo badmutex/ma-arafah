@@ -8,7 +8,7 @@ import tajmi.som.Position;
  *
  * @author badi
  */
-public class GaussianNeighborhoodFunc extends NeighborhoodFunc {
+public class Gaussian2DNeighborhoodFunc extends NeighborhoodFunc {
 
     double A = 1;
     double SIGMA = 2.0;

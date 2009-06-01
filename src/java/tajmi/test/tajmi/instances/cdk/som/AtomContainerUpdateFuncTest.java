@@ -10,7 +10,7 @@ import tajmi.som.Field;
 import java.util.*;
 import tajmi.abstracts.som.InitFunc;
 import tajmi.abstracts.som.NeighborhoodFunc;
-import tajmi.instances.som.GaussianNeighborhoodFunc;
+import tajmi.instances.som.Gaussian2DNeighborhoodFunc;
 import tajmi.som.Position;
 
 /**
@@ -40,7 +40,7 @@ public class AtomContainerUpdateFuncTest {
         initf.params(input_data, rand);
         Field field = new Field(10, 1, initf);
 
-        NeighborhoodFunc neighbourhoodf = new GaussianNeighborhoodFunc();
+        NeighborhoodFunc neighbourhoodf = new Gaussian2DNeighborhoodFunc();
         new AtomContainerUpdateFunc().params(field, atom, new Position(0, 0), 1.0, neighbourhoodf).call();
 
         System.out.println("AtomContainerUpdateFuncTest");
