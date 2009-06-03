@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.File;
 
 /**
  * <code> MoleculeReader :: String filename -> IO IMolecule </code>
@@ -37,6 +38,8 @@ public class MoleculeReader implements Fun {
         Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
         ISimpleChemObjectReader reader = new ReaderFactory().createReader(r);
 
+        IMolecule molec = (IMolecule) reader.read(new Molecule());
+        molec.setID(filename);
         return (IMolecule) reader.read(new Molecule());
     }
 }
