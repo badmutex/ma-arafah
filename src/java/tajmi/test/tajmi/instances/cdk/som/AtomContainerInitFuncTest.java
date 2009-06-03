@@ -11,6 +11,8 @@ import java.util.Random;
 import org.junit.Test;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.isomorphism.UniversalIsomorphismTester;
+import tajmi.Universe;
 import tajmi.Util;
 import tajmi.abstracts.som.InitFunc;
 
@@ -53,15 +55,19 @@ public class AtomContainerInitFuncTest {
         InitFunc initf = new AtomContainerInitFunc().params(molecs, r);
 
         List<IAtomContainer> field = new LinkedList<IAtomContainer>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             if (i % 1 == 0)
                 System.out.print(i + " ");
             IAtomContainer c = (IAtomContainer) ((List) initf.call()).get(0);
             field.add(c);
         }
+        System.out.println();
 
         for (IAtomContainer c : field){
-            System.out.println(c);
+            System.out.println(c.getID());
+            for (IAtomContainer orig : molecs)
+                System.out.println("\t" + UniversalIsomorphismTester.isSubgraph(c, orig));
+//            System.out.println(c.getID());
         }
         System.out.println();
         System.out.println("AtomContainerInitFuncTest");

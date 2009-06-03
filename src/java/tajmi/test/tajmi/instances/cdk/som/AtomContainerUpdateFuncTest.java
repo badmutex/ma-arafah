@@ -23,7 +23,7 @@ public class AtomContainerUpdateFuncTest {
     public void AtomContainerUpdateFunc() {
         IAtomContainer atom = new Molecule();
 
-        List<IAtomContainer> input_data = new LinkedList();
+        List<IAtomContainer> input_data = new LinkedList<IAtomContainer>();
         for (int i = 0; i < 9; i++)
             input_data.add(atom);
 
@@ -33,7 +33,10 @@ public class AtomContainerUpdateFuncTest {
 
             @Override
             public List<IAtomContainer> call() {
-                return getSeed();
+                IAtomContainer c = (IAtomContainer) getSeed().get(0);
+                FieldModel<IAtomContainer> fm = new FieldModel<IAtomContainer>();
+                fm.add(c);
+                return fm;
             }
         };
 
