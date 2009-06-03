@@ -35,9 +35,15 @@ public class AtomContainerInitFunc extends InitFunc<List<IAtomContainer>, IAtomC
         String uuid = UUID.randomUUID().toString();
 
         atompermutor = new AtomContainerAtomPermutor(choice);
-        choice = (AtomContainer) atompermutor.next();
+        try {
+            choice = (AtomContainer) atompermutor.next();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+        }
         bondpermutor = new AtomContainerBondPermutor(choice);
-        choice = (AtomContainer) bondpermutor.next();
+        try {
+            choice = (AtomContainer) bondpermutor.next();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+        }
 
         choice.setID(uuid);
 
@@ -48,7 +54,7 @@ public class AtomContainerInitFunc extends InitFunc<List<IAtomContainer>, IAtomC
     public List<IAtomContainer> call() {
 
         List<IAtomContainer> seed = getSeed();
-        List<IAtomContainer> result = new LinkedList<IAtomContainer>();
+        List<IAtomContainer> result = new FieldModel<IAtomContainer>();
 
         IAtomContainer choice;
 

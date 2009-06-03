@@ -25,9 +25,11 @@ public class AtomContainerInitFuncTest {
     @Test
     public void AtomContainerInitFuncTest() throws FileNotFoundException, IOException, CDKException {
 
-        final int POINTS = 2;
+        final int POINTS = 9;
         final String DATA_DIR = "test-data";
         File dir = new File(DATA_DIR + File.separator + "hiv1-inhibitors");
+
+
         File[] files = dir.listFiles(new FileFilter() {
 
             int chosen = 0;
@@ -55,7 +57,7 @@ public class AtomContainerInitFuncTest {
         InitFunc initf = new AtomContainerInitFunc().params(molecs, r);
 
         List<IAtomContainer> field = new LinkedList<IAtomContainer>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             if (i % 1 == 0)
                 System.out.print(i + " ");
             IAtomContainer c = (IAtomContainer) ((List) initf.call()).get(0);
