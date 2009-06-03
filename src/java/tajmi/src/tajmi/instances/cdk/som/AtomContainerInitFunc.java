@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import org.openscience.cdk.AtomContainer;
 import org.openscience.cdk.graph.AtomContainerAtomPermutor;
 import org.openscience.cdk.graph.AtomContainerBondPermutor;
 import org.openscience.cdk.graph.AtomContainerPermutor;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.abstracts.som.InitFunc;
 
 /**
@@ -32,11 +32,14 @@ public class AtomContainerInitFunc extends InitFunc<List<IAtomContainer>, IAtomC
 
     private IAtomContainer permute(IAtomContainer c) {
         AtomContainer choice = (AtomContainer) c;
+        String uuid = UUID.randomUUID().toString();
 
         atompermutor = new AtomContainerAtomPermutor(choice);
         choice = (AtomContainer) atompermutor.next();
         bondpermutor = new AtomContainerBondPermutor(choice);
         choice = (AtomContainer) bondpermutor.next();
+
+        choice.setID(uuid);
 
         return choice;
     }
