@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 /**
- * <code> MoleculeWriter :: String filename -> IChemFormat format -> IAtomContainer molecule -> IO Void </code>
+ * <code> MoleculeWriter :: IChemFormat format -> String filename -> IAtomContainer molecule -> IO Void </code>
  * @author badi
  */
 public class MoleculeWriter implements Fun {
@@ -26,10 +26,10 @@ public class MoleculeWriter implements Fun {
     }
 
     public Fun curry(Object arg) {
-        if (filename == null) {
-            filename = (String) arg;
-        } else if (format == null) {
+        if (format == null) {
             format = (IChemFormat) arg;
+        } else if (filename == null) {
+            filename = (String) arg;
         } else if (molecule == null) {
             molecule = (IAtomContainer) arg;
         }
