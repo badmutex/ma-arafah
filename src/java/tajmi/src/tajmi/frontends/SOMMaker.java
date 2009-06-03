@@ -2,7 +2,6 @@ package tajmi.frontends;
 
 import java.util.List;
 import java.util.Random;
-import tajmi.instances.vectorial.Vector;
 import tajmi.instances.vectorial.VectorDistanceFunc;
 import tajmi.instances.vectorial.som.VectorInitFunc;
 import tajmi.instances.som.IterationsStopFunc;
@@ -21,6 +20,10 @@ import tajmi.instances.som.GeneralProjectionFunc;
 import tajmi.som.Field;
 import tajmi.som.SOM;
 import tajmi.som.SOMParams;
+import tajmi.instances.cdk.AtomContainerDistanceFunc;
+import tajmi.instances.cdk.som.AtomContainerInitFunc;
+import tajmi.instances.cdk.som.AtomContainerListDistanceFunc;
+import tajmi.instances.cdk.som.AtomContainerUpdateFunc;
 
 /**
  * This is where one should set the parameters for the SOM before creating it. <br>
@@ -162,6 +165,46 @@ public class SOMMaker<F, D> {
 
         if (init_func == null) {
             init_func = (InitFunc) new VectorInitFunc();
+        }
+
+        if (params.show_status_func == null) {
+            params.show_status_func = new SimpleShowStatusFunc();
+        }
+
+        return makeSOM(data);
+    }
+
+    public SOM<F, D> makeIAtomContainerSOM (List<D> data) {
+        
+        if (params.project_func == null) {
+            params.project_func = new GeneralProjectionFunc();
+        }
+
+        if (params.project_func.getDistanceFunc() == null) {
+            params.project_func.setDistanceFunc(new AtomContainerListDistanceFunc());
+        }
+
+        if (params.project_func.getFindBestMatchFunc() == null) {
+            params.project_func.setFindBestMatchFunc(new NaiveFindBestMatchFunc());
+        }
+
+        if (params.project_func.getUpdateFunc() == null) {
+            params.project_func.setUpdateFunc(new AtomContainerUpdateFunc());
+        }
+
+        if (params.project_func.getNeighborhoodFunc() == null &&
+                this.neighborhood_func != null) {
+            params.project_func.setNeighborhoodFunc(this.neighborhood_func);
+        } else if (this.neighborhood_func == null) {
+            params.project_func.setNeighborhoodFunc(new Gaussian2DNeighborhoodFunc());
+        }
+
+        if (params.stop_func == null) {
+            params.stop_func = new IterationsStopFunc().setIterations(maxSOMIterations);
+        }
+
+        if (init_func == null) {
+            init_func = (InitFunc) new AtomContainerInitFunc();
         }
 
         if (params.show_status_func == null) {
