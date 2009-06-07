@@ -20,17 +20,42 @@ public class Field<F> implements Iterable<Tuple2<Position, F>> {
 
     public Field (int length, int width, InitFunc initf) {
 
-        this.length = length;
-        this.width = width;
+        this.length = 2 * length;
+        this.width = 2 * width;
+
+        boolean zero = true;
         
-        field = new ArrayList<List<F>>(length);
-        for (int x = 0; x < length; x++){
-            field.add(new ArrayList<F>(width));
-            for (int y = 0; y < width; y++) {
+        field = new ArrayList<List<F>>(this.length);
+        for (int x = 0; x < this.length; x++){
+//            if ( even(x) ) continue;
+            
+            field.add(new ArrayList<F>(this.width));
+            for (int y = 0; y < this.width; y++) {
+
+                if (zero && even(y)){
+                    field.get(x).add(null);
+                    continue;
+                }
+                else if (!zero && odd(y)){
+                    field.get(x).add(null);
+                    continue;
+                }
+
                 F res = (F) initf.call();
                 field.get(x).add(res);
             }
+
+            if (zero) zero = false;
+            else zero = true;
         }
+    }
+
+    private boolean even (int x) {
+        return x % 2 == 0;
+    }
+
+    private boolean odd (int x) {
+        return ! even (x);
     }
 
     public Field (Field<F> old_field) {
@@ -78,11 +103,28 @@ public class Field<F> implements Iterable<Tuple2<Position, F>> {
         // this is ugly: Java needs lazy generators
         List<Tuple2<Position, F>> l = new LinkedList<Tuple2<Position, F>>();
         for (int x = 0; x < field.size(); x++)
-            for (int y = 0; y < field.get(x).size(); y++)
-                l.add(
-                        new Tuple2<Position, F>(new Position(x, y)
-                        , field.get(x).get(y)));
+            for (int y = 0; y < field.get(x).size(); y++) {
+                F f = field.get(x).get(y);
+                if (f == null)
+                    continue;
+                else
+                    l.add(new Tuple2<Position, F> (new Position(x, y), f));
+            }
         return l.iterator();
+    }
+
+    public String toString () {
+        String me = "";
+        for (int i = 0; i < length; i++){
+            for (int j = 0; j < width; j++) {
+                F f = this.get(new Position(i, j));
+                me += f == null
+                        ? " "
+                        : f;
+            }
+            me += "\n";
+        }
+        return me;
     }
 
 }
