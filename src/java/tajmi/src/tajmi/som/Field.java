@@ -92,8 +92,8 @@ public class Field<F> implements Iterable<Tuple2<Position, F>> {
         return field.size() * field.get(0).size();
     }
 
-    public Tuple2<Integer, Integer> dimensions () {
-        return new Tuple2<Integer, Integer>(length, width);
+     public Tuple2<Integer, Integer> dimensions () {
+        return new Tuple2<Integer, Integer>(length / 2, width / 2);
     }
 
     /**
