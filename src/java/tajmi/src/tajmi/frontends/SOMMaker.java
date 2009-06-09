@@ -108,6 +108,14 @@ public class SOMMaker<F, D> {
         this.update_func = update_func;
     }
 
+    public void set_learning_restraint (double restraint) {
+        this.params.learning_restraint = restraint;
+    }
+
+    public void set_learning_restraint_modifier (double modifier) {
+        this.params.restraint_modifier = modifier;
+    }
+
     private SOM<F, D> makeSOM(List<D> data) {
         InitFunc<F, D> initf = init_func.params(data, params.random_gen);
 
