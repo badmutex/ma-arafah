@@ -30,26 +30,6 @@ public class AtomContainerInitFunc extends InitFunc<List<IAtomContainer>, IAtomC
         return super.params(tmp, randgen);
     }
 
-    private IAtomContainer permute(IAtomContainer c) {
-        AtomContainer choice = (AtomContainer) c;
-        String uuid = UUID.randomUUID().toString();
-
-        atompermutor = new AtomContainerAtomPermutor(choice);
-        try {
-            choice = (AtomContainer) atompermutor.next();
-        } catch (ArrayIndexOutOfBoundsException ex) {
-        }
-        bondpermutor = new AtomContainerBondPermutor(choice);
-        try {
-            choice = (AtomContainer) bondpermutor.next();
-        } catch (ArrayIndexOutOfBoundsException ex) {
-        }
-
-        choice.setID(uuid);
-
-        return choice;
-    }
-
     @Override
     public List<IAtomContainer> call() {
 
@@ -64,7 +44,6 @@ public class AtomContainerInitFunc extends InitFunc<List<IAtomContainer>, IAtomC
             choice = (AtomContainer) chosen.remove(0);
         }
 
-        choice = permute(choice);
         chosen.add(choice);
         result.add(choice);
 
