@@ -25,6 +25,13 @@ public class SOMTest {
 
     @Test
     public void TestIAtomContainerSOM() throws Exception {
+        SOM som = moleculeSOM();
+        System.out.println(som.call());
+
+        System.out.println("TestIAtomContainerSOM");
+    }
+
+    public SOM<IAtomContainer,FieldModel<IAtomContainer>> moleculeSOM() throws Exception {
         SOMMaker sommaker = new SOMMaker();
         sommaker.field_size(10, 10);
         sommaker.setMaxSOMIterations(2);
@@ -40,9 +47,8 @@ public class SOMTest {
 
         List<IMolecule> data = readMolecules();
         SOM som = sommaker.makeIAtomContainerSOM(data);
-        System.out.println(som.call());
 
-        System.out.println("TestIAtomContainerSOM");
+        return som;
     }
 
     public List<IMolecule> readMolecules() throws Exception {
