@@ -1,13 +1,20 @@
 
 package tajmi;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.io.formats.IChemFormat;
+import org.openscience.cdk.io.formats.SMILESFormat;
 import scala.Tuple2;
+import tajmi.functional.instances.cdk.MoleculeReader;
+import tajmi.functional.instances.cdk.MoleculeWriter;
+import tajmi.functional.interfaces.Fun;
 import static org.junit.Assert.*;
 
 /**
@@ -101,6 +108,39 @@ public class UtilTest {
             l2.add(l);
         }
         assertFalse(Util.identical(l1, l2));
+    }
+
+    @Test
+    public void testZip_Iterable_Iterable() {
+    }
+
+    @Test
+    public void testIdentical_Iterable_Iterable() {
+    }
+
+    @Test
+    public void testMcss() {
+    }
+
+    @Test
+    public void testReadMoleculeFile() throws Exception {
+    }
+
+    @Test
+    public void testWriteMoleculeFile() throws Exception {
+        String root = "test-data";
+        String in_dir = root + File.separator + "hiv1-inhibitors";
+        String test_molec = "AMP.mol2";
+        IChemFormat format = (IChemFormat) SMILESFormat.getInstance();
+
+        String input = in_dir + File.separator + test_molec;
+        IMolecule molec = Util.readMoleculeFile(input);
+
+        String output = root + File.separator + "testWriteMoleculeFile.smi";
+        Util.writeMoleculeFile(output, molec);
+
+        System.out.println("wrote " + output);
+        System.out.println("testWriteMoleculeFile");
     }
 
 }

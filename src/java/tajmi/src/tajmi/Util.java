@@ -111,28 +111,4 @@ public class Util {
 
 
     }
-
-    /**
-     * Guesses the file format of and reads in a molecule
-     * @param filename the path to the molecule file
-     * @return the molecule object
-     * @throws java.io.FileNotFoundException
-     * @throws java.io.IOException
-     * @throws org.openscience.cdk.exception.CDKException
-     */
-    public static IMolecule readMoleculeFile(final String filename) throws FileNotFoundException, IOException, CDKException {
-
-        Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
-        ISimpleChemObjectReader reader = new ReaderFactory().createReader(r);
-
-        return (IMolecule) reader.read(new Molecule());
-    }
-
-    public static void writeMoleculeFile(final String filename, IAtomContainer chemobj) throws CDKException, FileNotFoundException {
-//        AtomContainerManipulator.convertImplicitToExplicitHydrogens(chemobj);
-
-        IChemObjectWriter writer = new WriterFactory().createWriter((IChemFormat) SMILESFormat.getInstance());
-        writer.setWriter(new BufferedOutputStream(new FileOutputStream(filename)));
-        writer.write(new Molecule(chemobj));
-    }
 }
