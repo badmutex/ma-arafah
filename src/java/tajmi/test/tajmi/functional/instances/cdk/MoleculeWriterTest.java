@@ -15,7 +15,7 @@ import tajmi.functional.interfaces.Fun;
 public class MoleculeWriterTest {
 
     @Test
-    public void MoleculeWriterTest() throws Exception {
+    public void moleculeWriterTest() throws Exception {
         String root = "test-data";
         String in_dir = root + File.separator + "hiv1-inhibitors";
         String test_molec = "AMP.mol2";
@@ -24,9 +24,11 @@ public class MoleculeWriterTest {
         String input = in_dir + File.separator + test_molec;
         IMolecule molec = (IMolecule) new MoleculeReader().curry(input).call();
 
-        String output = root + File.separator + "MoleculeWriterTest";
-        Fun mwriter = new MoleculeWriter().curry(output).curry(format).curry(molec);
+        String output = root + File.separator + "moleculeWriterTest";
+        Fun mwriter = new MoleculeWriter().curry(format).curry(output).curry(molec);
         mwriter.call();
 
+        System.out.println("wrote " + output + format.getPreferredNameExtension());
+        System.out.println("moleculeWriterTest");
     }
 }
