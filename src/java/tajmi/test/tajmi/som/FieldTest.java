@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 import scala.Tuple2;
-import tajmi.abstracts.DistanceFunc;
 import tajmi.abstracts.som.InitFunc;
 import tajmi.abstracts.som.NeighborhoodFunc;
 import tajmi.instances.som.Gaussian2DNeighborhoodFunc;
-import static org.junit.Assert.*;
 
 /**
  *
