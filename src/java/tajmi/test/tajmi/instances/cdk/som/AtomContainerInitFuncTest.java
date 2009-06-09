@@ -12,10 +12,9 @@ import org.junit.*;
 //import org.junit.Test;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.isomorphism.UniversalIsomorphismTester;
-import tajmi.Universe;
-import tajmi.Util;
 import tajmi.abstracts.som.InitFunc;
+import tajmi.functional.instances.cdk.MoleculeReader;
+import tajmi.som.Field;
 
 /**
  *
@@ -24,11 +23,12 @@ import tajmi.abstracts.som.InitFunc;
 public class AtomContainerInitFuncTest {
 
     @Test
-    public void AtomContainerInitFuncTest() throws FileNotFoundException, IOException, CDKException {
+    public void AtomContainerInitFuncTest() throws FileNotFoundException, IOException, CDKException, Exception {
 
         final int POINTS = 9;
         final String DATA_DIR = "test-data";
         File dir = new File(DATA_DIR + File.separator + "hiv1-inhibitors");
+        final int LENGTH = 7, WIDTH = 7;
 
 
         File[] files = dir.listFiles(new FileFilter() {
@@ -44,11 +44,12 @@ public class AtomContainerInitFuncTest {
 
         List<IAtomContainer> molecs = new LinkedList<IAtomContainer>();
         for (File f : files) {
-            IAtomContainer c = Util.readMoleculeFile(f.getAbsolutePath());
+            IAtomContainer c = (IAtomContainer) new MoleculeReader().curry(f.getAbsolutePath()).call();
             c.setID(f.getName().split(".mol2")[0]);
             molecs.add(c);
         }
 
+        System.out.print("read in:\t");
         for (IAtomContainer c : molecs)
             System.out.print(c.getID() + " ");
         System.out.println();
@@ -57,21 +58,9 @@ public class AtomContainerInitFuncTest {
         Random r = new Random(42);
         InitFunc initf = new AtomContainerInitFunc().params(molecs, r);
 
-        List<IAtomContainer> field = new LinkedList<IAtomContainer>();
-        for (int i = 0; i < 5; i++) {
-            if (i % 1 == 0)
-                System.out.print(i + " ");
-            IAtomContainer c = (IAtomContainer) ((List) initf.call()).get(0);
-            field.add(c);
-        }
-        System.out.println();
+        Field<FieldModel<IAtomContainer>> field = new Field<FieldModel<IAtomContainer>>(LENGTH, WIDTH, initf);
 
-        for (IAtomContainer c : field){
-            System.out.println(c.getID());
-            for (IAtomContainer orig : molecs)
-                System.out.println("\t" + UniversalIsomorphismTester.isSubgraph(c, orig));
-//            System.out.println(c.getID());
-        }
+        System.out.println("Field:\n" + field);
         System.out.println();
         System.out.println("AtomContainerInitFuncTest");
     }

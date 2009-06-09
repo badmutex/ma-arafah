@@ -20,7 +20,7 @@ import tajmi.som.Position;
 public class AtomContainerUpdateFuncTest {
 
     @Test
-    public void AtomContainerUpdateFunc() {
+    public void AtomContainerUpdateFunc() throws Exception {
         IAtomContainer atom = new Molecule();
 
         List<IAtomContainer> input_data = new LinkedList<IAtomContainer>();
