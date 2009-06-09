@@ -1,35 +1,21 @@
 package tajmi.instances.cdk.som;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import org.junit.Test;
-import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IMolecule;
-import tajmi.functional.instances.cdk.MoleculeReader;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.abstracts.som.InitFunc;
 import tajmi.abstracts.som.ViewField;
 import tajmi.functional.instances.cdk.MoleculeWriter;
 import tajmi.som.Field;
-import org.openscience.cdk.interfaces.IMolecule;
-import org.openscience.cdk.io.formats.IChemFormat;
 import org.openscience.cdk.io.formats.SMILESFormat;
 import tajmi.som.Position;
 import scala.Tuple2;
+import tajmi.functional.instances.cdk.MoleculeReader;
 
 /**
  *
@@ -39,13 +25,14 @@ public class WriteClusterCentersTest {
 
     String in_dir = "test-data" + File.separator + "hiv1-inhibitors";
     String out_dir = "test-data" + File.separator + "WriteClusterCentersTest";
-    String out_file = out_dir + File.separator + "test";
     final int POINTS = 20;
-    final int FIELD_WIDTH = 10, FIELD_LENGTH = 10;
+    final int FIELD_WIDTH = 5, FIELD_LENGTH = 5;
 
     @Test
-    public void WriteClusterCentersTest() throws Exception {
-        List<IMolecule> molecs = readMolecules();
+    public void writeClusterCentersTest() throws Exception {
+        String out_file = out_dir + File.separator + "writeClusterCentersTest";
+
+        List<IAtomContainer> molecs = readMolecules();
         Field<FieldModel<IAtomContainer>> field = genField(molecs);
 
         MoleculeWriter mwriter = (MoleculeWriter) new MoleculeWriter().curry(SMILESFormat.getInstance());
@@ -57,9 +44,31 @@ public class WriteClusterCentersTest {
 
 
         viewer.params(field).call();
+
+        System.out.println("writeClusterCentersTest");
     }
 
-    private List<IMolecule> readMolecules() throws Exception {
+//    @Test
+    public void writeField () throws Exception {
+        MoleculeWriter mwriter = (MoleculeWriter) new MoleculeWriter().curry(SMILESFormat.getInstance());
+
+        if (! new File(out_dir).isDirectory())
+            new File(out_dir).mkdir();
+
+        String out_file = out_dir + File.separator + "writeFieldTest";
+        int counter = 0;
+        Field<FieldModel<IAtomContainer>> field = genField(readMolecules());
+        for (Tuple2<Position, FieldModel<IAtomContainer>> m : field) {
+            IAtomContainer median = m._2().getGeneralizeMedian();
+            String out_file_2 = out_file + "-" + counter++;
+            mwriter.copy().curry(out_file_2).curry(median).call();
+            System.out.println("wrote " + out_file_2 + ".smi");
+        }
+
+        System.out.println("writeField");
+    }
+
+    private List<IAtomContainer> readMolecules() throws Exception {
         File dir = new File(in_dir);
         File[] files = dir.listFiles(new FileFilter() {
 
@@ -76,9 +85,9 @@ public class WriteClusterCentersTest {
         });
 
 
-        List<IMolecule> ms = new LinkedList<IMolecule>();
+        List<IAtomContainer> ms = new LinkedList<IAtomContainer>();
         for (File f : files) {
-            IMolecule m = (IMolecule) new MoleculeReader().curry(f.getAbsolutePath()).call();
+            IAtomContainer m = (IAtomContainer) new MoleculeReader().curry(f.getAbsolutePath()).call();
             AtomContainerManipulator.removeHydrogens(m);
             String n = f.getName().replace(".mol2", "");
             m.setID(n);
@@ -89,7 +98,7 @@ public class WriteClusterCentersTest {
         return ms;
     }
 
-    private Field<FieldModel<IAtomContainer>> genField(List<IMolecule> molecs) {
+    private Field<FieldModel<IAtomContainer>> genField(List<IAtomContainer> molecs) {
 
         InitFunc initf = new AtomContainerInitFunc();
         Random rand = new Random(42);
@@ -101,4 +110,5 @@ public class WriteClusterCentersTest {
 
         return field;
     }
+
 }
