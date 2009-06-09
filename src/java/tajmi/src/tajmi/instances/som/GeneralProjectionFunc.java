@@ -16,7 +16,7 @@ import scala.Tuple2;
 public class GeneralProjectionFunc<F,D> extends ProjectionFunc<F,D> {
 
     @Override
-    public SOMParams<F,D> call() {
+    public SOMParams<F,D> call() throws Exception {
         SOMParams<F,D> state = getState();
         D datum = getDatum();
 

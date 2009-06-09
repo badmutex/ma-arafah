@@ -65,6 +65,6 @@ public abstract class ProjectionFunc<F,D> implements Callable<SOMParams<F,D>> {
         return this;
     }
 
-    public abstract SOMParams<F,D> call();
+    public abstract SOMParams<F,D> call() throws Exception;
 
 }

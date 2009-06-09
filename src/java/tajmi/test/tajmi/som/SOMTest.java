@@ -19,7 +19,7 @@ import tajmi.functional.instances.cdk.MoleculeReader;
  */
 public class SOMTest {
 
-    final int POINTS = 190;
+    final int POINTS = 10;
     final String DATA_DIR = "test-data";
     File in_dir = new File(DATA_DIR + File.separator + "hiv1-inhibitors");
 
@@ -40,9 +40,9 @@ public class SOMTest {
 
         List<IMolecule> data = readMolecules();
         SOM som = sommaker.makeIAtomContainerSOM(data);
-        som.call();
-        new LinkedList().add(null);
-        
+        System.out.println(som.call());
+
+        System.out.println("TestIAtomContainerSOM");
     }
 
     public List<IMolecule> readMolecules() throws Exception {
@@ -75,7 +75,7 @@ public class SOMTest {
     }
 
     @Test
-    public void TestVectorialSOM() throws FileNotFoundException, IOException {
+    public void TestVectorialSOM() throws FileNotFoundException, IOException, Exception {
         List<Vector> data = readVectorData("test-data" + File.separator + "yeast.data.short");
         System.out.println(data);
 
@@ -94,7 +94,7 @@ public class SOMTest {
 
         SOM result = sommaker.makeVectorialSOM(data);
 
-        result.call();
+        System.out.println(result.call());
         System.out.println("TestVectorialSOM");
     }
 

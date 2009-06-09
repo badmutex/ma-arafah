@@ -23,7 +23,7 @@ public class AtomContainerUpdateFunc extends UpdateFunc<FieldModel<IAtomContaine
     }
 
     @Override
-    public Field<FieldModel<IAtomContainer>> call() {
+    public Field<FieldModel<IAtomContainer>> call() throws Exception {
         Field<FieldModel<IAtomContainer>> field = getField();
         IAtomContainer datum = getDatum();
         Position bmu_pos = getBestMatchingUnitPosition();
@@ -55,11 +55,13 @@ public class AtomContainerUpdateFunc extends UpdateFunc<FieldModel<IAtomContaine
 
         //   i) generate the set N of all molecules in a neighborhood
         //      and find the generalized median thereof
-        IAtomContainer median = new FindGeneralizedMedian().params(nset).call();
+        IAtomContainer median = new FindGeneralizedMedian().params(nset).call()._2();
         for (FieldModel m : would_you_be) {
             m.setGeneralizeMedian(median);
+            m.clear();
+            Object med = m.getGeneralizeMedian();
+            m.add(med);
         }
-
 
 
         return field;

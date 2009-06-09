@@ -33,7 +33,7 @@ public class SOM<F,D> implements Callable<Field<F>> {
         return new Tuple2<List<D>, Random> (data, random_gen);
     }
 
-    public Field<F> call () {
+    public Field<F> call () throws Exception {
 
         Tuple2<List<D>, Random> res = shuffle(data, somparams.random_gen);
         data = res._1();

@@ -20,9 +20,10 @@ public class FieldTest {
     public Field<Integer> initField () {
         InitFunc<Integer, Integer> initf = new InitFunc<Integer, Integer>() {
 
+            int num = 0;
             @Override
             public Integer call() {
-                return 1;
+                return num++;
             }
         };
         return new Field<Integer>(10, 10, initf);
@@ -48,7 +49,7 @@ public class FieldTest {
 
     }
 
-//    @Test
+    @Test
     public void testField () {
         Field<Integer> field = initField();
         System.out.println(field);
