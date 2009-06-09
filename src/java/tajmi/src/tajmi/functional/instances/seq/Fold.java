@@ -4,7 +4,9 @@ package tajmi.functional.instances.seq;
 import tajmi.functional.interfaces.Fun;
 
 /**
- *
+ * Folds the function <code>(a -> b -> a)</code> through an iterable
+ * <code>[b]</code> using <code>a</code> as the initial value.<br><br>
+ * <code>Fold :: (a -> b -> a) -> a -> [b] -> a</code><br>
  * @author badi
  */
 public class Fold<T> implements Fun {

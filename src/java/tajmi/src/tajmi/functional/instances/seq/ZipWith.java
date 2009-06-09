@@ -1,45 +1,49 @@
 
 package tajmi.functional.instances.seq;
 
+import java.util.Iterator;
 import tajmi.functional.interfaces.Fun;
 import java.util.LinkedList;
 import java.util.List;
-import scala.Tuple2;
 
 /**
  *
+ * <code>ZipWith :: (a -> b -> c) -> [a] -> [b] -> [c]</code>
  * @author badi
  */
-public class ZipWith implements Fun {
+public class ZipWith<A,B,C> implements Fun {
 
     Fun f;
-    Iterable i1, i2;
+    Iterable<A> as;
+    Iterable<B> bs;
 
     public Fun copy() {
-        return new ZipWith().curry(f).curry(i1).curry(i2);
+        return new ZipWith().curry(f).curry(as).curry(bs);
     }
 
     public Fun curry(Object arg) {
         if (f == null)
             f = (Fun) arg;
-        else if (i1 == null)
-            i1 = (Iterable) arg;
-        else if (i2 == null)
-            i2 = (Iterable) arg;
+        else if (as == null)
+            as = (Iterable<A>) arg;
+        else if (bs == null)
+            bs = (Iterable<B>) arg;
 
         return this;
     }
 
-    public Object call() throws Exception {
-        Iterable<Tuple2> tups = (Iterable<Tuple2>) new Zip().curry(i1).curry(i2).call();
-
-        List res = new LinkedList();
-        for (Tuple2 t : tups) {
+    public Iterable<C> call() throws Exception {
+        Iterator<A> itrA = as.iterator();
+        Iterator<B> itrB = bs.iterator();
+        List<C> result = new LinkedList<C>();
+        while(itrA.hasNext() && itrB.hasNext()) {
             Fun f2 = f.copy();
-            Object r = f2.curry(t._1()).curry(t._2()).call();
-            res.add(r);
+            A a = itrA.next();
+            B b = itrB.next();
+            C c = (C) f2.curry(a).curry(b).call();
+            result.add(c);
         }
-        return res;
+        return result;
     }
 
 }

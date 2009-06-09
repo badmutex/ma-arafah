@@ -14,7 +14,10 @@ import tajmi.functional.interfaces.Result;
 import tajmi.parallel.Grain;
 
 /**
- *
+ * Maps the function <code>(a -> b)</code> over the iterable <code>[a]</code>
+ * using threads running the specified number of sequential calculations.<br><br>
+ * 
+ * <code>GrainyParallelMap :: (a -> b) -> [a] -> Integer -> [b]<br>
  * @author badi
  */
 public class GrainyParallelMap extends Map {
@@ -34,7 +37,6 @@ public class GrainyParallelMap extends Map {
     @Override
     public List call () throws InterruptedException, ExecutionException {
 
-        List results = new LinkedList();
         ExecutorService pool = Executors.newCachedThreadPool();
         List<Future> futures = new LinkedList<Future>();
 
@@ -46,28 +48,19 @@ public class GrainyParallelMap extends Map {
             grain.add(r);
 
             if (grain.size() >= grain_size) {
-                Future<List> sequential = submit(grain, pool); //pool.submit(granular_computation);
+                Future<List> sequential = submit(grain, pool);
                 futures.add(sequential);
                 grain = new LinkedList();
             }
-            
-//            if (grain.size() < grain_size) {
-//                Fun f2 = f.copy();
-//                Object r = f2.curry(o);
-//                grain.add(r);
-//            } else {
-//                Future<List> sequential = submit(grain, pool); //pool.submit(granular_computation);
-//                futures.add(sequential);
-//                grain = new LinkedList();
-//            }
         }
         if (grain.size() > 0) {
-            Future<List> sequential = submit(grain, pool); //pool.submit(granular_computation);
+            Future<List> sequential = submit(grain, pool);
             futures.add(sequential);
         }
 
 
         // collect results
+        List results = new LinkedList();
         for (Future<List> res : futures) {
             List l = res.get();
             for (Object r : l)

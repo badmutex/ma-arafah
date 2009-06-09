@@ -12,7 +12,11 @@ import tajmi.functional.interfaces.Fun;
 
 
 /**
+ * Maps the function <code>(a -> b)</code> over the iterable sequence
+ * <code>[a]</code> in which each function application is executed in parallel.
+ * Results are collected in the iterable sequence <code>[b]</code><br><br>
  *
+ * <code>ParallelMap :: (a -> b) -> [a] -> [b]</code>
  * @author badi
  */
 public class ParallelMap extends Map {

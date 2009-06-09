@@ -9,34 +9,53 @@ import scala.Tuple2;
 
 /**
  *
+ * <code>Zip :: [a] -> [b] -> [(a,b)]</code>
  * @author badi
  */
-public class Zip implements Fun {
+public class Zip<A,B> implements Fun {
 
-    Iterable i1, i2;
+    Iterable<A> as;
+    Iterable<B> bs;
 
     public Fun copy() {
-        return new Zip().curry(i1).curry(i2);
+        return new Zip().curry(as).curry(bs);
     }
 
     public Fun curry(Object arg) {
-        if (i1 == null)
-            i1 = (Iterable) arg;
-        else if (i2 == null)
-            i2 = (Iterable) arg;
+        if (as == null)
+            as = (Iterable) arg;
+        else if (bs == null)
+            bs = (Iterable) arg;
 
         return this;
     }
 
-    public Object call() throws Exception {
-        List res = new LinkedList();
+    public List<Tuple2<A,B>> call() throws Exception {
+        return (List<Tuple2<A, B>>) new ZipWith().curry(new Assoc()).curry(as).curry(bs).call();
+    }
 
-        Iterator itr1 = i1.iterator(),
-                itr2 = i2.iterator();
-        while (itr1.hasNext() && itr2.hasNext())
-            res.add(new Tuple2(itr1.next(), itr2.next()));
+    private class Assoc<A,B> implements Fun {
 
-        return res;
+        A a;
+        B b;
+
+        public Fun copy() {
+            return new Assoc().curry(a).curry(b);
+        }
+
+        public Fun curry(Object arg) {
+            if (a == null)
+                a = (A) arg;
+            else if (b == null)
+                b = (B) arg;
+
+            return this;
+        }
+
+        public Tuple2<A,B> call() throws Exception {
+            return new Tuple2<A, B>(a, b);
+        }
+        
     }
 
 }

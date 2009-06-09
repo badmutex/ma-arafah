@@ -7,7 +7,10 @@ import java.util.List;
 
 
 /**
- *
+ * Maps the function <code>(a -> b)</code> over the iterable <code>[a]</code>
+ * to produce a new iteration <code>[b]</code><br><br>
+ * 
+ * <code>Map :: (a -> b) -> [a] -> [b]<br>
  * @author badi
  */
 public class Map implements Fun {
