@@ -11,7 +11,7 @@ import tajmi.som.Position;
 public class Gaussian2DNeighborhoodFunc extends NeighborhoodFunc {
 
     double A = 1;
-    double SIGMA = 2.0;
+    double SIGMA = 9;
 
     public void setA(double A) {
         this.A = A;
