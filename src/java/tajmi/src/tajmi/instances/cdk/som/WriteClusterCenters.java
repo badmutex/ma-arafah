@@ -61,17 +61,17 @@ public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
 
         // 1) Put everything inter separate clusters
         Field<FieldModel<IAtomContainer>> field = getField();
-        Map<UUID, List<IAtomContainer>> clusters = new HashMap<UUID, List<IAtomContainer>>(field.size());
+        Map<String, List<IAtomContainer>> clusters = new HashMap<String, List<IAtomContainer>>(field.size());
         for (Tuple2<Position, FieldModel<IAtomContainer>> median : field) {
 
             FieldModel<IAtomContainer> clust = median._2();
             IAtomContainer m = clust.getGeneralizeMedian();
-            UUID uuid = UUID.fromString(m.getID());
+            String id = m.getID();
 
-            if (clusters.containsKey(uuid)) {
-                clusters.get(uuid).addAll(clust);
+            if (clusters.containsKey(id)) {
+                clusters.get(id).addAll(clust);
             } else {
-                clusters.put(uuid, clust);
+                clusters.put(id, clust);
             }
 
         }
