@@ -20,15 +20,15 @@ public class Field<F> implements Iterable<Tuple2<Position, F>> {
 
     public Field (int length, int width, InitFunc initf) {
 
-        this.length = 2 * length;
+        this.length = length;
         this.width = 2 * width;
 
         boolean zero = true;
-        
+
+        // create hexagonal field
         field = new ArrayList<List<F>>(this.length);
         for (int x = 0; x < this.length; x++){
-//            if ( even(x) ) continue;
-            
+
             field.add(new ArrayList<F>(this.width));
             for (int y = 0; y < this.width; y++) {
 
@@ -88,19 +88,23 @@ public class Field<F> implements Iterable<Tuple2<Position, F>> {
         return this;
     }
 
+    /**
+     *
+     * @return the number of models in the field.
+     */
     public int size () {
         return field.size() * field.get(0).size();
     }
 
      public Tuple2<Integer, Integer> dimensions () {
-        return new Tuple2<Integer, Integer>(length / 2, width / 2);
+        return new Tuple2<Integer, Integer>(length, width / 2);
     }
 
     /**
      * @return an interator over a linked list of the elements in the field.
      */
     public Iterator<Tuple2<Position, F>> iterator() {
-        // this is ugly: Java needs lazy generators
+        
         List<Tuple2<Position, F>> l = new LinkedList<Tuple2<Position, F>>();
         for (int x = 0; x < field.size(); x++)
             for (int y = 0; y < field.get(x).size(); y++) {
@@ -113,6 +117,7 @@ public class Field<F> implements Iterable<Tuple2<Position, F>> {
         return l.iterator();
     }
 
+    @Override
     public String toString () {
         String me = "";
         for (int i = 0; i < length; i++){
@@ -120,7 +125,7 @@ public class Field<F> implements Iterable<Tuple2<Position, F>> {
                 F f = this.get(new Position(i, j));
                 me += f == null
                         ? " "
-                        : f;
+                        : "*";
             }
             me += "\n";
         }
