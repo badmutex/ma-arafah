@@ -21,7 +21,6 @@ import javax.media.opengl.GLJPanel;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import scala.Tuple2;
 import tajmi.abstracts.som.ViewField;
-//import tajmi.som.DisplayField;
 import tajmi.som.Field;
 import tajmi.som.Position;
 
