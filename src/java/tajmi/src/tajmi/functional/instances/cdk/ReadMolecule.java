@@ -14,15 +14,15 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * <code> MoleculeReader :: String filename -> IO IMolecule </code>
+ * <code> ReadMolecule :: String filename -> IO IMolecule </code>
  * @author badi
  */
-public class MoleculeReader implements Fun {
+public class ReadMolecule implements Fun {
 
     String filename;
 
     public Fun copy() {
-        return new MoleculeReader().curry(filename);
+        return new ReadMolecule().curry(filename);
     }
 
     public Fun curry(Object arg) {

@@ -1,5 +1,6 @@
 package tajmi;
 
+import org.openscience.cdk.io.formats.IChemFormat;
 import tajmi.*;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -16,10 +17,12 @@ import org.junit.Test;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.io.formats.SMILESFormat;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.frontends.KMeans;
 import tajmi.abstracts.CenterOfMassFunc;
 import tajmi.abstracts.DistanceFunc;
+import tajmi.functional.instances.cdk.CDK;
 import tajmi.instances.cdk.AtomContainerCenterOfMassFunc;
 import tajmi.instances.cdk.AtomContainerDistanceFunc;
 
@@ -33,7 +36,7 @@ public class KMeansTest {
      * @param args the command line arguments
      */
     @Test
-    public void KMeansTest() throws FileNotFoundException, IOException, CDKException {
+    public void KMeansTest() throws FileNotFoundException, IOException, CDKException, Exception {
 
         final int POINTS = 3; // Integer.parseInt(args[0]);
         final int K = 2; //Integer.parseInt(args[1]);
@@ -45,7 +48,7 @@ public class KMeansTest {
 
             int chosen = 0;
             public boolean accept(File pathname) {
-                if(chosen < POINTS){
+                if(chosen <= POINTS){
                     chosen++;
                     return pathname.getName().matches("\\w*\\.mol2");
                 } else return false;
@@ -59,7 +62,7 @@ public class KMeansTest {
 
         List<IMolecule> ms = new LinkedList<IMolecule>();
         for (File f : files) {
-            IMolecule m = Util.readMoleculeFile(f.getAbsolutePath());
+            IMolecule m = CDK.read_molecule(f.getAbsolutePath());
             AtomContainerManipulator.removeHydrogens(m);
             String n = f.getName().replace(".mol2", "");
             m.setID(n);
@@ -83,7 +86,7 @@ public class KMeansTest {
         for(List<IMolecule> C : result){
             IAtomContainer c = (IAtomContainer) coma.params(C).call();
             System.out.println("Writing " + outdir + File.separator + "c_" + (++count) + ".smiles");
-            Util.writeMoleculeFile(outdir + File.separator + "c_" + count + ".smiles", c);
+            CDK.write_molecule((IChemFormat) SMILESFormat.getInstance(), outdir, c);
         }
 
 

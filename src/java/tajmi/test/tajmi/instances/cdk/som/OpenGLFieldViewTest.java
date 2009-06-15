@@ -10,7 +10,7 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
 import scala.Tuple2;
 import tajmi.abstracts.som.InitFunc;
-import tajmi.functional.instances.cdk.MoleculeReader;
+import tajmi.functional.instances.cdk.ReadMolecule;
 import tajmi.som.Field;
 import tajmi.som.Position;
 
@@ -33,7 +33,7 @@ public class OpenGLFieldViewTest {
         });
         List<IAtomContainer> molecules = new LinkedList();
         for (File f : files) {
-            IMolecule m = (IMolecule) new MoleculeReader().curry(f.getAbsolutePath()).call();
+            IMolecule m = (IMolecule) new ReadMolecule().curry(f.getAbsolutePath()).call();
             m.setID(f.getName());
             molecules.add(m);
         }

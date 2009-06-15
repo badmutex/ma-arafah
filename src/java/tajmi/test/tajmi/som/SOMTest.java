@@ -11,7 +11,7 @@ import tajmi.instances.vectorial.Vector;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
-import tajmi.functional.instances.cdk.MoleculeReader;
+import tajmi.functional.instances.cdk.ReadMolecule;
 
 /**
  *
@@ -40,7 +40,7 @@ public class SOMTest {
             @Override
             public Void call() {
                 SOMParams state = getState();
-//                System.out.println(state.iterations + "\t" + state.projections);
+                System.out.println(state.iterations + "\t" + state.projections);
                 return null;
             }
         });
@@ -69,7 +69,7 @@ public class SOMTest {
 
         List<IMolecule> ms = new LinkedList<IMolecule>();
         for (File f : files) {
-            IMolecule m = (IMolecule) new MoleculeReader().curry(f.getAbsolutePath()).call();
+            IMolecule m = (IMolecule) new ReadMolecule().curry(f.getAbsolutePath()).call();
             AtomContainerManipulator.removeHydrogens(m);
             String n = f.getName().replace(".mol2", "");
             m.setID(n);
@@ -80,7 +80,7 @@ public class SOMTest {
         return ms;
     }
 
-    @Test
+//    @Test
     public void TestVectorialSOM() throws FileNotFoundException, IOException, Exception {
         List<Vector> data = readVectorData("test-data" + File.separator + "yeast.data.short");
         System.out.println(data);

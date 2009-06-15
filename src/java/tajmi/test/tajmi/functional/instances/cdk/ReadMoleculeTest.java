@@ -14,14 +14,14 @@ import org.openscience.cdk.interfaces.IBond;
  *
  * @author badi
  */
-public class MoleculeReaderTest {
+public class ReadMoleculeTest {
 
     @Test
     public void MoleculeReaderTest() throws FileNotFoundException, CDKException, IOException {
         String in_dir = "test-data" + File.separator + "hiv1-inhibitors";
         String test_molec = "AMP.mol2";
 
-        MoleculeReader mreader = (MoleculeReader) new MoleculeReader().curry(in_dir + File.separator + test_molec);
+        ReadMolecule mreader = (ReadMolecule) new ReadMolecule().curry(in_dir + File.separator + test_molec);
         IAtomContainer molec = mreader.call();
         System.out.println("read in " + test_molec);
         System.out.println(molec);

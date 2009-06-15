@@ -10,12 +10,12 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.abstracts.som.InitFunc;
 import tajmi.abstracts.som.ViewField;
-import tajmi.functional.instances.cdk.MoleculeWriter;
+import tajmi.functional.instances.cdk.WriteMolecule;
 import tajmi.som.Field;
 import org.openscience.cdk.io.formats.SMILESFormat;
 import tajmi.som.Position;
 import scala.Tuple2;
-import tajmi.functional.instances.cdk.MoleculeReader;
+import tajmi.functional.instances.cdk.ReadMolecule;
 
 /**
  *
@@ -35,7 +35,7 @@ public class WriteClusterCentersTest {
         List<IAtomContainer> molecs = readMolecules();
         Field<FieldModel<IAtomContainer>> field = genField(molecs);
 
-        MoleculeWriter mwriter = (MoleculeWriter) new MoleculeWriter().curry(SMILESFormat.getInstance());
+        WriteMolecule mwriter = (WriteMolecule) new WriteMolecule().curry(SMILESFormat.getInstance());
 
         ViewField<FieldModel<IAtomContainer>> viewer = new WriteClusterCenters()
                 .setMoleculeWriter(mwriter)
@@ -50,7 +50,7 @@ public class WriteClusterCentersTest {
 
 //    @Test
     public void writeField () throws Exception {
-        MoleculeWriter mwriter = (MoleculeWriter) new MoleculeWriter().curry(SMILESFormat.getInstance());
+        WriteMolecule mwriter = (WriteMolecule) new WriteMolecule().curry(SMILESFormat.getInstance());
 
         if (! new File(out_dir).isDirectory())
             new File(out_dir).mkdir();
@@ -87,7 +87,7 @@ public class WriteClusterCentersTest {
 
         List<IAtomContainer> ms = new LinkedList<IAtomContainer>();
         for (File f : files) {
-            IAtomContainer m = (IAtomContainer) new MoleculeReader().curry(f.getAbsolutePath()).call();
+            IAtomContainer m = (IAtomContainer) new ReadMolecule().curry(f.getAbsolutePath()).call();
             AtomContainerManipulator.removeHydrogens(m);
             String n = f.getName().replace(".mol2", "");
             m.setID(n);

@@ -9,7 +9,7 @@ import java.util.Random;
 import org.junit.Test;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import scala.Tuple2;
-import tajmi.functional.instances.cdk.MoleculeReader;
+import tajmi.functional.instances.cdk.ReadMolecule;
 import tajmi.functional.instances.seq.Zip;
 
 /**
@@ -38,7 +38,7 @@ public class FindGeneralizedMedianTest {
         List<IAtomContainer> molecs = new LinkedList<IAtomContainer>();
         for (File f : fs) {
             String name = f.getAbsolutePath();
-            IAtomContainer m = (IAtomContainer) new MoleculeReader().curry(name).call();
+            IAtomContainer m = (IAtomContainer) new ReadMolecule().curry(name).call();
             molecs.add(m);
         }
 

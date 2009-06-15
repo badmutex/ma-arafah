@@ -16,6 +16,7 @@ public class AtomContainerDistanceFunc extends DistanceFunc<IAtomContainer,IAtom
         IAtomContainer g_1 = getFirst(),
                 g_2 = getSecond();
 
+        System.out.println(g_1.getID() + " <-> " + g_2.getID());
 
         IAtomContainer mcss = Util.mcss(g_1, g_2);
 

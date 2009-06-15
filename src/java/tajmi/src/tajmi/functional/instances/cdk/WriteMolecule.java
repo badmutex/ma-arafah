@@ -12,17 +12,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 /**
- * <code> MoleculeWriter :: IChemFormat format -> String filename -> IAtomContainer molecule -> IO Void </code>
+ * <code> WriteMolecule :: IChemFormat format -> String filename -> IAtomContainer molecule -> IO Void </code>
  * @author badi
  */
-public class MoleculeWriter implements Fun {
+public class WriteMolecule implements Fun {
 
-    String filename;
     IChemFormat format;
+    String filename;
     IAtomContainer molecule;
 
     public Fun copy() {
-        return new MoleculeWriter().curry(filename).curry(format).curry(molecule);
+        return new WriteMolecule().curry(format).curry(filename).curry(molecule);
     }
 
     public Fun curry(Object arg) {

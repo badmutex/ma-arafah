@@ -8,7 +8,7 @@ import java.util.List;
 import org.omegahat.Environment.IO.ExtensionFilenameFilter;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
-import tajmi.functional.instances.cdk.MoleculeReader;
+import tajmi.functional.instances.cdk.ReadMolecule;
 import tajmi.functional.instances.seq.Seq;
 //import tajmi.instances.cdk.som.OpenGLFieldView;
 import tajmi.som.Field;
@@ -43,7 +43,7 @@ public class RunSOM {
 
         List<IMolecule> ms = new LinkedList<IMolecule>();
         for (File f : files) {
-            IMolecule m = (IMolecule) new MoleculeReader().curry(f.getAbsolutePath()).call();
+            IMolecule m = (IMolecule) new ReadMolecule().curry(f.getAbsolutePath()).call();
             AtomContainerManipulator.removeHydrogens(m);
             String n = f.getName().replace(".mol2", "");
             m.setID(n);

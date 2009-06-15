@@ -12,8 +12,8 @@ import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.io.formats.IChemFormat;
 import org.openscience.cdk.io.formats.SMILESFormat;
 import scala.Tuple2;
-import tajmi.functional.instances.cdk.MoleculeReader;
-import tajmi.functional.instances.cdk.MoleculeWriter;
+import tajmi.functional.instances.cdk.ReadMolecule;
+import tajmi.functional.instances.cdk.WriteMolecule;
 import tajmi.functional.interfaces.Fun;
 import static org.junit.Assert.*;
 
@@ -126,21 +126,6 @@ public class UtilTest {
     public void testReadMoleculeFile() throws Exception {
     }
 
-    @Test
-    public void testWriteMoleculeFile() throws Exception {
-        String root = "test-data";
-        String in_dir = root + File.separator + "hiv1-inhibitors";
-        String test_molec = "AMP.mol2";
-        IChemFormat format = (IChemFormat) SMILESFormat.getInstance();
-
-        String input = in_dir + File.separator + test_molec;
-        IMolecule molec = Util.readMoleculeFile(input);
-
-        String output = root + File.separator + "testWriteMoleculeFile.smi";
-        Util.writeMoleculeFile(output, molec);
-
-        System.out.println("wrote " + output);
-        System.out.println("testWriteMoleculeFile");
-    }
+  
 
 }

@@ -17,7 +17,7 @@ import java.util.UUID;
 import scala.Tuple2;
 import tajmi.som.Position;
 import java.io.*;
-import tajmi.functional.instances.cdk.MoleculeWriter;
+import tajmi.functional.instances.cdk.WriteMolecule;
 
 /**
  *
@@ -26,7 +26,7 @@ import tajmi.functional.instances.cdk.MoleculeWriter;
 public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
 
     String output_directory;
-    MoleculeWriter writer;
+    WriteMolecule writer;
 
     public WriteClusterCenters setOutput_directory(String output_directory) {
         this.output_directory = output_directory;
@@ -47,11 +47,11 @@ public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
         return this;
     }
 
-    public MoleculeWriter getMoleculeWriter() {
+    public WriteMolecule getMoleculeWriter() {
         return writer;
     }
 
-    public WriteClusterCenters setMoleculeWriter(MoleculeWriter writer) {
+    public WriteClusterCenters setMoleculeWriter(WriteMolecule writer) {
         this.writer = writer;
         return this;
     }
@@ -91,7 +91,7 @@ public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
         }
 
         String prefix = getOutput_prefix();
-        MoleculeWriter writer = getMoleculeWriter();
+        WriteMolecule writer = getMoleculeWriter();
         int counter = 1;
         for (IAtomContainer center : centers) {
 

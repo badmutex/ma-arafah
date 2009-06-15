@@ -12,7 +12,7 @@ import tajmi.functional.interfaces.Fun;
  *
  * @author badi
  */
-public class MoleculeWriterTest {
+public class WriteMoleculeTest {
 
     @Test
     public void moleculeWriterTest() throws Exception {
@@ -22,10 +22,10 @@ public class MoleculeWriterTest {
         IChemFormat format = (IChemFormat) SMILESFormat.getInstance();
 
         String input = in_dir + File.separator + test_molec;
-        IMolecule molec = (IMolecule) new MoleculeReader().curry(input).call();
+        IMolecule molec = (IMolecule) new ReadMolecule().curry(input).call();
 
         String output = root + File.separator + "moleculeWriterTest";
-        Fun mwriter = new MoleculeWriter().curry(format).curry(output).curry(molec);
+        Fun mwriter = new WriteMolecule().curry(format).curry(output).curry(molec);
         mwriter.call();
 
         System.out.println("wrote " + output + format.getPreferredNameExtension());

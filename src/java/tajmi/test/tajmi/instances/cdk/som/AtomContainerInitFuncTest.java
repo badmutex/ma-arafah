@@ -13,7 +13,7 @@ import org.junit.*;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import tajmi.abstracts.som.InitFunc;
-import tajmi.functional.instances.cdk.MoleculeReader;
+import tajmi.functional.instances.cdk.ReadMolecule;
 import tajmi.som.Field;
 
 /**
@@ -44,7 +44,7 @@ public class AtomContainerInitFuncTest {
 
         List<IAtomContainer> molecs = new LinkedList<IAtomContainer>();
         for (File f : files) {
-            IAtomContainer c = (IAtomContainer) new MoleculeReader().curry(f.getAbsolutePath()).call();
+            IAtomContainer c = (IAtomContainer) new ReadMolecule().curry(f.getAbsolutePath()).call();
             c.setID(f.getName().split(".mol2")[0]);
             molecs.add(c);
         }

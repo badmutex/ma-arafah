@@ -41,6 +41,7 @@ public class SOM<F,D> implements Callable<Field<F>> {
 
         Iterator<D> itr = data.iterator();
         while ( !somparams.stop_func.params(somparams).call() ){
+            D current = itr.next();
 
             // we need to cycle over inputs
             if( !itr.hasNext() ) {
@@ -51,7 +52,7 @@ public class SOM<F,D> implements Callable<Field<F>> {
             }
 
             // the magic happens here
-            somparams = somparams.project_func.params(itr.next(), somparams).call();
+            somparams = somparams.project_func.params(current, somparams).call();
 
             // update the user and some state
             somparams.show_status_func.params(somparams).call();
