@@ -37,17 +37,8 @@ public class TestSOM {
 
         public SOM<IAtomContainer, FieldModel<IAtomContainer>> moleculeSOM() throws Exception {
             SOMMaker sommaker = new SOMMaker();
-            sommaker.field_size(10, 10);
-            sommaker.setMaxSOMIterations(2);
-            sommaker.setShow_status_func(new ShowStatusFunc() {
-
-                @Override
-                public Void call() {
-                    SOMParams state = getState();
-                    System.out.println(state.iterations + "\t" + state.projections);
-                    return null;
-                }
-            });
+            sommaker.field_size(5, 5);
+            sommaker.setMaxSOMIterations(1);
 
             List<IMolecule> data = readMolecules();
             SOM som = sommaker.makeIAtomContainerSOM(data);
