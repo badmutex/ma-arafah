@@ -67,7 +67,7 @@ public class Settings {
         defaults.put(Variables.mcss_format, "smiles");
 
 
-        List<String> config_lines = read_config_file(config_file_path);
+        List<String> config_lines = read_decommented_file(config_file_path);
         Map<Variables, Object> config = generate_configuration(keywords_and_types, config_lines);
         List<String> molecule_paths = build_molecule_paths(
                 config.get(Variables.molecules_directories),
@@ -77,8 +77,8 @@ public class Settings {
         configuration = config;
     }
 
-    private List<String> build_molecule_paths(Object directory_paths, Object names_list) throws IOException {
-        List<String> names = read_lines_as_rows((String) names_list);
+    private List<String> build_molecule_paths(Object directory_paths, Object names_list) throws IOException, FileNotFoundException, Exception {
+        List<String> names =  read_decommented_file((String) names_list);
 
         List<String> molecules = new LinkedList<String>();
         for (String mname : (List<String>) names) {
@@ -105,7 +105,7 @@ public class Settings {
         return configuration;
     }
 
-    private List<String> read_config_file(String path) throws FileNotFoundException, IOException, Exception {
+    private List<String> read_decommented_file(String path) throws FileNotFoundException, IOException, Exception {
         List<String> lines = read_lines_as_rows(path);
         List<String> uncommented_lines = filter_comments_out(lines);
 
@@ -137,7 +137,8 @@ public class Settings {
                 if (line.contains(COMMENT_CHAR)) {
                     l = line.substring(0, l.indexOf(COMMENT_CHAR));
                 }
-                lines.add(l);
+                if (l.length() > 0)
+                    lines.add(l);
                 return lines;
             }
         }
