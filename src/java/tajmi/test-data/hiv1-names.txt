@@ -1,42 +1,199 @@
 AMP.mol2
+# B01S.mol2
+# B02.mol2
+# B03.mol2
+# B04.mol2
+# B05.mol2
+# B06.mol2
+# B08.mol2
+# B09.mol2
+# B10.mol2
+# B11.mol2
+# B13.mol2
+# B14.mol2
+# B15.mol2
+# B16.mol2
+# B17.mol2
+# B18.mol2
+# B19.mol2
+# B21.mol2
+# B22.mol2
+# B23.mol2
+# B24.mol2
+# B25.mol2
+# B29.mol2
+# B30.mol2
+# B31.mol2
+# B32.mol2
+# B33.mol2
+# B36S.mol2
+# B37.mol2
+# B38.mol2
+# B39.mol2
+# B40.mol2
+# B41.mol2
+# B42.mol2
+# B43.mol2
+# B44.mol2
+# B45.mol2
+# B46.mol2
+# B47.mol2
+# B48.mol2
+# B49.mol2
+# B50.mol2
+# B51.mol2
+# B52.mol2
+# B54.mol2
+# B55.mol2
+# B56.mol2
+# B57.mol2
+# B58.mol2
+# B59.mol2
+# B60.mol2
+# B61.mol2
+# B62.mol2
+# B63.mol2
+# B64.mol2
+# B65.mol2
+# B66.mol2
+# B67.mol2
+B68.mol2
 H02.mol2
-H05.mol2
-H07.mol2
-H08.mol2
-H09.mol2
-H11.mol2
-Ha2.mol2
-Ha20.mol2
-Ha22.mol2
-Ha23.mol2
-Ha24.mol2
-Ha25.mol2
-Ha26.mol2
-Ha3.mol2
-Ha4.mol2
-Ha5.mol2
-Ha6.mol2
-Sc4.mol2
-Sc41.mol2
-Sc42.mol2
-Sc43.mol2
-Sc44.mol2
-Sc45.mol2
-Sc46.mol2
-Sc47.mol2
-Sc48.mol2
-Sc5.mol2
-Sc6.mol2
-Sc7.mol2
-Sc8.mol2
-Sc9.mol2
+# H05.mol2
+# H07.mol2
+# H08.mol2
+# H09.mol2
+# H11.mol2
+# H12.mol2
+# H14.mol2
+# H18.mol2
+# H19.mol2
+# H20.mol2
+# H23.mol2
+# H25.mol2
+# H27.mol2
+# H29.mol2
+# H31.mol2
+# H32.mol2
+# H33.mol2
+# H35.mol2
+Ha1.mol2
+# Ha10.mol2
+# Ha11.mol2
+# Ha13.mol2
+# Ha14.mol2
+# Ha15.mol2
+# Ha16.mol2
+# Ha17.mol2
+# Ha18.mol2
+# Ha19.mol2
+# Ha2.mol2
+# Ha20.mol2
+# Ha22.mol2
+# Ha23.mol2
+# Ha24.mol2
+# Ha25.mol2
+# Ha26.mol2
+# Ha3.mol2
+# Ha4.mol2
+# Ha5.mol2
+# Ha6.mol2
+KNI-577.mol2
+# Sc1.mol2
+# Sc10.mol2
+# Sc11.mol2
+# Sc12.mol2
+# Sc13.mol2
+# Sc14.mol2
+# Sc15.mol2
+# Sc16.mol2
+# Sc17.mol2
+# Sc18.mol2
+# Sc19.mol2
+# Sc2.mol2
+# Sc20.mol2
+# Sc21.mol2
+# Sc22.mol2
+# Sc23.mol2
+# Sc24.mol2
+# Sc25.mol2
+# Sc26.mol2
+# Sc27.mol2
+# Sc28.mol2
+# Sc3.mol2
+# Sc30.mol2
+# Sc31.mol2
+# Sc32.mol2
+# Sc33.mol2
+# Sc34.mol2
+# Sc35.mol2
+# Sc36.mol2
+# Sc4.mol2
+# Sc41.mol2
+# Sc42.mol2
+# Sc43.mol2
+# Sc44.mol2
+# Sc45.mol2
+# Sc46.mol2
+# Sc47.mol2
+# Sc48.mol2
+# Sc5.mol2
+# Sc6.mol2
+# Sc7.mol2
+# Sc8.mol2
+# Sc9.mol2
 T01.mol2
-T02.mol2
-T03.mol2
-T04.mol2
-T05.mol2
+# T02.mol2
+# T03.mol2
+# T04.mol2
+# T05.mol2
 T06.mol2
 T07.mol2
 T08.mol2
 T09.mol2
 T10.mol2
+T11.mol2
+T12.mol2
+T13.mol2
+T14.mol2
+T15.mol2
+T16.mol2
+T17.mol2
+T18.mol2
+T19.mol2
+T20.mol2
+T21.mol2
+T22.mol2
+T23.mol2
+T24.mol2
+T25.mol2
+T26.mol2
+T27.mol2
+T28.mol2
+T29.mol2
+T30.mol2
+T31.mol2
+T32.mol2
+T33.mol2
+T34.mol2
+T35.mol2
+T36.mol2
+T37.mol2
+T38.mol2
+T39.mol2
+T40.mol2
+T41.mol2
+T42.mol2
+T44.mol2
+T45.mol2
+T46.mol2
+T47.mol2
+T48.mol2
+T49.mol2
+T51.mol2
+T53.mol2
+T54.mol2
+T55.mol2
+T57.mol2
+T60.mol2
+T62.mol2

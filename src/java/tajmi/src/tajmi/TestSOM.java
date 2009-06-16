@@ -6,10 +6,13 @@ import java.util.List;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+import tajmi.abstracts.som.ViewField;
 import tajmi.frontends.SOMMaker;
 import tajmi.functional.instances.cdk.ReadMolecule;
 import tajmi.instances.cdk.som.AtomContainerGrainyParallelListDistanceFunc;
 import tajmi.instances.cdk.som.FieldModel;
+import tajmi.instances.cdk.som.OpenGLFieldView;
+import tajmi.som.Field;
 import tajmi.som.SOM;
 import tajmi.som.StatusUpdater;
 
@@ -25,21 +28,25 @@ public class TestSOM {
 
     private static class Test {
 
-        final static String TEST_CONFIG_FILE = "test-data" + File.separator + "test.config";
+        final static String TEST_CONFIG_FILE = "test-data" + File.separator + "amino-acids.config";
 
         public void TestIAtomContainerSOM() throws Exception {
             SOM som = moleculeSOM();
-            System.out.println(som.call());
+            Field f = som.call();
+            System.out.println(f);
+            ViewField viewer = new OpenGLFieldView();
+            viewer.params(f);
+            viewer.call();
 
             System.out.println("TestIAtomContainerSOM");
         }
 
         public SOM<IAtomContainer, FieldModel<IAtomContainer>> moleculeSOM() throws Exception {
             SOMMaker sommaker = new SOMMaker();
-            sommaker.field_size(2, 2);
-            sommaker.setMaxSOMIterations(9);
+            sommaker.field_size(10, 10);
+            sommaker.setMaxSOMIterations(1);
             sommaker.setDistance_func(new AtomContainerGrainyParallelListDistanceFunc());
-            StatusUpdater.getInstance().set_verbosity_level(StatusUpdater.Verbosity.Everything);
+            StatusUpdater.getInstance().set_verbosity_level(StatusUpdater.Verbosity.Verbose);
 
             List<IMolecule> data = readMolecules();
             SOM som = sommaker.makeIAtomContainerSOM(data);
