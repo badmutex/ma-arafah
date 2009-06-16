@@ -24,7 +24,7 @@ import tajmi.abstracts.CenterOfMassFunc;
 import tajmi.abstracts.DistanceFunc;
 import tajmi.functional.instances.cdk.CDK;
 import tajmi.instances.cdk.AtomContainerCenterOfMassFunc;
-import tajmi.instances.cdk.AtomContainerDistanceFunc;
+import tajmi.instances.cdk.AtomContainerMemoizingDistanceFunc;
 
 /**
  *
@@ -71,7 +71,7 @@ public class KMeansTest {
         Collections.shuffle(ms, new Random(4224));
         System.out.println("Read in " + files.length + " =>? " + ms.size());
 
-        DistanceFunc da = new AtomContainerDistanceFunc();
+        DistanceFunc da = new AtomContainerMemoizingDistanceFunc();
         CenterOfMassFunc coma = new AtomContainerCenterOfMassFunc();
 
         KMeans<IMolecule> km = new KMeans<IMolecule>(ms, K, da, coma);

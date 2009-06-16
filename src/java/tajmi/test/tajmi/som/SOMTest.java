@@ -35,15 +35,7 @@ public class SOMTest {
         SOMMaker sommaker = new SOMMaker();
         sommaker.field_size(10, 10);
         sommaker.setMaxSOMIterations(2);
-        sommaker.setShow_status_func(new ShowStatusFunc() {
-
-            @Override
-            public Void call() {
-                SOMParams state = getState();
-                System.out.println(state.iterations + "\t" + state.projections);
-                return null;
-            }
-        });
+        StatusUpdater.getInstance().set_verbosity_level(StatusUpdater.Verbosity.Everything);
 
         List<IMolecule> data = readMolecules();
         SOM som = sommaker.makeIAtomContainerSOM(data);
@@ -87,15 +79,6 @@ public class SOMTest {
 
         SOMMaker<Vector, Vector> sommaker = new SOMMaker();
         sommaker.field_size(10, 10);
-        sommaker.setShow_status_func(new ShowStatusFunc() {
-
-            @Override
-            public Void call() {
-                SOMParams state = getState();
-//                System.out.println(state.iterations + "\t" + state.projections);
-                return null;
-            }
-        });
         sommaker.setMaxSOMIterations(1);
 
         SOM result = sommaker.makeVectorialSOM(data);
