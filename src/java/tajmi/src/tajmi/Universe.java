@@ -14,11 +14,12 @@ public class Universe {
 
 
     /* Single code here */
-    private final static Universe INSTANCE = null;
+    private static Universe INSTANCE = null;
 
     public static synchronized Universe getInstance() {
         if (INSTANCE == null) {
-            return new Universe();
+            INSTANCE = new Universe();
+            return INSTANCE;
         } else {
             return INSTANCE;
         }
@@ -27,19 +28,33 @@ public class Universe {
     /**
      * saves the results of potentially expensive distance computations between datapoints
      */
-    HashMap<Integer, Double> distances;
+    HashMap<String, Double> distances;
     /**
      * saves the maximum common subgraphs between two atom containers
      */
-    HashMap<Integer, IAtomContainer> mcsss;
+    HashMap<String, IAtomContainer> mcsss;
 
     private Universe() {
-        distances = new HashMap<Integer, Double>(100);
-        mcsss = new HashMap<Integer, IAtomContainer>(100);
+        distances = new HashMap<String, Double>(100);
+        mcsss = new HashMap<String, IAtomContainer>(100);
     }
 
-    public int hashPair(String origin, String target) {
-        return origin.hashCode() + target.hashCode();
+    public String hashPair(String origin, String target) {
+        return origin + target;
+    }
+
+    public void add_distance (String first, String second, double distance) {
+        if(first == null || second == null)
+            throw new RuntimeException("ID cannot be null");
+        distances.put(hashPair(first, second), distance);
+    }
+
+    public double get_distance (String first, String second) {
+        return distances.get(hashPair(first, second));
+    }
+
+    public boolean distance_exists (String first, String second) {
+        return distances.containsKey(hashPair(first, second));
     }
 
 }
