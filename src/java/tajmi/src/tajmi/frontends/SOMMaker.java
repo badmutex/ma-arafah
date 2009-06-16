@@ -2,6 +2,7 @@ package tajmi.frontends;
 
 import java.util.List;
 import java.util.Random;
+import tajmi.abstracts.DistanceFunc;
 import tajmi.instances.vectorial.VectorDistanceFunc;
 import tajmi.instances.vectorial.som.VectorInitFunc;
 import tajmi.instances.som.IterationsStopFunc;
@@ -38,6 +39,7 @@ public class SOMMaker<F, D> {
     List<D> data = null;
     int field_len, field_width;
     FindBestMatchFunc<F, D> find_bmu_func;
+    DistanceFunc distance_func;
     InitFunc<F, D> init_func;
     NeighborhoodFunc neighborhood_func;
     ProjectionFunc<F, D> projection_func;
@@ -84,6 +86,9 @@ public class SOMMaker<F, D> {
         this.find_bmu_func = find_bmu_func;
     }
 
+    public void setDistance_func(DistanceFunc df) {
+        this.distance_func = df;
+    }
     public void setInit_func(InitFunc<F, D> init_func) {
         this.init_func = init_func;
     }
@@ -148,8 +153,11 @@ public class SOMMaker<F, D> {
             params.project_func = new GeneralProjectionFunc();
         }
 
-        if (params.project_func.getDistanceFunc() == null) {
+        if (params.project_func.getDistanceFunc() == null &&
+                this.distance_func == null) {
             params.project_func.setDistanceFunc(new VectorDistanceFunc());
+        } else if (this.distance_func != null){
+            params.project_func.setDistanceFunc(distance_func);
         }
 
         if (params.project_func.getFindBestMatchFunc() == null) {

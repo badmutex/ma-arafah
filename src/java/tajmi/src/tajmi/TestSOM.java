@@ -8,6 +8,7 @@ import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import tajmi.frontends.SOMMaker;
 import tajmi.functional.instances.cdk.ReadMolecule;
+import tajmi.instances.cdk.som.AtomContainerGrainyParallelListDistanceFunc;
 import tajmi.instances.cdk.som.FieldModel;
 import tajmi.som.SOM;
 import tajmi.som.StatusUpdater;
@@ -35,8 +36,9 @@ public class TestSOM {
 
         public SOM<IAtomContainer, FieldModel<IAtomContainer>> moleculeSOM() throws Exception {
             SOMMaker sommaker = new SOMMaker();
-            sommaker.field_size(5, 5);
-            sommaker.setMaxSOMIterations(1);
+            sommaker.field_size(2, 2);
+            sommaker.setMaxSOMIterations(9);
+            sommaker.setDistance_func(new AtomContainerGrainyParallelListDistanceFunc());
             StatusUpdater.getInstance().set_verbosity_level(StatusUpdater.Verbosity.Everything);
 
             List<IMolecule> data = readMolecules();
