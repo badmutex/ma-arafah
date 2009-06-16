@@ -20,7 +20,7 @@ import tajmi.instances.som.GeneralProjectionFunc;
 import tajmi.som.Field;
 import tajmi.som.SOM;
 import tajmi.som.SOMParams;
-import tajmi.instances.cdk.AtomContainerDistanceFunc;
+import tajmi.instances.cdk.AtomContainerMemoizingDistanceFunc;
 import tajmi.instances.cdk.som.AtomContainerInitFunc;
 import tajmi.instances.cdk.som.AtomContainerListDistanceFunc;
 import tajmi.instances.cdk.som.AtomContainerUpdateFunc;

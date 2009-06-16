@@ -4,7 +4,7 @@ package tajmi.instances.cdk.som;
 import java.util.List;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import tajmi.abstracts.DistanceFunc;
-import tajmi.instances.cdk.AtomContainerDistanceFunc;
+import tajmi.instances.cdk.AtomContainerMemoizingDistanceFunc;
 
 /**
  * Given an IAtomContainer <code>M</code> and a list of IAtomContainers <code>L</code>,
@@ -18,7 +18,7 @@ public class AtomContainerListDistanceFunc extends DistanceFunc<IAtomContainer, 
         IAtomContainer molecule = getFirst();
         List<IAtomContainer> others = getSecond();
 
-        DistanceFunc<IAtomContainer, IAtomContainer> distancef = new AtomContainerDistanceFunc();
+        DistanceFunc<IAtomContainer, IAtomContainer> distancef = new AtomContainerMemoizingDistanceFunc();
 
         double distance = 0.0;
         for (IAtomContainer other : others)
