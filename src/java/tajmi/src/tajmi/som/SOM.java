@@ -55,7 +55,7 @@ public class SOM<F,D> implements Callable<Field<F>> {
             somparams = somparams.project_func.params(current, somparams).call();
 
             // update the user and some state
-            somparams.show_status_func.params(somparams).call();
+            StatusUpdater.getInstance().update_status(somparams.show_status_func.params(somparams));
             somparams.projections++;
         }
         

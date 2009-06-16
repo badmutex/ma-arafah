@@ -1,18 +1,16 @@
 package tajmi;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.LinkedList;
 import java.util.List;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
-import tajmi.abstracts.som.ShowStatusFunc;
 import tajmi.frontends.SOMMaker;
 import tajmi.functional.instances.cdk.ReadMolecule;
 import tajmi.instances.cdk.som.FieldModel;
 import tajmi.som.SOM;
-import tajmi.som.SOMParams;
+import tajmi.som.StatusUpdater;
 
 /**
  *
@@ -39,6 +37,7 @@ public class TestSOM {
             SOMMaker sommaker = new SOMMaker();
             sommaker.field_size(5, 5);
             sommaker.setMaxSOMIterations(1);
+            StatusUpdater.getInstance().set_verbosity_level(StatusUpdater.Verbosity.Everything);
 
             List<IMolecule> data = readMolecules();
             SOM som = sommaker.makeIAtomContainerSOM(data);

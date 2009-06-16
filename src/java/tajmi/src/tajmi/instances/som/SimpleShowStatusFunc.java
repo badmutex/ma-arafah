@@ -10,16 +10,22 @@ import tajmi.som.SOMParams;
  */
 public class SimpleShowStatusFunc extends ShowStatusFunc {
 
-    public Void call() {
-
+    @Override
+    public void update_status_verbosly() {
         SOMParams state = getState();
-        
+
         int i = state.iterations;
         int p = state.projections;
 
         System.out.println("[" + i + "]\t[" + p + "]");
+    }
 
-        return null;
+    @Override
+    public void update_status_very_verbosly() {
+    }
+
+    @Override
+    public void update_status_everything() {
     }
 
 }

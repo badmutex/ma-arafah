@@ -1,14 +1,13 @@
 
 package tajmi.abstracts.som;
 
-import java.util.concurrent.Callable;
 import tajmi.som.SOMParams;
 
 /**
  * Informs the user of the current state of the program
  * @author badi
  */
-public abstract class ShowStatusFunc implements Callable<Void> {
+public abstract class ShowStatusFunc  {
 
     SOMParams state;
 
@@ -22,5 +21,8 @@ public abstract class ShowStatusFunc implements Callable<Void> {
         return this;
     }
 
-    public abstract Void call () ;
+    public abstract void update_status_verbosly ();
+    public abstract void update_status_very_verbosly ();
+    public abstract void update_status_everything ();
+
 }
