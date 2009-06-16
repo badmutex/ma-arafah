@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import scala.Tuple2;
+import tajmi.functional.instances.seq.Seq;
+import tajmi.functional.interfaces.Fun;
 
 /**
  *
@@ -39,7 +41,7 @@ public class Settings {
     private final String ASSIGNMENT_CHAR = "=";
     private final String CONCAT_SEPARATOR = ":";
 
-    public Settings(String config_file_path) throws FileNotFoundException, IOException, InvalidConfigurationType {
+    public Settings(String config_file_path) throws FileNotFoundException, IOException, InvalidConfigurationType, Exception {
         keywords_and_types = new Hashtable<Settings.Variables, Tuple2<String, String>>(Variables.values().length);
         defaults = new Hashtable<Variables, String>(Variables.values().length);
 
@@ -103,22 +105,44 @@ public class Settings {
         return configuration;
     }
 
-    private List<String> read_config_file(String path) throws FileNotFoundException, IOException {
-        BufferedReader reader = make_buffered_reader(path);
-
+    private List<String> read_config_file(String path) throws FileNotFoundException, IOException, Exception {
         List<String> lines = read_lines_as_rows(path);
-        List<String> uncommented_lines = new LinkedList<String>();
+        List<String> uncommented_lines = filter_comments_out(lines);
 
-        for (String line : lines) {
-            if (line.contains(COMMENT_CHAR)) {
-                String cleaned = line.substring(0, line.indexOf(COMMENT_CHAR));
-                uncommented_lines.add(cleaned);
-            } else {
-                uncommented_lines.add(line);
+        return uncommented_lines;
+    }
+
+    private List<String> filter_comments_out(List<String> lines) throws Exception {
+        class NoComments implements Fun {
+
+            List<String> lines;
+            String line;
+
+            public Fun copy() {
+                return new NoComments().curry(lines).curry(line);
+            }
+
+            public Fun curry(Object arg) {
+                if (lines == null) {
+                    lines = (List<String>) arg;
+                } else if (line == null) {
+                    line = (String) arg;
+                }
+
+                return this;
+            }
+
+            public List<String> call() throws Exception {
+                String l = line;
+                if (line.contains(COMMENT_CHAR)) {
+                    l = line.substring(0, l.indexOf(COMMENT_CHAR));
+                }
+                lines.add(l);
+                return lines;
             }
         }
 
-        return uncommented_lines;
+        return (List<String>) Seq.fold(new NoComments(), new LinkedList(), lines);
     }
 
     private List<String> read_lines_as_rows(String path) throws IOException {
