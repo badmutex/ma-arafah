@@ -32,7 +32,7 @@ public class Map implements Fun {
         return this;
     }
 
-    public List call() throws Exception {
+    public List call()  {
 
         List res = new LinkedList();
         for (Object o : l) {

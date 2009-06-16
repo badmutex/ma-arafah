@@ -12,7 +12,7 @@ public class Add implements Fun {
 
     Number fst, snd;
 
-    public Number call() throws Exception {
+    public Number call()  {
         return fst.doubleValue() + snd.doubleValue();
     }
 

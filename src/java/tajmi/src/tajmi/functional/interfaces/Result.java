@@ -9,4 +9,5 @@ import java.util.concurrent.Callable;
  */
 public interface Result<R> extends Callable<R> {
 
+    public R call ();
 }

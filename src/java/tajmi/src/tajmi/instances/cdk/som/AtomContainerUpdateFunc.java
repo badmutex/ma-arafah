@@ -23,7 +23,7 @@ public class AtomContainerUpdateFunc extends UpdateFunc<FieldModel<IAtomContaine
     }
 
     @Override
-    public Field<FieldModel<IAtomContainer>> call() throws Exception {
+    public Field<FieldModel<IAtomContainer>> call() {
         Field<FieldModel<IAtomContainer>> field = getField();
         IAtomContainer datum = getDatum();
         Position bmu_pos = getBestMatchingUnitPosition();

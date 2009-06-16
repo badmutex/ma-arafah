@@ -29,7 +29,7 @@ public class Take implements Fun {
         return this;
     }
 
-    public List call() throws Exception {
+    public List call()  {
         List l = new LinkedList();
         if (n > 0) {
             Object head = Seq.head(i);

@@ -31,7 +31,7 @@ public class MinimumBy implements Fun {
         return this;
     }
 
-    public Object call() throws Exception {
+    public Object call()  {
         Object best = new Head().curry(seq).call();
         Iterable rest = (Iterable) new Tail().curry(seq).call();
         for (Object o : rest) {

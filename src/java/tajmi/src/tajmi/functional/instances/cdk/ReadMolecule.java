@@ -1,5 +1,7 @@
 package tajmi.functional.instances.cdk;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tajmi.functional.interfaces.Fun;
 import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
@@ -33,13 +35,20 @@ public class ReadMolecule implements Fun {
         return this;
     }
 
-    public IMolecule call() throws FileNotFoundException, IOException, CDKException  {
-        Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
-        ISimpleChemObjectReader reader = new ReaderFactory().createReader(r);
-        
-        IMolecule m = (IMolecule) reader.read(new Molecule());
-        m.setID(filename);
-
+    public IMolecule call()  {
+        IMolecule m = null;
+        try {
+            Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
+            ISimpleChemObjectReader reader = new ReaderFactory().createReader(r);
+            m = (IMolecule) reader.read(new Molecule());
+            m.setID(filename);
+        } catch (CDKException ex) {
+            Logger.getLogger(ReadMolecule.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReadMolecule.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
+        }
         return m;
     }
 }

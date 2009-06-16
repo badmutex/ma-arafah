@@ -8,6 +8,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tajmi.functional.interfaces.Fun;
 
 
@@ -22,7 +24,7 @@ import tajmi.functional.interfaces.Fun;
 public class ParallelMap extends Map {
 
     @Override
-    public List call () throws ExecutionException, InterruptedException {
+    public List call () {
         List res = new LinkedList();
         ExecutorService pool = Executors.newCachedThreadPool();
         List<Future> futures = new LinkedList<Future>();
@@ -34,7 +36,15 @@ public class ParallelMap extends Map {
         }
 
         for (Future f : futures)
+            try {
             res.add(f.get());
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ParallelMap.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(ParallelMap.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
+        }
 
         return res;
     }

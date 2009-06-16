@@ -112,7 +112,7 @@ public class Settings {
         return uncommented_lines;
     }
 
-    private List<String> filter_comments_out(List<String> lines) throws Exception {
+    private List<String> filter_comments_out(List<String> lines) {
         class NoComments implements Fun {
 
             List<String> lines;
@@ -132,7 +132,7 @@ public class Settings {
                 return this;
             }
 
-            public List<String> call() throws Exception {
+            public List<String> call()  {
                 String l = line;
                 if (line.contains(COMMENT_CHAR)) {
                     l = line.substring(0, l.indexOf(COMMENT_CHAR));

@@ -28,7 +28,7 @@ public class Drop implements Fun {
         return this;
     }
 
-    public Iterable call() throws Exception {
+    public Iterable call() {
         if (n > 0)
             return Seq.drop(n-1, Seq.tail(i));
         else return i;

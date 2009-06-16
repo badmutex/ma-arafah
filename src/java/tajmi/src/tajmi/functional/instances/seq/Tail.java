@@ -27,7 +27,7 @@ public class Tail implements Fun {
         return this;
     }
 
-    public Iterable call() throws Exception {
+    public Iterable call()  {
         Iterator itr = seq.iterator();
         List l = new LinkedList();
         itr.next();

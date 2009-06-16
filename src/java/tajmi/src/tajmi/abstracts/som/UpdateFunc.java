@@ -60,6 +60,6 @@ public abstract class UpdateFunc<F,D> implements Callable<Field<F>> {
     }
 
 
-    public abstract Field<F> call () throws Exception;
+    public abstract Field<F> call ();
 
 }

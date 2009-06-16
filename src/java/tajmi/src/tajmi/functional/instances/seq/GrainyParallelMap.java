@@ -35,7 +35,7 @@ public class GrainyParallelMap extends Map {
     }
 
     @Override
-    public List call () throws InterruptedException, ExecutionException {
+    public List call () {
 
         ExecutorService pool = Executors.newCachedThreadPool();
         List<Future> futures = new LinkedList<Future>();
@@ -62,9 +62,18 @@ public class GrainyParallelMap extends Map {
         // collect results
         List results = new LinkedList();
         for (Future<List> res : futures) {
-            List l = res.get();
-            for (Object r : l)
-                results.add(r);
+            try {
+                List l = res.get();
+                for (Object r : l) {
+                    results.add(r);
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GrainyParallelMap.class.getName()).log(Level.SEVERE, null, ex);
+                throw new RuntimeException(ex);
+            } catch (ExecutionException ex) {
+                Logger.getLogger(GrainyParallelMap.class.getName()).log(Level.SEVERE, null, ex);
+                throw new RuntimeException(ex);
+            }
         }
 
         // aaaaand we're done!

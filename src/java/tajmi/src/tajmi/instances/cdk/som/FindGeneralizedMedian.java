@@ -21,7 +21,7 @@ public class FindGeneralizedMedian implements Callable<Tuple2<Double, IAtomConta
         return this;
     }
 
-    public Tuple2<Double, IAtomContainer> call() throws Exception {
+    public Tuple2<Double, IAtomContainer> call() {
         return (Tuple2<Double, IAtomContainer>) new MinimumBy().curry(new Compare()).curry(molecule_set).call();
     }
 

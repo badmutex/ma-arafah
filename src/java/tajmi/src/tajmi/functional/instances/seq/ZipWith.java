@@ -32,7 +32,7 @@ public class ZipWith<A,B,C> implements Fun {
         return this;
     }
 
-    public Iterable<C> call() throws Exception {
+    public Iterable<C> call()  {
         Iterator<A> itrA = as.iterator();
         Iterator<B> itrB = bs.iterator();
         List<C> result = new LinkedList<C>();

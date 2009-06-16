@@ -1,5 +1,7 @@
 package tajmi.functional.instances.cdk;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tajmi.functional.interfaces.Fun;
 import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
@@ -37,12 +39,18 @@ public class WriteMolecule implements Fun {
         return this;
     }
 
-    public Void call() throws CDKException, FileNotFoundException {
-
-        IChemObjectWriter writer = new WriterFactory().createWriter(format);
-        writer.setWriter(new BufferedOutputStream(new FileOutputStream(filename + "." + format.getPreferredNameExtension())));
-        writer.write(new Molecule(molecule));
-
+    public Void call() {
+        try {
+            IChemObjectWriter writer = new WriterFactory().createWriter(format);
+            writer.setWriter(new BufferedOutputStream(new FileOutputStream(filename + "." + format.getPreferredNameExtension())));
+            writer.write(new Molecule(molecule));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(WriteMolecule.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
+        } catch (CDKException ex) {
+            Logger.getLogger(WriteMolecule.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
+        }
         return null;
     }
 }

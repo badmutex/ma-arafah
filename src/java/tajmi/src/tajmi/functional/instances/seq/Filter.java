@@ -29,7 +29,7 @@ public class Filter<A> implements Fun {
         return this;
     }
 
-    public List<A> call() throws Exception {
+    public List<A> call()  {
         List<A> acceptable = new LinkedList<A>();
         for (A a : as) {
             Boolean accept = (Boolean) f.copy().curry(a).call();

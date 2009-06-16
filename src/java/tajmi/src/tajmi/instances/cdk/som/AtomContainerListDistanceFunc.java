@@ -19,11 +19,15 @@ public class AtomContainerListDistanceFunc extends DistanceFunc<IAtomContainer, 
         List<IAtomContainer> others = getSecond();
 
         DistanceFunc<IAtomContainer, IAtomContainer> distancef = new AtomContainerMemoizingDistanceFunc();
+        DistanceFunc f = (DistanceFunc) distancef.curry(molecule);
 
+        return calculate_overall_distance (f, others);
+    }
+
+    double calculate_overall_distance (DistanceFunc df, List<IAtomContainer> others) {
         double distance = 0.0;
         for (IAtomContainer other : others)
-            distance += distancef.params(molecule, other).call();
-
+            distance += (Double) df.curry(other).call();
         return distance;
     }
 

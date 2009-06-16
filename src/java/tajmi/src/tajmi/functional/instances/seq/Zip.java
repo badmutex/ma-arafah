@@ -30,7 +30,7 @@ public class Zip<A,B> implements Fun {
         return this;
     }
 
-    public List<Tuple2<A,B>> call() throws Exception {
+    public List<Tuple2<A,B>> call()  {
         return (List<Tuple2<A, B>>) new ZipWith().curry(new Assoc()).curry(as).curry(bs).call();
     }
 
@@ -52,7 +52,7 @@ public class Zip<A,B> implements Fun {
             return this;
         }
 
-        public Tuple2<A,B> call() throws Exception {
+        public Tuple2<A,B> call()  {
             return new Tuple2<A, B>(a, b);
         }
         

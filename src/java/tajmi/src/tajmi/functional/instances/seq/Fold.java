@@ -30,7 +30,7 @@ public class Fold<T> implements Fun {
         return this;
     }
 
-    public Object call() throws Exception {
+    public Object call()  {
         T res = init;
         for (Object o : l) {
             Fun f2 = f.copy();

@@ -25,7 +25,7 @@ public class Head<T> implements Fun {
         return this;
     }
 
-    public T call() throws Exception {
+    public T call()  {
         Iterator<T> itr = seq.iterator();
         return itr.next();
     }

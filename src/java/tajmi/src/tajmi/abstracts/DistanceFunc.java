@@ -7,7 +7,9 @@ import tajmi.functional.interfaces.Fun;
 
 /**
  * The type parameters <code>A</code> and <code>B</code>
- * are the types of the instances to have a distance computed between them.
+ * are the types of the instances to have a distance computed between them.<br><br>
+ *
+ * <code>a -> b -> Double</code>
  * @author badi
  */
 public abstract class DistanceFunc<A,B> implements Fun {
