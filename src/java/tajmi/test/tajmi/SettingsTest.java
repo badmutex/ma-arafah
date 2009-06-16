@@ -18,7 +18,7 @@ import tajmi.Settings.Variables;
 public class SettingsTest {
 
     @Test
-    public void SettingsTest() throws FileNotFoundException, IOException, InvalidConfigurationType {
+    public void SettingsTest() throws FileNotFoundException, IOException, InvalidConfigurationType, Exception {
         Settings settings = new Settings("test-data/test.config");
         Map<Variables, ?> config = settings.get_configuration();
         for (Settings.Variables v : config.keySet())
