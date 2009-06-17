@@ -63,16 +63,18 @@ public class AtomContainerMemoizingDistanceFunc extends DistanceFunc<IAtomContai
         }
 
         @Override
-        public void update_status_verbosly() {
+        public String verbose() {
+            return "";
         }
 
         @Override
-        public void update_status_very_verbosly() {
-            System.out.println("\t" + n1 + " <-> " + n2);
+        public String very_verbose() {
+            return "\t" + n1 + " <-> " + n2;
         }
 
         @Override
-        public void update_status_everything() {
+        public String everything() {
+            return "";
         }
 
     }
@@ -87,16 +89,18 @@ public class AtomContainerMemoizingDistanceFunc extends DistanceFunc<IAtomContai
         }
 
         @Override
-        public void update_status_verbosly() {
+        public String verbose() {
+            return "";
         }
 
         @Override
-        public void update_status_very_verbosly() {
+        public String very_verbose() {
+            return "";
         }
 
         @Override
-        public void update_status_everything() {
-            System.out.println("\t\t" + msg);
+        public String everything() {
+            return "\t\t" + msg;
         }
 
     }

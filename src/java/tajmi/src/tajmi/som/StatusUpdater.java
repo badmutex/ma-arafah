@@ -33,20 +33,29 @@ public class StatusUpdater {
         this.level = level;
     }
 
+    private void show_message (String msg) {
+        synchronized (System.out) {
+            System.out.println(msg);
+        }
+    }
+
     public void update_status(ShowStatusFunc fun) {
         if (level.equals(Verbosity.Verbose)) {
-            fun.update_status_verbosly();
+            String msg = fun.verbose();
+            show_message (msg);
         }
 
         if (level.equals(Verbosity.VeryVerbose)) {
-            fun.update_status_verbosly();
-            fun.update_status_very_verbosly();
+            String msg = fun.verbose() +
+                    fun.very_verbose();
+            show_message (msg);
         }
 
         if (level.equals(Verbosity.Everything)) {
-            fun.update_status_verbosly();
-            fun.update_status_very_verbosly();
-            fun.update_status_everything();
+            String msg = fun.verbose() +
+                    fun.very_verbose() +
+                    fun.everything();
+            show_message (msg);
         }
     }
 }

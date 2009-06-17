@@ -10,6 +10,7 @@ import tajmi.abstracts.som.ViewField;
 import tajmi.frontends.SOMMaker;
 import tajmi.functional.instances.cdk.ReadMolecule;
 import tajmi.instances.cdk.som.AtomContainerGrainyParallelListDistanceFunc;
+import tajmi.instances.cdk.som.AtomContainerParallelListDistanceFunc;
 import tajmi.instances.cdk.som.FieldModel;
 import tajmi.instances.cdk.som.OpenGLFieldView;
 import tajmi.som.Field;
@@ -28,7 +29,7 @@ public class TestSOM {
 
     private static class Test {
 
-        final static String TEST_CONFIG_FILE = "test-data" + File.separator + "amino-acids.config";
+        final static String TEST_CONFIG_FILE = "test-data" + File.separator + "test.config";
 
         public void TestIAtomContainerSOM() throws Exception {
             SOM som = moleculeSOM();
@@ -44,9 +45,10 @@ public class TestSOM {
         public SOM<IAtomContainer, FieldModel<IAtomContainer>> moleculeSOM() throws Exception {
             SOMMaker sommaker = new SOMMaker();
             sommaker.field_size(10, 10);
-            sommaker.setMaxSOMIterations(1);
-            sommaker.setDistance_func(new AtomContainerGrainyParallelListDistanceFunc());
-            StatusUpdater.getInstance().set_verbosity_level(StatusUpdater.Verbosity.Verbose);
+            sommaker.setMaxSOMIterations(19);
+//            sommaker.setDistance_func(new AtomContainerGrainyParallelListDistanceFunc());
+            sommaker.setDistance_func(new AtomContainerParallelListDistanceFunc());
+            StatusUpdater.getInstance().set_verbosity_level(StatusUpdater.Verbosity.Everything);
 
             List<IMolecule> data = readMolecules();
             SOM som = sommaker.makeIAtomContainerSOM(data);

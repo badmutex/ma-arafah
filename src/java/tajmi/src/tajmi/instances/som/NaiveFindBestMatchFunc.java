@@ -32,8 +32,10 @@ public class NaiveFindBestMatchFunc<F,D> extends FindBestMatchFunc<F,D> {
                 continue;
             } else {
                 current_distance = distancef.params(datum, elem._2()).call();
-                if (current_distance < best_distance)
+                if (current_distance < best_distance) {
                     best = elem;
+                    best_distance = current_distance;
+                }
             }
         }
         return best;

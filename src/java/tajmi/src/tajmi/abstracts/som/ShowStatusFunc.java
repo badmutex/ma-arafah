@@ -21,8 +21,8 @@ public abstract class ShowStatusFunc  {
         return this;
     }
 
-    public abstract void update_status_verbosly ();
-    public abstract void update_status_very_verbosly ();
-    public abstract void update_status_everything ();
+    public abstract String verbose ();
+    public abstract String very_verbose ();
+    public abstract String everything ();
 
 }

@@ -196,8 +196,11 @@ public class SOMMaker<F, D> {
             params.project_func = new GeneralProjectionFunc();
         }
 
-        if (params.project_func.getDistanceFunc() == null) {
+        if (params.project_func.getDistanceFunc() == null &&
+                this.distance_func == null) {
             params.project_func.setDistanceFunc(new AtomContainerListDistanceFunc());
+        } else if (this.distance_func != null){
+            params.project_func.setDistanceFunc(distance_func);
         }
 
         if (params.project_func.getFindBestMatchFunc() == null) {
