@@ -1,24 +1,22 @@
 
-package tajmi;
+package tajmi.instances.cdk;
 
 import java.util.HashMap;
-import java.util.Hashtable;
-import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
  * Used to hold global state in a singleton.
  * 
  * @author badi
  */
-public class Universe {
+public class Memoize {
 
 
     /* Single code here */
-    private static Universe INSTANCE = null;
+    private static Memoize INSTANCE = null;
 
-    public static synchronized Universe getInstance() {
+    public static synchronized Memoize getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new Universe();
+            INSTANCE = new Memoize();
             return INSTANCE;
         } else {
             return INSTANCE;
@@ -29,14 +27,9 @@ public class Universe {
      * saves the results of potentially expensive distance computations between datapoints
      */
     HashMap<String, Double> distances;
-    /**
-     * saves the maximum common subgraphs between two atom containers
-     */
-    HashMap<String, IAtomContainer> mcsss;
 
-    private Universe() {
+    private Memoize() {
         distances = new HashMap<String, Double>(100);
-        mcsss = new HashMap<String, IAtomContainer>(100);
     }
 
     public String hashPair(String origin, String target) {

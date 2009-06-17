@@ -3,7 +3,7 @@ package tajmi.instances.cdk;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
-import tajmi.Universe;
+import tajmi.instances.cdk.Memoize;
 import tajmi.Util;
 import tajmi.abstracts.DistanceFunc;
 import tajmi.abstracts.som.ShowStatusFunc;
@@ -19,7 +19,7 @@ public class AtomContainerMemoizingDistanceFunc extends DistanceFunc<IAtomContai
         IAtomContainer g_1 = getFirst(),
                 g_2 = getSecond();
 
-        Universe state = Universe.getInstance();
+        Memoize memo = Memoize.getInstance();
         String n1 = g_1.getID(),
                 n2 = g_2.getID();
 
@@ -29,9 +29,9 @@ public class AtomContainerMemoizingDistanceFunc extends DistanceFunc<IAtomContai
 
         double distance = Double.NEGATIVE_INFINITY;
 
-        if (state.distance_exists(n1, n2)) {
+        if (memo.distance_exists(n1, n2)) {
             statusupdater.update_status(new ShowMemoizingStatus().set_message("skipping"));
-            distance = state.get_distance(n1, n2);
+            distance = memo.get_distance(n1, n2);
         } else {
             statusupdater.update_status(new ShowMemoizingStatus().set_message("running mcss algorithm"));
 
@@ -45,7 +45,7 @@ public class AtomContainerMemoizingDistanceFunc extends DistanceFunc<IAtomContai
                         g2 = AtomContainerManipulator.removeHydrogens(g_2);
                 distance = 1.0 - (mcss.getAtomCount() + 0.0) / Math.max(g1.getAtomCount(), g2.getAtomCount());
 
-                state.add_distance(n1, n2, distance);
+                memo.add_distance(n1, n2, distance);
             }
         }
 
