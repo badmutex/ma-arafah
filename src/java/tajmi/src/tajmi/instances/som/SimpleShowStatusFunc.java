@@ -17,7 +17,7 @@ public class SimpleShowStatusFunc extends ShowStatusFunc {
         int i = state.iterations;
         int p = state.projections;
 
-        return "[" + i + "]\t[" + p + "]";
+        return "[" + i + "]\t[" + p + "]\n";
     }
 
     @Override

@@ -86,10 +86,10 @@ public class AtomContainerListDistanceFunc extends DistanceFunc<IAtomContainer, 
                 }
             }
 
-            List<String> names = Seq.parallel_map(new GetNames(), rest);
+            List<String> names = Seq.map(new GetNames(), rest);
 
             return getClass().getName() +
-                    " finding distances between " + target.getID() + " and " + names;
+                    " finding distances between " + target.getID() + " and " + names + "\n";
 
         }
     }

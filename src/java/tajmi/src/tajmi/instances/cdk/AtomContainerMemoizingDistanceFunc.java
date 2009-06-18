@@ -30,10 +30,10 @@ public class AtomContainerMemoizingDistanceFunc extends DistanceFunc<IAtomContai
         double distance = Double.NEGATIVE_INFINITY;
 
         if (memo.distance_exists(n1, n2)) {
-            statusupdater.update_status(new ShowMemoizingStatus().set_message("skipping"));
+            statusupdater.update_status(new ShowMemoizingStatus().set_message("skipping\n"));
             distance = memo.get_distance(n1, n2);
         } else {
-            statusupdater.update_status(new ShowMemoizingStatus().set_message("running mcss algorithm"));
+            statusupdater.update_status(new ShowMemoizingStatus().set_message("running mcss algorithm\n"));
 
             IAtomContainer mcss = Util.mcss(g_1, g_2);
 
@@ -69,7 +69,7 @@ public class AtomContainerMemoizingDistanceFunc extends DistanceFunc<IAtomContai
 
         @Override
         public String very_verbose() {
-            return "\t" + n1 + " <-> " + n2;
+            return "\t" + n1 + " <-> " + n2 + "\n";
         }
 
         @Override
@@ -100,7 +100,7 @@ public class AtomContainerMemoizingDistanceFunc extends DistanceFunc<IAtomContai
 
         @Override
         public String everything() {
-            return "\t\t" + msg;
+            return "\t\t" + msg + "\n";
         }
 
     }

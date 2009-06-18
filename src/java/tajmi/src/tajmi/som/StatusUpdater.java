@@ -35,7 +35,7 @@ public class StatusUpdater {
 
     private void show_message (String msg) {
         synchronized (System.out) {
-            System.out.println(msg);
+            System.out.print(msg);
         }
     }
 
