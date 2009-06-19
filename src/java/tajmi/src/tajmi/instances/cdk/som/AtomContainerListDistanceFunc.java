@@ -1,5 +1,6 @@
 package tajmi.instances.cdk.som;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -21,7 +22,7 @@ public class AtomContainerListDistanceFunc extends DistanceFunc<IAtomContainer, 
     @Override
     public Double call() {
         IAtomContainer molecule = getFirst();
-        List<IAtomContainer> others = getSecond();
+        Collection<IAtomContainer> others = getSecond();
         StatusUpdater.getInstance().update_status(new StatusUpdate().set_target(molecule).set_rest(others));
 
         DistanceFunc<IAtomContainer, IAtomContainer> distancef = new AtomContainerMemoizingDistanceFunc();
@@ -30,10 +31,10 @@ public class AtomContainerListDistanceFunc extends DistanceFunc<IAtomContainer, 
         return calculate_overall_distance(f, others);
     }
 
-    double calculate_overall_distance(DistanceFunc df, List<IAtomContainer> others) {
+    double calculate_overall_distance(DistanceFunc df, Collection<IAtomContainer> others) {
         double distance = 0.0;
         for (IAtomContainer other : others) {
-            distance += (Double) df.curry(other).call();
+            distance += (Double) df.copy().curry(other).call();
         }
         return distance;
     }

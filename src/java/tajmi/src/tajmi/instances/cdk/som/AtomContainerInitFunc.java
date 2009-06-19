@@ -1,6 +1,7 @@
 package tajmi.instances.cdk.som;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +18,7 @@ import tajmi.abstracts.som.InitFunc;
  *
  * @author badi
  */
-public class AtomContainerInitFunc extends InitFunc<List<IAtomContainer>, IAtomContainer> {
+public class AtomContainerInitFunc extends InitFunc<Collection<IAtomContainer>, IAtomContainer> {
 
     List<IAtomContainer> chosen;
     AtomContainerPermutor bondpermutor, atompermutor;
@@ -31,10 +32,10 @@ public class AtomContainerInitFunc extends InitFunc<List<IAtomContainer>, IAtomC
     }
 
     @Override
-    public List<IAtomContainer> call() {
+    public Collection<IAtomContainer> call() {
 
         List<IAtomContainer> seed = getSeed();
-        List<IAtomContainer> result = new FieldModel<IAtomContainer>();
+        Collection<IAtomContainer> result = new FieldModel<IAtomContainer>();
 
         IAtomContainer choice;
 

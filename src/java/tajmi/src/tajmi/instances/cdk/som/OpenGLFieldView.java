@@ -190,7 +190,7 @@ public class OpenGLFieldView extends ViewField {
         private void list_me_dots(java.util.List<Tuple2<Position, FieldModel<IAtomContainer>>> dots, GL gl) {
             gl.glPushMatrix();
             gl.glTranslated((-length / 2) + 0.5, -width / 2, 0);
-            gl.glPointSize(5.0f);
+            gl.glPointSize(10.0f);
             gl.glBegin(gl.GL_POINTS);
 
             for (Tuple2<Position, FieldModel<IAtomContainer>> model : dots) {
@@ -211,6 +211,7 @@ public class OpenGLFieldView extends ViewField {
             int color_position = 0;
 
             for (Tuple2<Position, FieldModel<IAtomContainer>> m : field) {
+                if (m._2().getGeneralizeMedian() == null) continue;
                 String id = m._2().getGeneralizeMedian().getID();
                 if (!modelColors.containsKey(id)) {
                     Float[] new_color = generate_next_color();

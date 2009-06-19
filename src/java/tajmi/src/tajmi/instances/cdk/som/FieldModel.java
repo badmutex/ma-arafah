@@ -2,13 +2,14 @@
 package tajmi.instances.cdk.som;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
  *
  * @author badi
  */
-public class FieldModel<T> extends LinkedList<T> {
+public class FieldModel<T> extends HashSet<T> {
 
     T generalizeMedian;
 

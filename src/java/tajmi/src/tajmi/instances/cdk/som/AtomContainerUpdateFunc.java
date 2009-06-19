@@ -58,9 +58,9 @@ public class AtomContainerUpdateFunc extends UpdateFunc<FieldModel<IAtomContaine
         IAtomContainer median = new FindGeneralizedMedian().params(nset).call()._2();
         for (FieldModel m : would_you_be) {
             m.setGeneralizeMedian(median);
-            m.clear();
-            Object med = m.getGeneralizeMedian();
-            m.add(med);
+//            m.clear();
+//            Object med = m.getGeneralizeMedian();
+//            m.add(med);
         }
 
 

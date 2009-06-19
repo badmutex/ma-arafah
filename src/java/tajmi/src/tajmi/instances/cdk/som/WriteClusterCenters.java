@@ -17,6 +17,7 @@ import java.util.UUID;
 import scala.Tuple2;
 import tajmi.som.Position;
 import java.io.*;
+import java.util.Collection;
 import tajmi.functional.instances.cdk.WriteMolecule;
 
 /**
@@ -61,7 +62,7 @@ public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
 
         // 1) Put everything inter separate clusters
         Field<FieldModel<IAtomContainer>> field = getField();
-        Map<String, List<IAtomContainer>> clusters = new HashMap<String, List<IAtomContainer>>(field.size());
+        Map<String, Collection<IAtomContainer>> clusters = new HashMap<String, Collection<IAtomContainer>>(field.size());
         for (Tuple2<Position, FieldModel<IAtomContainer>> median : field) {
 
             FieldModel<IAtomContainer> clust = median._2();
@@ -79,7 +80,7 @@ public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
         // 2) Find the cluster centers
         CenterOfMassFunc<IAtomContainer> centerf = new AtomContainerCenterOfMassFunc();
         List<IAtomContainer> centers = new LinkedList<IAtomContainer>();
-        for (List<IAtomContainer> cluster : clusters.values()) {
+        for (Collection<IAtomContainer> cluster : clusters.values()) {
             IAtomContainer center = (IAtomContainer) centerf.params(cluster).call();
             centers.add(center);
         }

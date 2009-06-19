@@ -1,6 +1,7 @@
 
 package tajmi.instances.cdk.som;
 
+import java.util.Collection;
 import java.util.List;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import tajmi.abstracts.DistanceFunc;
@@ -15,12 +16,12 @@ import tajmi.som.StatusUpdater;
 public class AtomContainerGrainyParallelListDistanceFunc extends AtomContainerListDistanceFunc {
 
     @Override
-    double calculate_overall_distance(DistanceFunc df, List<IAtomContainer> others) {        
+    double calculate_overall_distance(DistanceFunc df, Collection<IAtomContainer> others) {
         List<Double> distances = parallel_calculation (df, others);
         return sum_distances(distances);
     }
 
-    List<Double> parallel_calculation(DistanceFunc df, List<IAtomContainer> others) {
+    List<Double> parallel_calculation(DistanceFunc df, Collection<IAtomContainer> others) {
         return Seq.grainy_parallel_map(df, others, others.size() / 100);// Runtime.getRuntime().availableProcessors());
     }
 
