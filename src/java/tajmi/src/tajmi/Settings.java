@@ -15,6 +15,7 @@ import tajmi.functional.instances.seq.Seq;
 import tajmi.functional.interfaces.Fun;
 import org.openscience.cdk.io.formats.IChemFormat;
 import org.openscience.cdk.io.formats.SMILESFormat;
+import tajmi.som.StatusUpdater.Verbosity;
 
 /**
  *
@@ -36,7 +37,9 @@ public class Settings {
         field_length,
         field_width,
 
-        show_opengl_viewer
+        show_opengl_viewer,
+
+        verbosity
     }
     Map<Variables, Tuple2<String, String>> keywords_and_types;
     Map<Variables, String> defaults;
@@ -81,6 +84,9 @@ public class Settings {
 
         keywords_and_types.put(Variables.show_opengl_viewer, new Tuple2("show opengl viewer", "Boolean"));
         defaults.put(Variables.show_opengl_viewer, "false");
+
+        keywords_and_types.put(Variables.verbosity, new Tuple2("verbosity", "StatusUpdater.Verbosity"));
+        defaults.put(Variables.verbosity, "Verbose");
 
 
         List<String> config_lines = read_decommented_file(config_file_path);
@@ -202,6 +208,8 @@ public class Settings {
                 config.put(kw, format);
             } else if (kw_type.equals("Integer")) {
                 config.put(kw, Integer.parseInt(val));
+            } else if (kw_type.equals("StatusUpdater.Verbosity")) {
+                config.put(kw, Verbosity.valueOf(val));
             } else {
                 throw new InvalidConfigurationType(keywords_types, kw_type);
             }
