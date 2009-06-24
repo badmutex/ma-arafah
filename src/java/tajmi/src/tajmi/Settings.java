@@ -37,6 +37,8 @@ public class Settings {
         field_length,
         field_width,
 
+        max_iterations,
+
         show_opengl_viewer,
 
         verbosity
@@ -87,6 +89,9 @@ public class Settings {
 
         keywords_and_types.put(Variables.verbosity, new Tuple2("verbosity", "StatusUpdater.Verbosity"));
         defaults.put(Variables.verbosity, "Verbose");
+
+        keywords_and_types.put(Variables.max_iterations, new Tuple2("max iterations", "Integer"));
+        defaults.put(Variables.max_iterations, "1");
 
 
         List<String> config_lines = read_decommented_file(config_file_path);
