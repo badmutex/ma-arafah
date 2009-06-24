@@ -34,7 +34,9 @@ public class Settings {
         mcss_format,
 
         field_length,
-        field_width
+        field_width,
+
+        show_opengl_viewer
     }
     Map<Variables, Tuple2<String, String>> keywords_and_types;
     Map<Variables, String> defaults;
@@ -76,6 +78,9 @@ public class Settings {
 
         keywords_and_types.put(Variables.field_width, new Tuple2("field width", "Integer"));
         defaults.put(Variables.field_width, "10");
+
+        keywords_and_types.put(Variables.show_opengl_viewer, new Tuple2("show opengl viewer", "Boolean"));
+        defaults.put(Variables.show_opengl_viewer, "false");
 
 
         List<String> config_lines = read_decommented_file(config_file_path);
