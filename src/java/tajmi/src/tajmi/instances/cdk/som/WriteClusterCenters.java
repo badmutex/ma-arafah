@@ -4,21 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import tajmi.abstracts.som.ViewField;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import tajmi.abstracts.CenterOfMassFunc;
-import tajmi.instances.cdk.AtomContainerCenterOfMassFunc;
-import tajmi.som.Field;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.List;
-import java.util.LinkedList;
-import java.lang.Iterable;
-import java.util.UUID;
-import scala.Tuple2;
-import tajmi.som.Position;
 import java.io.*;
-import java.util.Collection;
+import tajmi.abstracts.som.ShowStatusFunc;
 import tajmi.functional.instances.cdk.WriteMolecule;
+import tajmi.som.StatusUpdater;
 
 /**
  *
@@ -60,30 +49,7 @@ public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
     @Override
     public Void call() {
 
-        // 1) Put everything inter separate clusters
-        Field<FieldModel<IAtomContainer>> field = getField();
-        Map<String, Collection<IAtomContainer>> clusters = new HashMap<String, Collection<IAtomContainer>>(field.size());
-        for (Tuple2<Position, FieldModel<IAtomContainer>> median : field) {
-
-            FieldModel<IAtomContainer> clust = median._2();
-            IAtomContainer m = clust.getGeneralizeMedian();
-            String id = m.getID();
-
-            if (clusters.containsKey(id)) {
-                clusters.get(id).addAll(clust);
-            } else {
-                clusters.put(id, clust);
-            }
-
-        }
-
-        // 2) Find the cluster centers
-        CenterOfMassFunc<IAtomContainer> centerf = new AtomContainerCenterOfMassFunc();
-        List<IAtomContainer> centers = new LinkedList<IAtomContainer>();
-        for (Collection<IAtomContainer> cluster : clusters.values()) {
-            IAtomContainer center = (IAtomContainer) centerf.params(cluster).call();
-            centers.add(center);
-        }
+       Iterable<IAtomContainer> centers = (Iterable<IAtomContainer>) new CollectClusterCenters().curry(getField()).call();
 
         // 3) write out the cluster centers
         File outdir = new File(getOutput_directory());
@@ -96,9 +62,11 @@ public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
         int counter = 1;
         for (IAtomContainer center : centers) {
 
-            String fname = prefix + "-" + counter;
+            String fname = getOutput_directory() + File.separator + prefix + counter;
+
             try {
-                writer.curry(fname).curry(center).call();
+                writer.copy().curry(fname).curry(center).call();
+                StatusUpdater.getInstance().update_status(new Status().setVerbose("Wrote " + fname + "\n"));
             } catch (Exception ex) {
                 Logger.getLogger(WriteClusterCenters.class.getName()).log(Level.SEVERE, "Could not write " + fname, ex);
             }
@@ -109,5 +77,44 @@ public class WriteClusterCenters extends ViewField<FieldModel<IAtomContainer>> {
 
         // ....and we're done!
         return null;
+    }
+
+    private class Status extends ShowStatusFunc {
+
+        String verbose,
+                very_verbose,
+                everything;
+
+        public Status setEverything(String everything) {
+            this.everything = everything;
+            return this;
+        }
+
+        public Status setVerbose(String verbose) {
+            this.verbose = verbose;
+            return this;
+        }
+
+        public Status setVery_verbose(String very_verbose) {
+            this.very_verbose = very_verbose;
+            return this;
+        }
+
+        
+        @Override
+        public String verbose() {
+            return verbose;
+        }
+
+        @Override
+        public String very_verbose() {
+            return very_verbose;
+        }
+
+        @Override
+        public String everything() {
+            return everything;
+        }
+        
     }
 }
