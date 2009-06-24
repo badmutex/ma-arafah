@@ -31,7 +31,10 @@ public class Settings {
         write_cluster_mcss,
         cluster_mcss_directory,
         mcss_prefix,
-        mcss_format
+        mcss_format,
+
+        field_length,
+        field_width
     }
     Map<Variables, Tuple2<String, String>> keywords_and_types;
     Map<Variables, String> defaults;
@@ -67,6 +70,12 @@ public class Settings {
 
         keywords_and_types.put(Variables.mcss_format, new Tuple2("mcss format", "IChemFormat"));
         defaults.put(Variables.mcss_format, "smiles");
+
+        keywords_and_types.put(Variables.field_length, new Tuple2("field length", "Integer"));
+        defaults.put(Variables.field_length, "10");
+
+        keywords_and_types.put(Variables.field_width, new Tuple2("field width", "Integer"));
+        defaults.put(Variables.field_width, "10");
 
 
         List<String> config_lines = read_decommented_file(config_file_path);
@@ -186,6 +195,8 @@ public class Settings {
             } else if (kw_type.equals("IChemFormat")){
                 IChemFormat format = choose_file_format (val);
                 config.put(kw, format);
+            } else if (kw_type.equals("Integer")) {
+                config.put(kw, Integer.parseInt(val));
             } else {
                 throw new InvalidConfigurationType(keywords_types, kw_type);
             }
