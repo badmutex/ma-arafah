@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 import scala.Tuple2;
 import tajmi.functional.instances.seq.Seq;
 import tajmi.functional.interfaces.Fun;
+import org.openscience.cdk.io.formats.IChemFormat;
+import org.openscience.cdk.io.formats.SMILESFormat;
 
 /**
  *
@@ -63,7 +65,7 @@ public class Settings {
         keywords_and_types.put(Variables.mcss_prefix, new Tuple2("mcss prefix", "String"));
         defaults.put(Variables.mcss_prefix, DEFAULT_MCSS_DIRECTORY + File.separator + "mcss_");
 
-        keywords_and_types.put(Variables.mcss_format, new Tuple2("mcss format", "String"));
+        keywords_and_types.put(Variables.mcss_format, new Tuple2("mcss format", "IChemFormat"));
         defaults.put(Variables.mcss_format, "smiles");
 
 
@@ -162,7 +164,7 @@ public class Settings {
         return new BufferedReader(new FileReader(path));
     }
 
-    private Map<Variables, Object> generate_configuration(Map<Variables, Tuple2<String, String>> keywords_types, List<String> lines) throws InvalidConfigurationType {
+    private Map<Variables, Object> generate_configuration(Map<Variables, Tuple2<String, String>> keywords_types, List<String> lines) throws InvalidConfigurationType, InvalidFileFormat {
         Map<Variables, Object> config = new Hashtable(lines.size());
 
         for (Variables kw : keywords_types.keySet()) {
@@ -181,12 +183,25 @@ public class Settings {
                 config.put(kw, Boolean.parseBoolean(val));
             } else if (kw_type.equals("List<String>")) {
                 config.put(kw, split_by_concat_separator(val));
+            } else if (kw_type.equals("IChemFormat")){
+                IChemFormat format = choose_file_format (val);
+                config.put(kw, format);
             } else {
                 throw new InvalidConfigurationType(keywords_types, kw_type);
             }
         }
 
         return config;
+    }
+
+    private IChemFormat choose_file_format (String description) throws InvalidFileFormat {
+        IChemFormat format = null;
+
+        if (description.equalsIgnoreCase("smiles"))
+            format = (IChemFormat) SMILESFormat.getInstance();
+        else throw new InvalidFileFormat(description);
+
+        return format;
     }
 
     private List<String> split_by_concat_separator(String list) {
@@ -227,10 +242,25 @@ public class Settings {
             String msg = "Bad type specified [" + bad_type + "].\n" +
                     "The valid types are\n";
             for (Tuple2<String, String> kw_types : keywords_types.values()) {
-                msg += kw_types._2();
+                msg += "\t" + kw_types._2() + "\n";
             }
 
             return msg;
         }
+    }
+
+    public class InvalidFileFormat extends Exception {
+        String bad_format_name;
+
+        public InvalidFileFormat (String format_name) {
+            this.bad_format_name = format_name;
+        }
+
+        @Override
+        public String getLocalizedMessage() {
+            return "Unknown attempted format [" + bad_format_name + "]. Try [" + "smiles" + "]";
+        }
+
+
     }
 }
