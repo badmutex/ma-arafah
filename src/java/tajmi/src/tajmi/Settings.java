@@ -163,6 +163,7 @@ public class Settings {
                 String l = line;
                 if (line.contains(COMMENT_CHAR)) {
                     l = line.substring(0, l.indexOf(COMMENT_CHAR));
+                    l = l.trim();
                 }
                 if (l.length() > 0)
                     lines.add(l);
