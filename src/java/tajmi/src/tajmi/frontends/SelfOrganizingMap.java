@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.LinkedList;
 import tajmi.Settings.InvalidConfigurationType;
 import tajmi.Settings.Variables;
-import tajmi.frontends.SOMMaker;
 import tajmi.som.SOM;
 
 import org.openscience.cdk.interfaces.IMolecule;
@@ -21,6 +20,7 @@ import tajmi.functional.instances.cdk.ReadMolecule;
 import tajmi.functional.instances.cdk.WriteMolecule;
 import tajmi.instances.cdk.som.OpenGLFieldView;
 import tajmi.instances.cdk.som.WriteClusterCenters;
+import tajmi.instances.cdk.som.WriteClusterInfo;
 import tajmi.instances.som.IterationsStopFunc;
 import tajmi.som.Field;
 import tajmi.som.StatusUpdater;
@@ -73,7 +73,7 @@ public class SelfOrganizingMap {
             File f = new File(path);
             IMolecule m = (IMolecule) new ReadMolecule().curry(f.getAbsolutePath()).call();
             AtomContainerManipulator.removeHydrogens(m);
-            m.setID(f.getName());
+            m.setID(f.getName().split("\\.\\w+$")[0]);  // remove suffix
             ms.add(m);
         }
         return ms;
@@ -97,6 +97,20 @@ public class SelfOrganizingMap {
 
             write.params(f);
             write.call();
+        }
+
+        if ((Boolean) config.get(Variables.write_cluster_info)) {
+            String outdir =
+                    (String) config.get(Variables.cluster_info_directory) +
+                    File.separator +
+                    (String)config.get(Variables.cluster_prefix);
+            new WriteClusterInfo()
+                    .curry(Settings.COMMENT_CHAR)
+                    .curry(Settings.ASSIGNMENT_CHAR)
+                    .curry(config.get(Variables.molecule_names))
+                    .curry(outdir)
+                    .curry(f)
+                    .call();
         }
     }
 }

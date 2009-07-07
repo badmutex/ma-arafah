@@ -31,13 +31,16 @@ public class Settings {
         name,
         biological_activity,
         molecules_directories,
-        molecule_info_file,
-        read_biological_activity,
+        molecule_names_file,
+        used_descriptors_file,
         molecule_names,
         write_cluster_mcss,
+        write_cluster_info,
         cluster_mcss_directory,
+        cluster_info_directory,
         mcss_prefix,
         mcss_format,
+        cluster_prefix,
 
         field_length,
         field_width,
@@ -71,11 +74,20 @@ public class Settings {
         keywords_and_types.put(Variables.molecules_directories, new Tuple2("molecules directories", "List<String>"));
         defaults.put(Variables.molecules_directories, ROOT + "molecules");
 
-        keywords_and_types.put(Variables.molecule_info_file, new Tuple2("molecule info file", "String"));
-        defaults.put(Variables.molecule_info_file, ROOT + "molecule-info.txt");
-        
-        keywords_and_types.put(Variables.read_biological_activity, new Tuple2("read biological activity", "Boolean"));
-        defaults.put(Variables.read_biological_activity, "false");
+        keywords_and_types.put(Variables.molecule_names_file, new Tuple2("molecule names file", "String"));
+        defaults.put(Variables.molecule_names_file, ROOT + "molecule-names.txt");        
+
+        keywords_and_types.put(Variables.used_descriptors_file, new Tuple2("used descriptors file", "String"));
+        defaults.put(Variables.used_descriptors_file, "None");
+
+        keywords_and_types.put(Variables.write_cluster_info, new Tuple2("write cluster info", "Boolean"));
+        defaults.put(Variables.write_cluster_info, "true");
+
+        keywords_and_types.put(Variables.cluster_info_directory, new Tuple2("cluster info directory", "String"));
+        defaults.put(Variables.cluster_info_directory, DEFAULT_MCSS_DIRECTORY);
+
+        keywords_and_types.put(Variables.cluster_prefix, new Tuple2("cluster prefix", "String"));
+        defaults.put(Variables.cluster_prefix, "clust-");
 
         keywords_and_types.put(Variables.write_cluster_mcss, new Tuple2("write cluster mcss", "Boolean"));
         defaults.put(Variables.write_cluster_mcss, "false");
@@ -109,7 +121,7 @@ public class Settings {
         Map<Variables, Object> config = generate_configuration(keywords_and_types, config_lines);
         List<String> molecule_paths = build_molecule_paths(
                 config.get(Variables.molecules_directories),
-                config.get(Variables.molecule_info_file));
+                config.get(Variables.molecule_names_file));
         config.put(Variables.molecule_names, molecule_paths);
 
 
@@ -151,7 +163,7 @@ public class Settings {
             String keyword = keywords_types.get(kw)._1();
             String kw_type = keywords_types.get(kw)._2();
 
-            String val = get_value_for_kw(keyword, lines);
+            String val = StringFuns.get_value_for_kw(ASSIGNMENT_CHAR, keyword, lines);
 
             if (val == null) {
                 val = defaults.get(kw);
@@ -178,18 +190,7 @@ public class Settings {
         return config;
     }
 
-    private String get_value_for_kw(String keyword, List<String> lines) {
-        String val = null;
-        for (String line : lines) {
-            if (line.startsWith(keyword)) {
-                Pattern pat = Pattern.compile("\\s*" + ASSIGNMENT_CHAR + "\\s*");
-                String[] bitsnpieces = pat.split(line);
-                val = bitsnpieces[1];
-                break;
-            }
-        }
-        return val;
-    }
+    
 
     public class InvalidConfigurationType extends Exception {
 

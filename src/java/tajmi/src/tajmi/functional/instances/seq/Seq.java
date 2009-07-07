@@ -63,4 +63,8 @@ public class Seq {
     public static List<List> transpose(List<List> seq) {
         return (List<List>) new Transpose().curry(seq).call();
     }
+
+    public static Boolean elem (Object o, Iterable os) {
+        return (Boolean) new Elem().curry(o).curry(os).call();
+    }
 }

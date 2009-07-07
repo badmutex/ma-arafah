@@ -2,6 +2,7 @@
 package tajmi.functional.instances.string;
 
 import java.util.List;
+import scala.Tuple2;
 
 /**
  *
@@ -23,5 +24,17 @@ public class StringFuns {
 
     public static List<String> remove_commented_lines (String comment_str, Iterable<String> lines) {
         return (List<String>) new RemoveCommentedLines().curry(comment_str).curry(lines).call();
+    }
+
+    public static String get_value_for_kw(String assignment_str, String keyword, List<String> lines) {
+        return (String) new GetValueForKeyword().curry(assignment_str).curry(keyword).curry(lines).call();
+    }
+
+    public static Tuple2<String, Double> parse_molecular_descriptor (String assignment_str, String descriptor_line) {
+        return (Tuple2<String, Double>) new ParseMolecularDescriptor().curry(assignment_str).curry(descriptor_line).call();
+    }
+
+    public static String replace_suffix (String str, String replacement) {
+        return (String) new ReplaceSuffix().curry(str).curry(replacement).call();
     }
 }
