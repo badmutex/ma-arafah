@@ -1,6 +1,7 @@
 
-package tajmi;
+package tajmi.frontends;
 
+import tajmi.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
