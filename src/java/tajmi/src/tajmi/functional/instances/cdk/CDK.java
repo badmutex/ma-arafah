@@ -19,4 +19,8 @@ public class CDK {
         new WriteMolecule().curry(format).curry(filename).curry(molecule).call();
     }
 
+    public static IChemFormat choose_file_format (String description) {
+        return (IChemFormat) new ChooseFileFormat().curry(description).call();
+    }
+
 }

@@ -1,4 +1,4 @@
-package tajmi.functional.IO;
+package tajmi.functional.instances.io;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,15 +11,15 @@ import java.util.logging.Logger;
 import tajmi.functional.interfaces.Fun;
 
 /**
- *<code> Lines :: String -> IO [String]</code>
+ *<code> ReadFile :: String -> IO [String]</code>
  * @author badi
  */
-public class Lines implements Fun {
+public class ReadFile implements Fun {
 
     String path;
 
     public Fun copy() {
-        return new Lines().curry(path);
+        return new ReadFile().curry(path);
     }
 
     public Fun curry(Object arg) {
@@ -39,9 +39,9 @@ public class Lines implements Fun {
                 lines.add(line);
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Lines.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Lines.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
         }
         return lines;
     }

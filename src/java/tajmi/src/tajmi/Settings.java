@@ -15,6 +15,9 @@ import tajmi.functional.instances.seq.Seq;
 import tajmi.functional.interfaces.Fun;
 import org.openscience.cdk.io.formats.IChemFormat;
 import org.openscience.cdk.io.formats.SMILESFormat;
+import tajmi.functional.instances.cdk.CDK;
+import tajmi.functional.instances.io.IO;
+import tajmi.functional.instances.string.StringFuns;
 import tajmi.som.StatusUpdater.Verbosity;
 
 /**
@@ -102,18 +105,19 @@ public class Settings {
         defaults.put(Variables.max_iterations, "1");
 
 
-        List<String> config_lines = read_decommented_file(config_file_path);
+        List<String> config_lines = IO.read_decommented_file(COMMENT_CHAR, config_file_path);
         Map<Variables, Object> config = generate_configuration(keywords_and_types, config_lines);
         List<String> molecule_paths = build_molecule_paths(
                 config.get(Variables.molecules_directories),
                 config.get(Variables.molecule_info_file));
         config.put(Variables.molecule_names, molecule_paths);
 
+
         configuration = config;
     }
 
     private List<String> build_molecule_paths(Object directory_paths, Object names_list) throws IOException, FileNotFoundException, Exception {
-        List<String> names =  read_decommented_file((String) names_list);
+        List<String> names =  IO.read_decommented_file(COMMENT_CHAR, (String) names_list);
 
         List<String> molecules = new LinkedList<String>();
         for (String mname : (List<String>) names) {
@@ -140,65 +144,7 @@ public class Settings {
         return configuration;
     }
 
-    private List<String> read_decommented_file(String path) throws FileNotFoundException, IOException, Exception {
-        List<String> lines = read_lines_as_rows(path);
-        List<String> uncommented_lines = filter_comments_out(lines);
-
-        return uncommented_lines;
-    }
-
-    private List<String> filter_comments_out(List<String> lines) {
-        class NoComments implements Fun {
-
-            List<String> lines;
-            String line;
-
-            public Fun copy() {
-                return new NoComments().curry(lines).curry(line);
-            }
-
-            public Fun curry(Object arg) {
-                if (lines == null) {
-                    lines = (List<String>) arg;
-                } else if (line == null) {
-                    line = (String) arg;
-                }
-
-                return this;
-            }
-
-            public List<String> call()  {
-                String l = line;
-                if (line.contains(COMMENT_CHAR)) {
-                    l = line.substring(0, l.indexOf(COMMENT_CHAR));
-                    l = l.trim();
-                }
-                if (l.length() > 0)
-                    lines.add(l);
-                return lines;
-            }
-        }
-
-        return (List<String>) Seq.fold(new NoComments(), new LinkedList(), lines);
-    }
-
-    private List<String> read_lines_as_rows(String path) throws IOException {
-        BufferedReader reader = make_buffered_reader(path);
-
-        List<String> lines = new LinkedList<String>();
-
-        for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-            lines.add(line);
-        }
-
-        return lines;
-    }
-
-    private BufferedReader make_buffered_reader(String path) throws FileNotFoundException {
-        return new BufferedReader(new FileReader(path));
-    }
-
-    private Map<Variables, Object> generate_configuration(Map<Variables, Tuple2<String, String>> keywords_types, List<String> lines) throws InvalidConfigurationType, InvalidFileFormat {
+    private Map<Variables, Object> generate_configuration(Map<Variables, Tuple2<String, String>> keywords_types, List<String> lines) throws InvalidConfigurationType {
         Map<Variables, Object> config = new Hashtable(lines.size());
 
         for (Variables kw : keywords_types.keySet()) {
@@ -216,9 +162,9 @@ public class Settings {
             } else if (kw_type.equals("Boolean")) {
                 config.put(kw, Boolean.parseBoolean(val));
             } else if (kw_type.equals("List<String>")) {
-                config.put(kw, split_by_concat_separator(val));
+                config.put(kw, StringFuns.break_by(CONCAT_SEPARATOR, val));
             } else if (kw_type.equals("IChemFormat")){
-                IChemFormat format = choose_file_format (val);
+                IChemFormat format = CDK.choose_file_format (val);
                 config.put(kw, format);
             } else if (kw_type.equals("Integer")) {
                 config.put(kw, Integer.parseInt(val));
@@ -230,25 +176,6 @@ public class Settings {
         }
 
         return config;
-    }
-
-    private IChemFormat choose_file_format (String description) throws InvalidFileFormat {
-        IChemFormat format = null;
-
-        if (description.equalsIgnoreCase("smiles"))
-            format = (IChemFormat) SMILESFormat.getInstance();
-        else throw new InvalidFileFormat(description);
-
-        return format;
-    }
-
-    private List<String> split_by_concat_separator(String list) {
-        List<String> dirs = new LinkedList<String>();
-        for (String dir_path : list.split(CONCAT_SEPARATOR)) {
-            dirs.add(dir_path);
-        }
-
-        return dirs;
     }
 
     private String get_value_for_kw(String keyword, List<String> lines) {
@@ -285,20 +212,5 @@ public class Settings {
 
             return msg;
         }
-    }
-
-    public class InvalidFileFormat extends Exception {
-        String bad_format_name;
-
-        public InvalidFileFormat (String format_name) {
-            this.bad_format_name = format_name;
-        }
-
-        @Override
-        public String getLocalizedMessage() {
-            return "Unknown attempted format [" + bad_format_name + "]. Try [" + "smiles" + "]";
-        }
-
-
     }
 }

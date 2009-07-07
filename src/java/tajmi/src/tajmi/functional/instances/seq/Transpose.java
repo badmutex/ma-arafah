@@ -27,19 +27,13 @@ public class Transpose implements Fun {
 
     public List<List> call() {
         List<List> transposed = new ArrayList<List>(seq.get(0).size());
-
-        // init
-        for (Object o : seq)
-            transposed.add(new LinkedList());
-
-        // transpose
         for (List l : seq) {
             for (int i = 0; i < l.size(); i++) {
+                if (transposed.size() <= i)
+                    transposed.add(new LinkedList());
                 transposed.get(i).add(l.get(i));
             }
         }
-
-        // done
         return transposed;
     }
 

@@ -1,5 +1,7 @@
 package tajmi.functional.instances.seq;
 
+import tajmi.functional.instances.string.BreakBy;
+import tajmi.functional.instances.string.WordsBy;
 import java.util.List;
 import scala.Tuple2;
 import tajmi.functional.interfaces.Fun;
