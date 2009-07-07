@@ -37,24 +37,7 @@ public class CollectClusterCenters implements Fun {
 
     public Iterable<IAtomContainer> call() {
         // 1) Put everything inte separate clusters
-        Field<FieldModel<IAtomContainer>> field = this.field;
-        Map<String, Collection<IAtomContainer>> clusters = new HashMap<String, Collection<IAtomContainer>>(field.size());
-        for (Tuple2<Position, FieldModel<IAtomContainer>> median : field) {
-
-            FieldModel<IAtomContainer> clust = median._2();
-            IAtomContainer m = clust.getGeneralizeMedian();
-
-            if (m != null) {
-                String id = m.getID();
-
-                if (clusters.containsKey(id)) {
-                    clusters.get(id).addAll(clust);
-                } else {
-                    clusters.put(id, clust);
-                }
-            }
-
-        }
+        Map<String, Collection<IAtomContainer>> clusters = (Map<String, Collection<IAtomContainer>>) new CollectClusters().curry(field).call();
 
         // 2) Find the cluster centers
         CenterOfMassFunc<IAtomContainer> centerf = new AtomContainerCenterOfMassFunc();
