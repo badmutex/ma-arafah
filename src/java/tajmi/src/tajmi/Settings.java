@@ -54,9 +54,9 @@ public class Settings {
     final String DEFAULT_ROOT_DIRECTORY = "input_data";
     final String ROOT = DEFAULT_ROOT_DIRECTORY + File.separator;
     final String DEFAULT_MCSS_DIRECTORY = ROOT + "mcss_files";
-    private final String COMMENT_CHAR = "#";
-    private final String ASSIGNMENT_CHAR = "=";
-    private final String CONCAT_SEPARATOR = ":";
+    public static final String COMMENT_CHAR = "#";
+    public static final String ASSIGNMENT_CHAR = "=";
+    public static final String CONCAT_SEPARATOR = ":";
 
     public Settings(String config_file_path) throws FileNotFoundException, IOException, InvalidConfigurationType, Exception {
         keywords_and_types = new Hashtable<Settings.Variables, Tuple2<String, String>>(Variables.values().length);
