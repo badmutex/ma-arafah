@@ -26,8 +26,10 @@ public class Settings {
     public enum Variables {
 
         name,
+        biological_activity,
         molecules_directories,
-        molecule_names_file,
+        molecule_info_file,
+        read_biological_activity,
         molecule_names,
         write_cluster_mcss,
         cluster_mcss_directory,
@@ -60,11 +62,17 @@ public class Settings {
         keywords_and_types.put(Variables.name, new Tuple2("name", "String"));
         defaults.put(Variables.name, "No name specified");
 
+        keywords_and_types.put(Variables.biological_activity, new Tuple2("biological activity", "String"));
+        defaults.put(Variables.biological_activity, "None");
+
         keywords_and_types.put(Variables.molecules_directories, new Tuple2("molecules directories", "List<String>"));
         defaults.put(Variables.molecules_directories, ROOT + "molecules");
 
-        keywords_and_types.put(Variables.molecule_names_file, new Tuple2("molecule names file", "String"));
-        defaults.put(Variables.molecule_names_file, ROOT + "molecule-names.txt");
+        keywords_and_types.put(Variables.molecule_info_file, new Tuple2("molecule info file", "String"));
+        defaults.put(Variables.molecule_info_file, ROOT + "molecule-info.txt");
+        
+        keywords_and_types.put(Variables.read_biological_activity, new Tuple2("read biological activity", "Boolean"));
+        defaults.put(Variables.read_biological_activity, "false");
 
         keywords_and_types.put(Variables.write_cluster_mcss, new Tuple2("write cluster mcss", "Boolean"));
         defaults.put(Variables.write_cluster_mcss, "false");
@@ -98,7 +106,7 @@ public class Settings {
         Map<Variables, Object> config = generate_configuration(keywords_and_types, config_lines);
         List<String> molecule_paths = build_molecule_paths(
                 config.get(Variables.molecules_directories),
-                config.get(Variables.molecule_names_file));
+                config.get(Variables.molecule_info_file));
         config.put(Variables.molecule_names, molecule_paths);
 
         configuration = config;
