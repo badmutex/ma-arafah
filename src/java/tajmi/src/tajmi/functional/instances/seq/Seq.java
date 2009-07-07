@@ -57,4 +57,8 @@ public class Seq {
     public static List zip_with(Fun f, Iterable itr)  {
         return (List) new ZipWith().curry(f).curry(itr).call();
     }
+
+    public static List<List> transpose(List<List> seq) {
+        return (List<List>) new Transpose().curry(seq).call();
+    }
 }
